@@ -103,7 +103,7 @@ class MainWindow(QMainWindow):
             with open(os.path.expanduser('~/.config/scopebuddy/scb.conf'), 'w') as file:
                 file.writelines(lines)
 
-        self.ui.variable_displayGamescope.setText(self.get_gamescope_args()) #display updated config
+        self.ui.variable_displayGamescope.setText('Current Gamescope Config: ' + self.get_gamescope_args()) #display updated config
 
     # ON-CLICK METHODS
 

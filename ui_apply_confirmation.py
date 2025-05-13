@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'apply_confirmationStlMhN.ui'
+## Form generated from reading UI file 'apply_confirmationZlTXkM.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -46,9 +46,16 @@ class Ui_Dialog_Apply(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.label = QLabel(self.widget_3)
         self.label.setObjectName(u"label")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignBottom|Qt.AlignmentFlag.AlignHCenter)
+        self.label.setWordWrap(True)
 
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
+
+        self.label_4 = QLabel(self.widget_3)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
+
+        self.gridLayout.addWidget(self.label_4, 1, 0, 1, 1)
 
 
         self.verticalLayout_2.addWidget(self.widget_3)
@@ -73,6 +80,10 @@ class Ui_Dialog_Apply(object):
         self.label_2.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_2.addWidget(self.label_2)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
 
         self.var_currentConfig = QLabel(self.widget_4)
         self.var_currentConfig.setObjectName(u"var_currentConfig")
@@ -101,6 +112,10 @@ class Ui_Dialog_Apply(object):
         self.label_3.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_3.addWidget(self.label_3)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
 
         self.var_newConfig = QLabel(self.widget_5)
         self.var_newConfig.setObjectName(u"var_newConfig")
@@ -147,6 +162,7 @@ class Ui_Dialog_Apply(object):
     def retranslateUi(self, Dialog_Apply):
         Dialog_Apply.setWindowTitle(QCoreApplication.translate("Dialog_Apply", u"Dialog", None))
         self.label.setText(QCoreApplication.translate("Dialog_Apply", u"Are you sure you want to apply the new config?", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog_Apply", u"The current one will remain deactived in the config file.", None))
         self.label_2.setText(QCoreApplication.translate("Dialog_Apply", u"Current Configuration: ", None))
         self.var_currentConfig.setText(QCoreApplication.translate("Dialog_Apply", u"VAR_CURRENT_CONFIG", None))
         self.label_3.setText(QCoreApplication.translate("Dialog_Apply", u"New Configuration: ", None))

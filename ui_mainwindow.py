@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowmZTAcf.ui'
+## Form generated from reading UI file 'mainwindowLeBRNE.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -581,9 +581,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QHBoxLayout(self.frame_4)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(6, 0, 0, 0)
+        self.pushButton_exit = QPushButton(self.frame_4)
+        self.pushButton_exit.setObjectName(u"pushButton_exit")
+        sizePolicy4.setHeightForWidth(self.pushButton_exit.sizePolicy().hasHeightForWidth())
+        self.pushButton_exit.setSizePolicy(sizePolicy4)
+        self.pushButton_exit.setMaximumSize(QSize(16777215, 40))
+
+        self.horizontalLayout_2.addWidget(self.pushButton_exit)
+
         self.scrollArea = QScrollArea(self.frame_4)
         self.scrollArea.setObjectName(u"scrollArea")
-        sizePolicy9 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+        sizePolicy9 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy9.setHorizontalStretch(0)
         sizePolicy9.setVerticalStretch(0)
         sizePolicy9.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
@@ -595,7 +603,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 129, 36))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 514, 36))
         self.gridLayout_2 = QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.variable_displayGamescope = QLabel(self.scrollAreaWidgetContents_2)
@@ -612,10 +620,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.scrollArea)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_2.addItem(self.horizontalSpacer)
-
         self.pushButton_about = QPushButton(self.frame_4)
         self.pushButton_about.setObjectName(u"pushButton_about")
         sizePolicy4.setHeightForWidth(self.pushButton_about.sizePolicy().hasHeightForWidth())
@@ -624,14 +628,6 @@ class Ui_MainWindow(object):
         self.pushButton_about.setFlat(False)
 
         self.horizontalLayout_2.addWidget(self.pushButton_about)
-
-        self.pushButton_exit = QPushButton(self.frame_4)
-        self.pushButton_exit.setObjectName(u"pushButton_exit")
-        sizePolicy4.setHeightForWidth(self.pushButton_exit.sizePolicy().hasHeightForWidth())
-        self.pushButton_exit.setSizePolicy(sizePolicy4)
-        self.pushButton_exit.setMaximumSize(QSize(16777215, 40))
-
-        self.horizontalLayout_2.addWidget(self.pushButton_exit)
 
         self.pushButton_apply = QPushButton(self.frame_4)
         self.pushButton_apply.setObjectName(u"pushButton_apply")
@@ -688,9 +684,9 @@ class Ui_MainWindow(object):
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"MangoHUD Overlay", None))
         self.checkBox_mango.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"AppID (Found in game's properties page on Steam)", None))
+        self.pushButton_exit.setText(QCoreApplication.translate("MainWindow", u"Exit App", None))
         self.variable_displayGamescope.setText(QCoreApplication.translate("MainWindow", u"currentGamescope", None))
         self.pushButton_about.setText(QCoreApplication.translate("MainWindow", u"About", None))
-        self.pushButton_exit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.pushButton_apply.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
     # retranslateUi
 
