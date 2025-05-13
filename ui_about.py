@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'aboutZFEYaL.ui'
+## Form generated from reading UI file 'aboutBuZRsW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -19,16 +19,16 @@ from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QGridLayout,
     QHBoxLayout, QPushButton, QSizePolicy, QSpacerItem,
     QTabWidget, QTextBrowser, QVBoxLayout, QWidget)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(454, 472)
-        self.verticalLayout = QVBoxLayout(Dialog)
+class Ui_Dialog_About(object):
+    def setupUi(self, Dialog_About):
+        if not Dialog_About.objectName():
+            Dialog_About.setObjectName(u"Dialog_About")
+        Dialog_About.resize(454, 472)
+        self.verticalLayout = QVBoxLayout(Dialog_About)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 6, 0, 0)
-        self.tabWidget = QTabWidget(Dialog)
+        self.tabWidget = QTabWidget(Dialog_About)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabWidget.setTabShape(QTabWidget.TabShape.Rounded)
         self.tabWidget.setDocumentMode(True)
@@ -75,7 +75,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addWidget(self.tabWidget)
 
-        self.widget = QWidget(Dialog)
+        self.widget = QWidget(Dialog_About)
         self.widget.setObjectName(u"widget")
         self.horizontalLayout = QHBoxLayout(self.widget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -92,17 +92,17 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.widget)
 
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(Dialog_About)
 
         self.tabWidget.setCurrentIndex(0)
 
 
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(Dialog_About)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.textBrowser.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+    def retranslateUi(self, Dialog_About):
+        Dialog_About.setWindowTitle(QCoreApplication.translate("Dialog_About", u"Dialog", None))
+        self.textBrowser.setHtml(QCoreApplication.translate("Dialog_About", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -116,8 +116,8 @@ class Ui_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /><span style=\" font-weight:700;\">Scopebuddy-gui</span> (this program) was not made by HikariKnight. It is lacks man"
                         "y of the features present in Scopebuddy itself, but provides an easy to use UI for the more basic features of scopebuddy.</p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/rfrench3/scopebuddy-gui\"><span style=\" text-decoration: underline; color:#bfbce9;\">Here's its github page!</span></a></p></body></html>", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Credits", None))
-        self.textBrowser_2.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Dialog_About", u"Credits", None))
+        self.textBrowser_2.setHtml(QCoreApplication.translate("Dialog_About", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -132,7 +132,7 @@ class Ui_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">When the GUI applies a new config, it comments out the old config in <span style=\" font-weight:700;\">~/.config/sco"
                         "pebuddy/</span> while adding a new line with the new config. This means worse-case, you can manually reapply any old configuration! <span style=\" font-weight:700;\">It can build up over time with excessive config editing,</span> but text files are small and it is easy enough to manually clean out if ever necessary.</p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br />Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power \u2013 it <span style=\" font-style:italic;\">does</span> aim to be safe to use alongside any such advanced configuration, however.</p></body></html>", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Dialog", u"Usage", None))
-        self.pushButton_okay.setText(QCoreApplication.translate("Dialog", u"Okay", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Dialog_About", u"Usage", None))
+        self.pushButton_okay.setText(QCoreApplication.translate("Dialog_About", u"Okay", None))
     # retranslateUi
 

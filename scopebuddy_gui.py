@@ -1,13 +1,15 @@
-
+#PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QIntValidator
 from ui_mainwindow import Ui_MainWindow  # Import generated UI file
+from ui_about import Ui_Dialog_About  # Import generated UI file
+from ui_apply_confirmation import Ui_Dialog_Apply
+
+# non-GUI imports
 import sys  
 import os
 from re import search # for searching for gamescope args in the config file
-from ui_about import Ui_Dialog  # Import generated UI file
 
-## The GUI files were created by: Qt User Interface Compiler version 6.9.0
 
 
 class MainWindow(QMainWindow):
@@ -87,11 +89,6 @@ class MainWindow(QMainWindow):
             lines = file.readlines()
 
             # Find the line that starts with SCB_GAMESCOPE_ARGS
-            #for i, line in enumerate(lines):
-            #    if line.startswith('SCB_GAMESCOPE_ARGS'):
-            #        lines[i] = f'SCB_GAMESCOPE_ARGS="{the_config}"\n'
-            #        break
-
             for i, line in enumerate(lines):
                 if line.startswith('SCB_GAMESCOPE_ARGS'):
                     # Comment out the original line
@@ -112,8 +109,12 @@ class MainWindow(QMainWindow):
 
     def apply_clicked(self):
         print("Apply button clicked...")
-
-        self.apply_global_config() # apply the config
+        #TODO: ensure the set of inputs is valid (-h cant be empty unless -w is empty, etc.)
+        dialog = DialogApply()
+        dialog.exec()
+        if dialog.answer:
+            print('Applying changes...')
+            self.apply_global_config()
 
     def exit_app(self):
         print("Exiting application...")
@@ -128,13 +129,36 @@ class MainWindow(QMainWindow):
 class DialogAbout(QDialog):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_Dialog()
+        self.ui = Ui_Dialog_About()
         self.ui.setupUi(self)
         self.setWindowTitle("About ScopeBuddy GUI")  # Set the window title
         self.ui.pushButton_okay.clicked.connect(self.exit_app)
     
     def exit_app(self):
         self.close()
+
+class DialogApply(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_Dialog_Apply()
+        self.ui.setupUi(self)
+        self.setWindowTitle("Apply Changes?")  # Set the window title
+        self.ui.var_currentConfig.setText(MainWindow.get_gamescope_args(window))
+        self.ui.var_newConfig.setText(MainWindow.generate_new_config(window))
+
+        #button actions
+        self.ui.pushButton_Cancel.clicked.connect(self.exit_window)
+        self.ui.pushButton_Apply.clicked.connect(self.apply_changes)
+        self.answer = False #changes will not be applied unless explictly confirmed
+    
+    def exit_window(self):
+        self.close()
+    
+    def apply_changes(self):
+        self.answer = True
+        self.close()
+
+
 
 
 app = QApplication([])
