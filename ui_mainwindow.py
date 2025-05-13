@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowGTAScu.ui'
+## Form generated from reading UI file 'mainwindowmZTAcf.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -133,7 +133,7 @@ class Ui_MainWindow(object):
         self.scrollArea_settings.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 575, 604))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 575, 610))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.widget_rW = QWidget(self.scrollAreaWidgetContents)
@@ -580,33 +580,64 @@ class Ui_MainWindow(object):
         self.frame_4.setFrameShadow(QFrame.Shadow.Plain)
         self.horizontalLayout_2 = QHBoxLayout(self.frame_4)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_displayGamescope = QLabel(self.frame_4)
-        self.label_displayGamescope.setObjectName(u"label_displayGamescope")
-
-        self.horizontalLayout_2.addWidget(self.label_displayGamescope)
-
-        self.variable_displayGamescope = QLabel(self.frame_4)
+        self.horizontalLayout_2.setContentsMargins(6, 0, 0, 0)
+        self.scrollArea = QScrollArea(self.frame_4)
+        self.scrollArea.setObjectName(u"scrollArea")
+        sizePolicy9 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+        sizePolicy9.setHorizontalStretch(0)
+        sizePolicy9.setVerticalStretch(0)
+        sizePolicy9.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
+        self.scrollArea.setSizePolicy(sizePolicy9)
+        self.scrollArea.setMaximumSize(QSize(16777215, 40))
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollArea.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_2 = QWidget()
+        self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 129, 36))
+        self.gridLayout_2 = QGridLayout(self.scrollAreaWidgetContents_2)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.variable_displayGamescope = QLabel(self.scrollAreaWidgetContents_2)
         self.variable_displayGamescope.setObjectName(u"variable_displayGamescope")
+        sizePolicy10 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Expanding)
+        sizePolicy10.setHorizontalStretch(0)
+        sizePolicy10.setVerticalStretch(0)
+        sizePolicy10.setHeightForWidth(self.variable_displayGamescope.sizePolicy().hasHeightForWidth())
+        self.variable_displayGamescope.setSizePolicy(sizePolicy10)
 
-        self.horizontalLayout_2.addWidget(self.variable_displayGamescope)
+        self.gridLayout_2.addWidget(self.variable_displayGamescope, 0, 0, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(143, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents_2)
+
+        self.horizontalLayout_2.addWidget(self.scrollArea)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
         self.pushButton_about = QPushButton(self.frame_4)
         self.pushButton_about.setObjectName(u"pushButton_about")
+        sizePolicy4.setHeightForWidth(self.pushButton_about.sizePolicy().hasHeightForWidth())
+        self.pushButton_about.setSizePolicy(sizePolicy4)
+        self.pushButton_about.setMaximumSize(QSize(16777215, 40))
         self.pushButton_about.setFlat(False)
 
         self.horizontalLayout_2.addWidget(self.pushButton_about)
 
         self.pushButton_exit = QPushButton(self.frame_4)
         self.pushButton_exit.setObjectName(u"pushButton_exit")
+        sizePolicy4.setHeightForWidth(self.pushButton_exit.sizePolicy().hasHeightForWidth())
+        self.pushButton_exit.setSizePolicy(sizePolicy4)
+        self.pushButton_exit.setMaximumSize(QSize(16777215, 40))
 
         self.horizontalLayout_2.addWidget(self.pushButton_exit)
 
         self.pushButton_apply = QPushButton(self.frame_4)
         self.pushButton_apply.setObjectName(u"pushButton_apply")
+        sizePolicy4.setHeightForWidth(self.pushButton_apply.sizePolicy().hasHeightForWidth())
+        self.pushButton_apply.setSizePolicy(sizePolicy4)
+        self.pushButton_apply.setMaximumSize(QSize(16777215, 40))
         self.pushButton_apply.setCheckable(False)
         self.pushButton_apply.setChecked(False)
 
@@ -657,13 +688,9 @@ class Ui_MainWindow(object):
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"MangoHUD Overlay", None))
         self.checkBox_mango.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"AppID (Found in game's properties page on Steam)", None))
-        self.label_displayGamescope.setText(QCoreApplication.translate("MainWindow", u"Current Gamescope: ", None))
         self.variable_displayGamescope.setText(QCoreApplication.translate("MainWindow", u"currentGamescope", None))
         self.pushButton_about.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.pushButton_exit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.pushButton_apply.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
-#if QT_CONFIG(shortcut)
-        self.pushButton_apply.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
-#endif // QT_CONFIG(shortcut)
     # retranslateUi
 

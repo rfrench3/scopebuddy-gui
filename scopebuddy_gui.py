@@ -16,16 +16,16 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("ScopeBuddy GUI")  # Set the window title
-        self.ui.variable_displayGamescope.setText(self.get_gamescope_args()) #display the current gamescope args
+        self.ui.variable_displayGamescope.setText('Current Gamescope Config: ' + self.get_gamescope_args()) #display the current gamescope args
 
         # Button actions
-        self.ui.pushButton_apply.clicked.connect(self.apply_global_config)
+        self.ui.pushButton_apply.clicked.connect(self.apply_clicked)
         self.ui.pushButton_exit.clicked.connect(self.exit_app)
         self.ui.pushButton_about.clicked.connect(self.open_about_dialog)
 
-        self.ui.lineEdit_oHeight.setValidator(QIntValidator()) #ensures valid inputs
-        self.ui.lineEdit_rHeight.setValidator(QIntValidator())
-        self.ui.lineEdit_oWidth.setValidator(QIntValidator())
+        self.ui.lineEdit_oHeight.setValidator(QIntValidator()) # ensures valid inputs
+        self.ui.lineEdit_rHeight.setValidator(QIntValidator()) # input fields are also limited to 
+        self.ui.lineEdit_oWidth.setValidator(QIntValidator())  # 4 digits in Qt Designer to ensure sane configs
         self.ui.lineEdit_rWidth.setValidator(QIntValidator())
         self.ui.lineEdit_fps.setValidator(QIntValidator())
 
@@ -59,7 +59,9 @@ class MainWindow(QMainWindow):
             if checkBox.isChecked():
                 self.config_list.append(str(arg + ' '))
 
-        apply_checkbox_input(self.ui.checkBox_mango,'--mangoapp')
+        # IMPLEMENTED ARGUMENTS
+        # TODO: implement more
+        apply_checkbox_input(self.ui.checkBox_mango,'--mangoapp') 
         apply_lineEdit_input(self.ui.lineEdit_rHeight,'-h')
         apply_lineEdit_input(self.ui.lineEdit_rWidth,'-w')
         apply_lineEdit_input(self.ui.lineEdit_fps,'-r')
@@ -75,8 +77,6 @@ class MainWindow(QMainWindow):
         
         print(f'The generated config file is {generated_config}')
         return generated_config
-
-    # ON-CLICK METHODS
 
     def apply_global_config(self):
         # set the config
@@ -108,6 +108,13 @@ class MainWindow(QMainWindow):
 
         self.ui.variable_displayGamescope.setText(self.get_gamescope_args()) #display updated config
 
+    # ON-CLICK METHODS
+
+    def apply_clicked(self):
+        print("Apply button clicked...")
+
+        self.apply_global_config() # apply the config
+
     def exit_app(self):
         print("Exiting application...")
         sys.exit()
@@ -115,7 +122,8 @@ class MainWindow(QMainWindow):
     def open_about_dialog(self):
         print("Opening about dialog...")
         dialog = DialogAbout()
-        result = dialog.exec()  # Modal; use dialog.show() for non-modal
+        result = dialog.exec() #TODO: popup can go behind the main window, while blocking inputs on the main window...
+
 
 class DialogAbout(QDialog):
     def __init__(self):

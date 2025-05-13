@@ -1,16 +1,10 @@
 # To-Do List.md
 
-- support for game-specific configs
+- implement game-specific configs
 
-- text indicating an empty config file
+- text indicating an empty config file, instead of just showing nothing
 
 - make the window look prettier
-
-- add a readme
-
-- add a license
-
-- figure out how to use github
 
 - make a pretty icon
 
@@ -20,6 +14,8 @@
 
 - clicking the apply button should make a popup telling you what the changes are, allowing you to accept or cancel
 
-- add a button to reset the config to default
+- add a button to reset the config to default (if scopebuddy doesn't have one, just make sensible defaults)
 
 - add a button to open the config file in a text editor
+
+- instructions to put scopebuddy launch args in steam, or do it automatically

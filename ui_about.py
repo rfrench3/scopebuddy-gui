@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'aboutmkcHCE.ui'
+## Form generated from reading UI file 'aboutZFEYaL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -15,18 +15,29 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
-    QPushButton, QSizePolicy, QSpacerItem, QTextBrowser,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QGridLayout,
+    QHBoxLayout, QPushButton, QSizePolicy, QSpacerItem,
+    QTabWidget, QTextBrowser, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(454, 453)
+        Dialog.resize(454, 472)
         self.verticalLayout = QVBoxLayout(Dialog)
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.textBrowser = QTextBrowser(Dialog)
+        self.verticalLayout.setContentsMargins(0, 6, 0, 0)
+        self.tabWidget = QTabWidget(Dialog)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setTabShape(QTabWidget.TabShape.Rounded)
+        self.tabWidget.setDocumentMode(True)
+        self.tabWidget.setTabBarAutoHide(False)
+        self.tab = QWidget()
+        self.tab.setObjectName(u"tab")
+        self.gridLayout = QGridLayout(self.tab)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.textBrowser = QTextBrowser(self.tab)
         self.textBrowser.setObjectName(u"textBrowser")
         self.textBrowser.setMouseTracking(True)
         self.textBrowser.setFrameShape(QFrame.Shape.StyledPanel)
@@ -34,7 +45,35 @@ class Ui_Dialog(object):
         self.textBrowser.setOpenExternalLinks(True)
         self.textBrowser.setOpenLinks(True)
 
-        self.verticalLayout.addWidget(self.textBrowser)
+        self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 1)
+
+        self.line_2 = QFrame(self.tab)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.gridLayout.addWidget(self.line_2, 1, 0, 1, 1)
+
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName(u"tab_2")
+        self.gridLayout_2 = QGridLayout(self.tab_2)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.textBrowser_2 = QTextBrowser(self.tab_2)
+        self.textBrowser_2.setObjectName(u"textBrowser_2")
+
+        self.gridLayout_2.addWidget(self.textBrowser_2, 0, 0, 1, 1)
+
+        self.line = QFrame(self.tab_2)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.gridLayout_2.addWidget(self.line, 1, 0, 1, 1)
+
+        self.tabWidget.addTab(self.tab_2, "")
+
+        self.verticalLayout.addWidget(self.tabWidget)
 
         self.widget = QWidget(Dialog)
         self.widget.setObjectName(u"widget")
@@ -55,6 +94,9 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
+        self.tabWidget.setCurrentIndex(0)
+
+
         QMetaObject.connectSlotsByName(Dialog)
     # setupUi
 
@@ -74,6 +116,23 @@ class Ui_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /><span style=\" font-weight:700;\">Scopebuddy-gui</span> (this program) was not made by HikariKnight. It is lacks man"
                         "y of the features present in Scopebuddy itself, but provides an easy to use UI for the more basic features of scopebuddy.</p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/rfrench3/scopebuddy-gui\"><span style=\" text-decoration: underline; color:#bfbce9;\">Here's its github page!</span></a></p></body></html>", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Credits", None))
+        self.textBrowser_2.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
+"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\">For more detailed information, be sure to review the documentation for </span><a href=\"https://github.com/ValveSoftware/gamescope\"><span style=\" text-decoration: underline; color:#bfbce9;\">Gamescope</span></a><span style=\" font-style:italic;\"> and </span><a href=\"https://github.com/HikariKnight/ScopeBuddy\"><span style=\" text-decoration: underline; color:#"
+                        "bfbce9;\">Scopebuddy</span></a><span style=\" font-style:italic;\">.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A text field left blank is the same as a checkbox left unchecked \u2013 it will use Gamescope's default setting. Sometimes a field cannot be left blank, such as providing width without height, because Gamescope does not allow for it.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">When the GUI applies a new config, it comments out the old config in <span style=\" font-weight:700;\">~/.config/sco"
+                        "pebuddy/</span> while adding a new line with the new config. This means worse-case, you can manually reapply any old configuration! <span style=\" font-weight:700;\">It can build up over time with excessive config editing,</span> but text files are small and it is easy enough to manually clean out if ever necessary.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br />Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power \u2013 it <span style=\" font-style:italic;\">does</span> aim to be safe to use alongside any such advanced configuration, however.</p></body></html>", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Dialog", u"Usage", None))
         self.pushButton_okay.setText(QCoreApplication.translate("Dialog", u"Okay", None))
     # retranslateUi
 
