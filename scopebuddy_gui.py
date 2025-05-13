@@ -72,7 +72,6 @@ class MainWindow(QMainWindow):
         apply_lineEdit_input(self.ui.lineEdit_oWidth,'-W')
         apply_checkbox_input(self.ui.checkBox_steam,'-s')
         
-
         generated_config = ''
         for argument in self.config_list:
             generated_config += argument
@@ -155,7 +154,7 @@ class DialogApply(QDialog):
         self.close()
     
     def apply_changes(self):
-        self.answer = True
+        self.answer = True #changes have been explicitly confirmed
         self.close()
 
 

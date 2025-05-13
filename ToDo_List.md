@@ -2,6 +2,11 @@
 
 ## Features (add new stuff)
 
+- implement visual guides for:
+    - steam
+    - lutris
+    - heroic
+
 - implement game-specific configs
 
 - make a pretty icon

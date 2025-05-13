@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'aboutBuZRsW.ui'
+## Form generated from reading UI file 'aboutNIOxPL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -126,12 +126,16 @@ class Ui_Dialog_About(object):
 "</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\">For more detailed information, be sure to review the documentation for </span><a href=\"https://github.com/ValveSoftware/gamescope\"><span style=\" text-decoration: underline; color:#bfbce9;\">Gamescope</span></a><span style=\" font-style:italic;\"> and </span><a href=\"https://github.com/HikariKnight/ScopeBuddy\"><span style=\" text-decoration: underline; color:#"
                         "bfbce9;\">Scopebuddy</span></a><span style=\" font-style:italic;\">.</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A text field left blank is the same as a checkbox left unchecked \u2013 it will use Gamescope's default setting. Sometimes a field cannot be left blank, such as providing width without height, because Gamescope does not allow for it.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">When the GUI applies a new config, it comments out the old config in <span style=\" font-weight:700;\">~/.config/sco"
-                        "pebuddy/</span> while adding a new line with the new config. This means worse-case, you can manually reapply any old configuration! <span style=\" font-weight:700;\">It can build up over time with excessive config editing,</span> but text files are small and it is easy enough to manually clean out if ever necessary.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br />Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power \u2013 it <span style=\" font-style:italic;\">does</span> aim to be safe to use alongside any such advanced configuration, however.</p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:700;\">APPLYING SCOPEBUDDY</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">In Steam, you must navigate to Launch Options and enter: <br />scb -- %command%<br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A text field left blank is the same as a checkbox left unchecked \u2013 it wi"
+                        "ll use Gamescope's default setting. Sometimes a field cannot be left blank, such as providing width without height, because Gamescope does not allow for it.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">When the GUI applies a new config, it comments out the old config in <span style=\" font-weight:700;\">~/.config/scopebuddy/</span> while adding a new line with the new config. This means worse-case, you can manually reapply any old configuration! <span style=\" font-weight:700;\">It can build up over time with excessive config editing,</span> but text files are small and it is easy enough to manually clean out if ever necessary.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br />Scopebudd"
+                        "y itself is extremely powerful, and this GUI does not currently aim to cover all of its power \u2013 it <span style=\" font-style:italic;\">does</span> aim to be safe to use alongside any such advanced configuration, however.</p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Dialog_About", u"Usage", None))
         self.pushButton_okay.setText(QCoreApplication.translate("Dialog_About", u"Okay", None))
     # retranslateUi
