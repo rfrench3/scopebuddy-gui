@@ -47,7 +47,7 @@ class MainWindow(QMainWindow):
                         return match.group(1)
                     else:
                         print("No SCB_GAMESCOPE_ARGS found in the config file.")
-                        return None
+                        return None #TODO: make it add a line for the args
         
 
     def generate_new_config(self) -> str: #output a new config string based on the user input
