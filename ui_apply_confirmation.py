@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'apply_confirmationUQxUIr.ui'
+## Form generated from reading UI file 'apply_confirmationeuDfEm.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -23,8 +23,9 @@ class Ui_Dialog_Apply(object):
     def setupUi(self, Dialog_Apply):
         if not Dialog_Apply.objectName():
             Dialog_Apply.setObjectName(u"Dialog_Apply")
-        Dialog_Apply.setWindowModality(Qt.WindowModality.WindowModal)
+        Dialog_Apply.setWindowModality(Qt.WindowModality.ApplicationModal)
         Dialog_Apply.resize(400, 446)
+        Dialog_Apply.setModal(True)
         self.verticalLayout = QVBoxLayout(Dialog_Apply)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.frame_2 = QFrame(Dialog_Apply)

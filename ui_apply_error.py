@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'apply_errorTcyvSM.ui'
+## Form generated from reading UI file 'apply_errorlEfwIe.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -23,8 +23,9 @@ class Ui_Dialog_ApplyError(object):
     def setupUi(self, Dialog_ApplyError):
         if not Dialog_ApplyError.objectName():
             Dialog_ApplyError.setObjectName(u"Dialog_ApplyError")
-        Dialog_ApplyError.setWindowModality(Qt.WindowModality.WindowModal)
+        Dialog_ApplyError.setWindowModality(Qt.WindowModality.ApplicationModal)
         Dialog_ApplyError.resize(400, 248)
+        Dialog_ApplyError.setModal(True)
         self.verticalLayout = QVBoxLayout(Dialog_ApplyError)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.frame_2 = QFrame(Dialog_ApplyError)

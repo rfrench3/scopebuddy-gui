@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'aboutKGmoGD.ui'
+## Form generated from reading UI file 'aboutOEHQai.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -25,7 +25,9 @@ class Ui_Dialog_About(object):
     def setupUi(self, Dialog_About):
         if not Dialog_About.objectName():
             Dialog_About.setObjectName(u"Dialog_About")
+        Dialog_About.setWindowModality(Qt.WindowModality.ApplicationModal)
         Dialog_About.resize(454, 472)
+        Dialog_About.setModal(True)
         self.verticalLayout = QVBoxLayout(Dialog_About)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
