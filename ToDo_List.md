@@ -4,6 +4,8 @@
 
 - get the app running outside of the dev environment
 
+- add tooltips to further explain every option
+
 - clearly indicate that a blank field uses gamescope's default
 
 - disable the "apply" button if scopebuddy is not installed

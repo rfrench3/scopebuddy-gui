@@ -77,6 +77,9 @@
           </property>
           <item>
            <widget class="QListWidget" name="listWidget_gamesList">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -148,6 +151,9 @@
              </property>
              <item>
               <widget class="QToolButton" name="toolButton_addGame">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="toolTip">
                 <string>TODO: adds slot for game-specific settings</string>
                </property>
@@ -157,10 +163,16 @@
                <property name="icon">
                 <iconset theme="QIcon::ThemeIcon::ListAdd"/>
                </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item>
               <widget class="QToolButton" name="toolButton_removeGame">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -1748,7 +1760,21 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget" native="true"/>
+            <widget class="QWidget" name="widget" native="true">
+             <widget class="QLabel" name="label_6">
+              <property name="geometry">
+               <rect>
+                <x>60</x>
+                <y>50</y>
+                <width>461</width>
+                <height>141</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>spawn a new instance of the default settings page here, below the AppID</string>
+              </property>
+             </widget>
+            </widget>
            </item>
           </layout>
          </widget>

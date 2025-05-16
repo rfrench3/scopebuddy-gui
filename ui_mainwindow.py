@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowJOqoKs.ui'
+## Form generated from reading UI file 'mainwindowvVTDsf.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -62,6 +62,7 @@ class Ui_MainWindow(object):
         QListWidgetItem(self.listWidget_gamesList)
         QListWidgetItem(self.listWidget_gamesList)
         self.listWidget_gamesList.setObjectName(u"listWidget_gamesList")
+        self.listWidget_gamesList.setEnabled(False)
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(1)
@@ -92,13 +93,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.toolButton_addGame = QToolButton(self.frame_5)
         self.toolButton_addGame.setObjectName(u"toolButton_addGame")
+        self.toolButton_addGame.setEnabled(False)
         icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.ListAdd))
         self.toolButton_addGame.setIcon(icon)
+        self.toolButton_addGame.setCheckable(False)
 
         self.horizontalLayout.addWidget(self.toolButton_addGame)
 
         self.toolButton_removeGame = QToolButton(self.frame_5)
         self.toolButton_removeGame.setObjectName(u"toolButton_removeGame")
+        self.toolButton_removeGame.setEnabled(False)
         sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
@@ -963,6 +967,9 @@ class Ui_MainWindow(object):
 
         self.widget = QWidget(self.page)
         self.widget.setObjectName(u"widget")
+        self.label_6 = QLabel(self.widget)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setGeometry(QRect(60, 50, 461, 141))
 
         self.verticalLayout_8.addWidget(self.widget)
 
@@ -1112,6 +1119,7 @@ class Ui_MainWindow(object):
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Adaptive Sync", None))
         self.checkBox_adaptiveSync.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"AppID (Found in game's properties page on Steam)", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"spawn a new instance of the default settings page here, below the AppID", None))
         self.pushButton_exit.setText(QCoreApplication.translate("MainWindow", u"Exit App", None))
         self.variable_displayGamescope.setText(QCoreApplication.translate("MainWindow", u"currentGamescope", None))
         self.pushButton_about.setText(QCoreApplication.translate("MainWindow", u"About", None))
