@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowvVTDsf.ui'
+## Form generated from reading UI file 'mainwindowWJwEbP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.listWidget_gamesList.setEnabled(False)
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(1)
+        sizePolicy2.setVerticalStretch(5)
         sizePolicy2.setHeightForWidth(self.listWidget_gamesList.sizePolicy().hasHeightForWidth())
         self.listWidget_gamesList.setSizePolicy(sizePolicy2)
         self.listWidget_gamesList.setFrameShape(QFrame.Shape.Box)
@@ -80,20 +80,25 @@ class Ui_MainWindow(object):
 
         self.frame_5 = QFrame(self.frame)
         self.frame_5.setObjectName(u"frame_5")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
         sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setVerticalStretch(1)
         sizePolicy3.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
         self.frame_5.setSizePolicy(sizePolicy3)
         self.frame_5.setFrameShape(QFrame.Shape.Box)
         self.frame_5.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout = QHBoxLayout(self.frame_5)
-        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setSpacing(18)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setContentsMargins(18, 18, 18, 18)
         self.toolButton_addGame = QToolButton(self.frame_5)
         self.toolButton_addGame.setObjectName(u"toolButton_addGame")
         self.toolButton_addGame.setEnabled(False)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy4.setHorizontalStretch(1)
+        sizePolicy4.setVerticalStretch(1)
+        sizePolicy4.setHeightForWidth(self.toolButton_addGame.sizePolicy().hasHeightForWidth())
+        self.toolButton_addGame.setSizePolicy(sizePolicy4)
         icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.ListAdd))
         self.toolButton_addGame.setIcon(icon)
         self.toolButton_addGame.setCheckable(False)
@@ -103,9 +108,6 @@ class Ui_MainWindow(object):
         self.toolButton_removeGame = QToolButton(self.frame_5)
         self.toolButton_removeGame.setObjectName(u"toolButton_removeGame")
         self.toolButton_removeGame.setEnabled(False)
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.toolButton_removeGame.sizePolicy().hasHeightForWidth())
         self.toolButton_removeGame.setSizePolicy(sizePolicy4)
         icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.ListRemove))
@@ -174,8 +176,11 @@ class Ui_MainWindow(object):
 
         self.lineEdit_rWidth = QLineEdit(self.widget_10)
         self.lineEdit_rWidth.setObjectName(u"lineEdit_rWidth")
-        sizePolicy4.setHeightForWidth(self.lineEdit_rWidth.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rWidth.setSizePolicy(sizePolicy4)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.lineEdit_rWidth.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rWidth.setSizePolicy(sizePolicy8)
         self.lineEdit_rWidth.setMaxLength(4)
 
         self.horizontalLayout_4.addWidget(self.lineEdit_rWidth)
@@ -218,8 +223,8 @@ class Ui_MainWindow(object):
 
         self.lineEdit_rHeight = QLineEdit(self.widget_11)
         self.lineEdit_rHeight.setObjectName(u"lineEdit_rHeight")
-        sizePolicy4.setHeightForWidth(self.lineEdit_rHeight.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rHeight.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.lineEdit_rHeight.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rHeight.setSizePolicy(sizePolicy8)
         self.lineEdit_rHeight.setMaxLength(4)
 
         self.horizontalLayout_5.addWidget(self.lineEdit_rHeight)
@@ -262,8 +267,8 @@ class Ui_MainWindow(object):
 
         self.lineEdit_fps = QLineEdit(self.widget_9)
         self.lineEdit_fps.setObjectName(u"lineEdit_fps")
-        sizePolicy4.setHeightForWidth(self.lineEdit_fps.sizePolicy().hasHeightForWidth())
-        self.lineEdit_fps.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.lineEdit_fps.sizePolicy().hasHeightForWidth())
+        self.lineEdit_fps.setSizePolicy(sizePolicy8)
         self.lineEdit_fps.setMaxLength(4)
 
         self.horizontalLayout_3.addWidget(self.lineEdit_fps)
@@ -306,8 +311,8 @@ class Ui_MainWindow(object):
 
         self.lineEdit_oWidth = QLineEdit(self.widget_15)
         self.lineEdit_oWidth.setObjectName(u"lineEdit_oWidth")
-        sizePolicy4.setHeightForWidth(self.lineEdit_oWidth.sizePolicy().hasHeightForWidth())
-        self.lineEdit_oWidth.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.lineEdit_oWidth.sizePolicy().hasHeightForWidth())
+        self.lineEdit_oWidth.setSizePolicy(sizePolicy8)
         self.lineEdit_oWidth.setMaxLength(4)
 
         self.horizontalLayout_7.addWidget(self.lineEdit_oWidth)
@@ -350,8 +355,8 @@ class Ui_MainWindow(object):
 
         self.lineEdit_oHeight = QLineEdit(self.widget_13)
         self.lineEdit_oHeight.setObjectName(u"lineEdit_oHeight")
-        sizePolicy4.setHeightForWidth(self.lineEdit_oHeight.sizePolicy().hasHeightForWidth())
-        self.lineEdit_oHeight.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.lineEdit_oHeight.sizePolicy().hasHeightForWidth())
+        self.lineEdit_oHeight.setSizePolicy(sizePolicy8)
         self.lineEdit_oHeight.setMaxLength(4)
 
         self.horizontalLayout_6.addWidget(self.lineEdit_oHeight)
@@ -611,11 +616,11 @@ class Ui_MainWindow(object):
 
         self.line_15 = QFrame(self.widget__11_AdvancedSettings)
         self.line_15.setObjectName(u"line_15")
-        sizePolicy8 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
-        sizePolicy8.setHorizontalStretch(0)
-        sizePolicy8.setVerticalStretch(0)
-        sizePolicy8.setHeightForWidth(self.line_15.sizePolicy().hasHeightForWidth())
-        self.line_15.setSizePolicy(sizePolicy8)
+        sizePolicy9 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy9.setHorizontalStretch(0)
+        sizePolicy9.setVerticalStretch(0)
+        sizePolicy9.setHeightForWidth(self.line_15.sizePolicy().hasHeightForWidth())
+        self.line_15.setSizePolicy(sizePolicy9)
         self.line_15.setMinimumSize(QSize(0, 0))
         self.line_15.setMaximumSize(QSize(16777215, 16777215))
         self.line_15.setSizeIncrement(QSize(0, 0))
@@ -656,8 +661,8 @@ class Ui_MainWindow(object):
 
         self.lineEdit_maxScaleFactor = QLineEdit(self.widget_26)
         self.lineEdit_maxScaleFactor.setObjectName(u"lineEdit_maxScaleFactor")
-        sizePolicy4.setHeightForWidth(self.lineEdit_maxScaleFactor.sizePolicy().hasHeightForWidth())
-        self.lineEdit_maxScaleFactor.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.lineEdit_maxScaleFactor.sizePolicy().hasHeightForWidth())
+        self.lineEdit_maxScaleFactor.setSizePolicy(sizePolicy8)
         self.lineEdit_maxScaleFactor.setMaxLength(4)
 
         self.horizontalLayout_14.addWidget(self.lineEdit_maxScaleFactor)
@@ -705,8 +710,8 @@ class Ui_MainWindow(object):
         self.comboBox_upscalerType.addItem("")
         self.comboBox_upscalerType.addItem("")
         self.comboBox_upscalerType.setObjectName(u"comboBox_upscalerType")
-        sizePolicy4.setHeightForWidth(self.comboBox_upscalerType.sizePolicy().hasHeightForWidth())
-        self.comboBox_upscalerType.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.comboBox_upscalerType.sizePolicy().hasHeightForWidth())
+        self.comboBox_upscalerType.setSizePolicy(sizePolicy8)
 
         self.horizontalLayout_17.addWidget(self.comboBox_upscalerType)
 
@@ -794,8 +799,8 @@ class Ui_MainWindow(object):
 
         self.lineEdit_upscalerSharpness = QLineEdit(self.widget_28)
         self.lineEdit_upscalerSharpness.setObjectName(u"lineEdit_upscalerSharpness")
-        sizePolicy4.setHeightForWidth(self.lineEdit_upscalerSharpness.sizePolicy().hasHeightForWidth())
-        self.lineEdit_upscalerSharpness.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.lineEdit_upscalerSharpness.sizePolicy().hasHeightForWidth())
+        self.lineEdit_upscalerSharpness.setSizePolicy(sizePolicy8)
         self.lineEdit_upscalerSharpness.setMaxLength(2)
 
         self.horizontalLayout_15.addWidget(self.lineEdit_upscalerSharpness)
@@ -944,8 +949,8 @@ class Ui_MainWindow(object):
 
         self.lineEdit_appID = QLineEdit(self.widget_22)
         self.lineEdit_appID.setObjectName(u"lineEdit_appID")
-        sizePolicy4.setHeightForWidth(self.lineEdit_appID.sizePolicy().hasHeightForWidth())
-        self.lineEdit_appID.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.lineEdit_appID.sizePolicy().hasHeightForWidth())
+        self.lineEdit_appID.setSizePolicy(sizePolicy8)
 
         self.horizontalLayout_13.addWidget(self.lineEdit_appID)
 
@@ -982,11 +987,11 @@ class Ui_MainWindow(object):
 
         self.frame_4 = QFrame(self.centralwidget)
         self.frame_4.setObjectName(u"frame_4")
-        sizePolicy9 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
-        sizePolicy9.setHorizontalStretch(1)
-        sizePolicy9.setVerticalStretch(0)
-        sizePolicy9.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
-        self.frame_4.setSizePolicy(sizePolicy9)
+        sizePolicy10 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        sizePolicy10.setHorizontalStretch(1)
+        sizePolicy10.setVerticalStretch(0)
+        sizePolicy10.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
+        self.frame_4.setSizePolicy(sizePolicy10)
         self.frame_4.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_4.setFrameShadow(QFrame.Shadow.Plain)
         self.horizontalLayout_2 = QHBoxLayout(self.frame_4)
@@ -994,19 +999,19 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setContentsMargins(6, 0, 0, 0)
         self.pushButton_exit = QPushButton(self.frame_4)
         self.pushButton_exit.setObjectName(u"pushButton_exit")
-        sizePolicy4.setHeightForWidth(self.pushButton_exit.sizePolicy().hasHeightForWidth())
-        self.pushButton_exit.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.pushButton_exit.sizePolicy().hasHeightForWidth())
+        self.pushButton_exit.setSizePolicy(sizePolicy8)
         self.pushButton_exit.setMaximumSize(QSize(16777215, 40))
 
         self.horizontalLayout_2.addWidget(self.pushButton_exit)
 
         self.scrollArea = QScrollArea(self.frame_4)
         self.scrollArea.setObjectName(u"scrollArea")
-        sizePolicy10 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        sizePolicy10.setHorizontalStretch(0)
-        sizePolicy10.setVerticalStretch(0)
-        sizePolicy10.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
-        self.scrollArea.setSizePolicy(sizePolicy10)
+        sizePolicy11 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy11.setHorizontalStretch(0)
+        sizePolicy11.setVerticalStretch(0)
+        sizePolicy11.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
+        self.scrollArea.setSizePolicy(sizePolicy11)
         self.scrollArea.setMaximumSize(QSize(16777215, 40))
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -1019,11 +1024,11 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.variable_displayGamescope = QLabel(self.scrollAreaWidgetContents_2)
         self.variable_displayGamescope.setObjectName(u"variable_displayGamescope")
-        sizePolicy11 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Expanding)
-        sizePolicy11.setHorizontalStretch(0)
-        sizePolicy11.setVerticalStretch(0)
-        sizePolicy11.setHeightForWidth(self.variable_displayGamescope.sizePolicy().hasHeightForWidth())
-        self.variable_displayGamescope.setSizePolicy(sizePolicy11)
+        sizePolicy12 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Expanding)
+        sizePolicy12.setHorizontalStretch(0)
+        sizePolicy12.setVerticalStretch(0)
+        sizePolicy12.setHeightForWidth(self.variable_displayGamescope.sizePolicy().hasHeightForWidth())
+        self.variable_displayGamescope.setSizePolicy(sizePolicy12)
 
         self.gridLayout_2.addWidget(self.variable_displayGamescope, 0, 0, 1, 1)
 
@@ -1033,8 +1038,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_about = QPushButton(self.frame_4)
         self.pushButton_about.setObjectName(u"pushButton_about")
-        sizePolicy4.setHeightForWidth(self.pushButton_about.sizePolicy().hasHeightForWidth())
-        self.pushButton_about.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.pushButton_about.sizePolicy().hasHeightForWidth())
+        self.pushButton_about.setSizePolicy(sizePolicy8)
         self.pushButton_about.setMaximumSize(QSize(16777215, 40))
         self.pushButton_about.setFlat(False)
 
@@ -1042,8 +1047,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_apply = QPushButton(self.frame_4)
         self.pushButton_apply.setObjectName(u"pushButton_apply")
-        sizePolicy4.setHeightForWidth(self.pushButton_apply.sizePolicy().hasHeightForWidth())
-        self.pushButton_apply.setSizePolicy(sizePolicy4)
+        sizePolicy8.setHeightForWidth(self.pushButton_apply.sizePolicy().hasHeightForWidth())
+        self.pushButton_apply.setSizePolicy(sizePolicy8)
         self.pushButton_apply.setMaximumSize(QSize(16777215, 40))
         self.pushButton_apply.setCheckable(False)
         self.pushButton_apply.setChecked(False)

@@ -83,7 +83,7 @@
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
-              <verstretch>1</verstretch>
+              <verstretch>5</verstretch>
              </sizepolicy>
             </property>
             <property name="frameShape">
@@ -122,9 +122,9 @@
           <item>
            <widget class="QFrame" name="frame_5">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
+              <verstretch>1</verstretch>
              </sizepolicy>
             </property>
             <property name="frameShape">
@@ -135,24 +135,30 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <property name="spacing">
-              <number>0</number>
+              <number>18</number>
              </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>18</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>18</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>18</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>18</number>
              </property>
              <item>
               <widget class="QToolButton" name="toolButton_addGame">
                <property name="enabled">
                 <bool>false</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>1</horstretch>
+                 <verstretch>1</verstretch>
+                </sizepolicy>
                </property>
                <property name="toolTip">
                 <string>TODO: adds slot for game-specific settings</string>
@@ -174,9 +180,9 @@
                 <bool>false</bool>
                </property>
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>1</horstretch>
+                 <verstretch>1</verstretch>
                 </sizepolicy>
                </property>
                <property name="toolTip">
