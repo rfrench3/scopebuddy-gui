@@ -88,6 +88,7 @@ class MainWindow(QMainWindow):
         apply_lineEdit_input(self.ui.lineEdit_upscalerSharpness,'--sharpness')
         apply_doubleSpinBox_input(self.ui.doubleSpinBox_mouseSensitivity,'-s')
         apply_checkbox_input(self.ui.checkBox_adaptiveSync,'--adaptive-sync')
+        apply_checkbox_input(self.ui.checkBox_forceInternalFullscreen,'--force-windows-fullscreen')
 
         #apply_checkbox_input(self.ui.checkBox_,'-')
         #apply_lineEdit_input(self.ui.lineEdit_,'-')

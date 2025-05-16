@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowvdNxPL.ui'
+## Form generated from reading UI file 'mainwindowJOqoKs.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -136,7 +136,7 @@ class Ui_MainWindow(object):
         self.scrollArea_settings.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, -285, 570, 911))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, -139, 570, 960))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.widget1_rW = QWidget(self.scrollAreaWidgetContents)
@@ -534,6 +534,48 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_5.addWidget(self.widget__10mangohud)
+
+        self.widget_24 = QWidget(self.scrollAreaWidgetContents)
+        self.widget_24.setObjectName(u"widget_24")
+        sizePolicy6.setHeightForWidth(self.widget_24.sizePolicy().hasHeightForWidth())
+        self.widget_24.setSizePolicy(sizePolicy6)
+        self.verticalLayout_20 = QVBoxLayout(self.widget_24)
+        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
+        self.widget_27 = QWidget(self.widget_24)
+        self.widget_27.setObjectName(u"widget_27")
+        sizePolicy7.setHeightForWidth(self.widget_27.sizePolicy().hasHeightForWidth())
+        self.widget_27.setSizePolicy(sizePolicy7)
+        self.horizontalLayout_20 = QHBoxLayout(self.widget_27)
+        self.horizontalLayout_20.setSpacing(0)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.horizontalLayout_20.setContentsMargins(0, 0, 0, 0)
+        self.label_18 = QLabel(self.widget_27)
+        self.label_18.setObjectName(u"label_18")
+
+        self.horizontalLayout_20.addWidget(self.label_18)
+
+        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_20.addItem(self.horizontalSpacer_18)
+
+        self.checkBox_forceInternalFullscreen = QCheckBox(self.widget_27)
+        self.checkBox_forceInternalFullscreen.setObjectName(u"checkBox_forceInternalFullscreen")
+        self.checkBox_forceInternalFullscreen.setTristate(False)
+
+        self.horizontalLayout_20.addWidget(self.checkBox_forceInternalFullscreen)
+
+
+        self.verticalLayout_20.addWidget(self.widget_27)
+
+        self.line_19 = QFrame(self.widget_24)
+        self.line_19.setObjectName(u"line_19")
+        self.line_19.setFrameShape(QFrame.Shape.HLine)
+        self.line_19.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_20.addWidget(self.line_19)
+
+
+        self.verticalLayout_5.addWidget(self.widget_24)
 
         self.widget__11_AdvancedSettings = QWidget(self.scrollAreaWidgetContents)
         self.widget__11_AdvancedSettings.setObjectName(u"widget__11_AdvancedSettings")
@@ -1047,6 +1089,8 @@ class Ui_MainWindow(object):
         self.checkBox_steam.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"MangoHUD Overlay", None))
         self.checkBox_mango.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Force Fullscreen within Gamescope Window", None))
+        self.checkBox_forceInternalFullscreen.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Advanced Settings", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Maximum Scale Factor", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Upscaler Type", None))
