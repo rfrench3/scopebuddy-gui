@@ -4,6 +4,7 @@ from PySide6.QtGui import QIntValidator
 from ui_mainwindow import Ui_MainWindow  # Import generated UI file
 from ui_about import Ui_Dialog_About  # Import generated UI file
 from ui_apply_confirmation import Ui_Dialog_Apply
+from ui_apply_error import Ui_Dialog_ApplyError
 
 # non-GUI imports
 import sys  
@@ -55,17 +56,19 @@ class MainWindow(QMainWindow):
                 file.write("# this default enables the steam overlay and tells games to render to 1080p 60fps\n")
 
         # The file does exist, so read it and return the gamescope arguments
-        with open(os.path.expanduser('~/.config/scopebuddy/scb.conf'), 'r') as file: #read-only mode, this part does not write to the file
+        with open(os.path.expanduser('~/.config/scopebuddy/scb.conf'), 'r+') as file:
             lines = file.readlines()
             for line in lines:
                 if line.startswith('SCB_GAMESCOPE_ARGS='):
                     match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
                     if match:
                         return match.group(1)
-                    else:
-                        print("No SCB_GAMESCOPE_ARGS found in the config file.")
-                        return None #TODO: make it add a line for the args
-        
+            file.seek(0, os.SEEK_END) # ensure we are at the end of the file
+            if lines and not lines[-1].endswith('\n'):
+                file.write('\n')
+            file.write("SCB_GAMESCOPE_ARGS=\"-w 1920 -h 1080 -r 60 -e\"\n")
+            print("SCB_GAMESCOPE_ARGS not found; added default line.")
+            return "-w 1920 -h 1080 -r 60 -e" #TODO: all instances of default arguments should not be hardcoded like this.
 
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
@@ -152,15 +155,25 @@ class MainWindow(QMainWindow):
         self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.get_gamescope_args()}') #display updated config
 
     def ensure_valid_args(self) -> tuple:
-        pass  #TODO: ensure the set of inputs is valid (-h cant be empty unless -w is empty, etc.)
+        #TODO: Before adding more checks, make a general function for checking
+        if self.ui.lineEdit_rHeight.text() == '' and self.ui.lineEdit_rWidth.text() != '':
+            print("Invalid arguments: -h is empty, but -w is not.")
+            return (False,'-w','-h')
+        
+        if self.ui.lineEdit_oHeight.text() == '' and self.ui.lineEdit_oWidth.text() != '':
+            print("Invalid arguments: -H is empty, but -W is not.")
+            return (False,'-W','-H')
+        
+        return (True,) #nothing went wrong
 
     # ON-CLICK METHODS
 
     def apply_clicked(self):
         print("Apply button clicked...")
-        if not self.ensure_valid_args():
-            #TODO: dialog telling user what to fix
-            pass
+        if not self.ensure_valid_args()[0]:
+            dialog = Dialog_ApplyError()
+            dialog.exec()
+            raise ValueError
         dialog = DialogApply()
         dialog.exec()
         if dialog.answer:
@@ -183,9 +196,20 @@ class DialogAbout(QDialog):
         self.ui = Ui_Dialog_About()
         self.ui.setupUi(self)
         self.setWindowTitle("About ScopeBuddy GUI")  # Set the window title
-        self.ui.pushButton_okay.clicked.connect(self.exit_app)
+        self.ui.pushButton_okay.clicked.connect(self.exit_window)
     
-    def exit_app(self):
+    def exit_window(self):
+        self.close()
+
+class Dialog_ApplyError(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_Dialog_ApplyError()
+        self.ui.setupUi(self)
+        self.setWindowTitle("Error!")  # Set the window title
+        self.ui.pushButton_Ok.clicked.connect(self.exit_window)
+    
+    def exit_window(self):
         self.close()
 
 class DialogApply(QDialog):
