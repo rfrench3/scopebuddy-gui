@@ -17,14 +17,13 @@
 - add a button to open the config file in a text editor
 
 - instructions to put scopebuddy launch args in:
-    - Steam
     - Lutris
     - Heroic
 
-    - implement picture guides for:
-        - Steam
-        - Lutris
-        - Heroic
+    - implement picture guides for: (and make the pictures scale based on the window)
+        - Steam   *pictures are added but far too large in most cases*
+        - Lutris   *no pictures*
+        - Heroic   *no pictures*
 
 ## Bugfixes (make old stuff work)
 
