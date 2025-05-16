@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("ScopeBuddy GUI")  # Set the window title
-        self.ui.variable_displayGamescope.setText('Current Gamescope Config: ' + self.get_gamescope_args()) #display the current gamescope args
+        self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.get_gamescope_args()}') #display the current gamescope args
 
         # Button actions
         self.ui.pushButton_apply.clicked.connect(self.apply_clicked)
@@ -112,19 +112,16 @@ class MainWindow(QMainWindow):
             # Find the line that starts with SCB_GAMESCOPE_ARGS
             for i, line in enumerate(lines):
                 if line.startswith('SCB_GAMESCOPE_ARGS'):
-                    # Comment out the original line
-                    commented_line = f"# commented out by scopebuddy-gui: {line}"
-                    # Create the new line
-                    new_line = f'SCB_GAMESCOPE_ARGS="{the_config}"\n'
-                    # Replace with the commented + new line
-                    lines[i:i+1] = [commented_line, new_line]
+                    commented_line = f"# commented out by scopebuddy-gui: {line}"# Comment out the original line
+                    new_line = f'SCB_GAMESCOPE_ARGS="{the_config}"\n'# Create the new line
+                    lines[i:i+1] = [commented_line, new_line]# Replace with the commented + new line
                     break
 
             # Write the modified lines back to the file
             with open(os.path.expanduser('~/.config/scopebuddy/scb.conf'), 'w') as file:
                 file.writelines(lines)
 
-        self.ui.variable_displayGamescope.setText('Current Gamescope Config: ' + self.get_gamescope_args()) #display updated config
+        self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.get_gamescope_args()}') #display updated config
 
     # ON-CLICK METHODS
 
