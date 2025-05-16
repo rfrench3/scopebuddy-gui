@@ -2,6 +2,8 @@
 
 ## Features (add new stuff)
 
+- get the app running outside of the dev environment
+
 - clearly indicate that a blank field uses gamescope's default
 
 - disable the "apply" button if scopebuddy is not installed
@@ -32,6 +34,9 @@
 - text indicating an empty config file, instead of just showing nothing
 
 - ensure a new scb.conf will be made if one does not exist
+
+- ensure available settings are handled properly in gamescope-session as well as nested gamescope
+    - check if the app is running within gamescope, and if its in nested or session, to properly limit settings?
 
 ## Features to add when all else is complete (non-critical, potentially difficult, etc)
 
