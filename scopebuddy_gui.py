@@ -71,28 +71,39 @@ class MainWindow(QMainWindow):
             if doubleSpinBox.value() != 1.0:
                 self.config_list.append(f'{arg} {doubleSpinBox.value()} ')
 
-        # IMPLEMENTED ARGUMENTS
-        # TODO: implement more
-        apply_checkbox_input(self.ui.checkBox_mango,'--mangoapp') 
-        apply_lineEdit_input(self.ui.lineEdit_rHeight,'-h')
-        apply_lineEdit_input(self.ui.lineEdit_rWidth,'-w')
-        apply_lineEdit_input(self.ui.lineEdit_fps,'-r')
-        apply_checkbox_input(self.ui.checkBox_fullscreen,'-f')
-        apply_lineEdit_input(self.ui.lineEdit_oHeight,'-H')
-        apply_lineEdit_input(self.ui.lineEdit_oWidth,'-W')
-        apply_checkbox_input(self.ui.checkBox_steam,'-s')
-        apply_checkbox_input(self.ui.checkBox_hdr,'--hdr-enabled')
-        apply_lineEdit_input(self.ui.lineEdit_maxScaleFactor,'-m')
-        apply_combobox_input(self.ui.comboBox_upscalerType,'-S')
-        apply_combobox_input(self.ui.comboBox_upscalerFilter,'-F')
-        apply_lineEdit_input(self.ui.lineEdit_upscalerSharpness,'--sharpness')
-        apply_doubleSpinBox_input(self.ui.doubleSpinBox_mouseSensitivity,'-s')
-        apply_checkbox_input(self.ui.checkBox_adaptiveSync,'--adaptive-sync')
-        apply_checkbox_input(self.ui.checkBox_forceInternalFullscreen,'--force-windows-fullscreen')
+        def compile_arguments(settings):
+            for widget_type, input_widget, arg in settings:
+                if widget_type == 'checkbox':
+                    apply_checkbox_input(input_widget, arg)
+                elif widget_type == 'lineEdit':
+                    apply_lineEdit_input(input_widget, arg)
+                elif widget_type == 'comboBox':
+                    apply_combobox_input(input_widget, arg)
+                elif widget_type == 'doubleSpinBox':
+                    apply_doubleSpinBox_input(input_widget, arg)
 
-        #apply_checkbox_input(self.ui.checkBox_,'-')
-        #apply_lineEdit_input(self.ui.lineEdit_,'-')
-        #apply_combobox_input(self.ui.comboBox_,'-')
+        # IMPLEMENTED ARGUMENTS
+        settings = [
+            ('checkbox', self.ui.checkBox_mango, '--mangoapp'),
+            ('lineEdit', self.ui.lineEdit_rHeight, '-h'),
+            ('lineEdit', self.ui.lineEdit_rWidth, '-w'),
+            ('lineEdit', self.ui.lineEdit_fps, '-r'),
+            ('checkbox', self.ui.checkBox_fullscreen, '-f'),
+            ('lineEdit', self.ui.lineEdit_oHeight, '-H'),
+            ('lineEdit', self.ui.lineEdit_oWidth, '-W'),
+            ('checkbox', self.ui.checkBox_steam, '-s'),
+            ('checkbox', self.ui.checkBox_hdr, '--hdr-enabled'),
+            ('lineEdit', self.ui.lineEdit_maxScaleFactor, '-m'),
+            ('comboBox', self.ui.comboBox_upscalerType, '-S'),
+            ('comboBox', self.ui.comboBox_upscalerFilter, '-F'),
+            ('lineEdit', self.ui.lineEdit_upscalerSharpness, '--sharpness'),
+            ('doubleSpinBox', self.ui.doubleSpinBox_mouseSensitivity, '-s'),
+            ('checkbox', self.ui.checkBox_adaptiveSync, '--adaptive-sync'),
+            ('checkbox', self.ui.checkBox_forceInternalFullscreen, '--force-windows-fullscreen'),
+        ]
+
+        compile_arguments(settings)
+
 
         generated_config = ''
         for argument in self.config_list:
