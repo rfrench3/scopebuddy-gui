@@ -20,8 +20,6 @@
 
 - make a pretty icon
 
-- add more gamescope args
-
 - add a button to reset the config to default (if scopebuddy doesn't have one, just make sensible defaults)
 
 - add a button to open the config file in a text editor
@@ -37,14 +35,13 @@
 
 ## Bugfixes (make old stuff work)
 
+- if the app is running inside gamescope-session, inform user that the tool should only be used in desktop mode 
+
 - make the window look prettier
 
 - text indicating an empty config file, instead of just showing nothing
 
 - ensure a new scb.conf will be made if one does not exist
-
-- ensure available settings are handled properly in gamescope-session as well as nested gamescope
-    - check if the app is running within gamescope, and if its in nested or session, to properly limit settings?
 
 ## Features to add when all else is complete (non-critical, potentially difficult, etc)
 
