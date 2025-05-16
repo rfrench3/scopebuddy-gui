@@ -33,6 +33,13 @@ class MainWindow(QMainWindow):
         self.ui.lineEdit_maxScaleFactor.setValidator(QIntValidator())
         self.ui.lineEdit_upscalerSharpness.setValidator(QIntValidator())
 
+        gamescope_path = locate_dependency('gamescope') # check if gamescope is installed
+        scopebuddy_path = locate_dependency('scopebuddy')
+        if not (gamescope_path and scopebuddy_path):
+            self.ui.variable_displayGamescope.setText("Gamescope or ScopeBuddy not found, no changes made will be saved.")
+            self.ui.variable_displayGamescope.setStyleSheet("color: red;")
+
+
 
     def get_gamescope_args(self) -> str: #search for the config file, return args if it exists
         # Check if the config file exists
@@ -82,6 +89,8 @@ class MainWindow(QMainWindow):
                     apply_combobox_input(input_widget, arg)
                 elif widget_type == 'doubleSpinBox':
                     apply_doubleSpinBox_input(input_widget, arg)
+                else:
+                    raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
 
         # IMPLEMENTED ARGUMENTS
         settings = [
@@ -135,11 +144,16 @@ class MainWindow(QMainWindow):
 
         self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.get_gamescope_args()}') #display updated config
 
+    def ensure_valid_args(self) -> tuple:
+        pass  #TODO: ensure the set of inputs is valid (-h cant be empty unless -w is empty, etc.)
+
     # ON-CLICK METHODS
 
     def apply_clicked(self):
         print("Apply button clicked...")
-        #TODO: ensure the set of inputs is valid (-h cant be empty unless -w is empty, etc.)
+        if not self.ensure_valid_args():
+            #TODO: dialog telling user what to fix
+            pass
         dialog = DialogApply()
         dialog.exec()
         if dialog.answer:
@@ -153,7 +167,7 @@ class MainWindow(QMainWindow):
     def open_about_dialog(self):
         print("Opening about dialog...")
         dialog = DialogAbout()
-        result = dialog.exec() #TODO: popup can go behind the main window, while blocking inputs on the main window...
+        dialog.exec() #TODO: popup can go behind the main window, while blocking inputs on the main window...
 
 
 class DialogAbout(QDialog):
@@ -180,20 +194,8 @@ class DialogApply(QDialog):
         self.ui.pushButton_Cancel.clicked.connect(self.exit_window)
         self.ui.pushButton_Apply.clicked.connect(self.apply_changes)
         self.answer = False #changes will not be applied unless explictly confirmed
-
-        # disable file writing if necessary programs aren't installed
-        def locate_dependency(program:str):
-            # Check if the required dependency is installed
-            try:
-                # Run the shell script and capture the output
-                result = subprocess.run(["./locatepath.sh", program], capture_output=True, text=True)
-                print(result.stdout)
-                return result.stdout
-            except Exception:
-                print(f"Error, Unable to run the shell script due to: {Exception}")
-                pass
         
-        if (locate_dependency('gamescope') and locate_dependency('scopebuddy')):
+        if not (locate_dependency('gamescope') and locate_dependency('scopebuddy')):
             print("Gamescope or ScopeBuddy not found, disabling file writing.")
             self.ui.pushButton_Apply.setEnabled(False)
             self.ui.label.setText("Gamescope or ScopeBuddy not found, unable to write to config file.")
@@ -206,6 +208,19 @@ class DialogApply(QDialog):
     def apply_changes(self):
         self.answer = True #changes have been explicitly confirmed
         self.close()
+
+# return path to program if it exists, None if it doesn't. for determining if gamescope/scopebuddy are installed
+def locate_dependency(program:str):
+    # Check if the required dependency is installed
+    try:
+        # Run the shell script and capture the output
+        result = subprocess.run(["./locatepath.sh", program], capture_output=True, text=True)
+        print(result.stdout)
+        return result.stdout
+    except Exception:
+        print(f"Error, Unable to run the shell script due to: {Exception}")
+        return None
+
 
 
 app = QApplication([]) # pass the arguments to the QApplication constructor
