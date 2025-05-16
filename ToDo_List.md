@@ -4,6 +4,12 @@
 
 - get the app running outside of the dev environment
 
+- DEFAULT SETTINGS:
+    - if there's a config already, open GUI with its options selected
+    - if there isn't, have a sane set of defaults (1080p, 60fps, etc)
+    - clear-all button 
+    - large field for gamescope options not recognized by/implemented into the gui
+
 - add tooltips to further explain every option
 
 - clearly indicate that a blank field uses gamescope's default
