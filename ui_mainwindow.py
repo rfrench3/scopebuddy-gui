@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowfDoecf.ui'
+## Form generated from reading UI file 'mainwindowvdNxPL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -16,11 +16,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QCheckBox, QComboBox,
-    QFrame, QGridLayout, QHBoxLayout, QLabel,
-    QLineEdit, QListView, QListWidget, QListWidgetItem,
-    QMainWindow, QPushButton, QScrollArea, QSizePolicy,
-    QSpacerItem, QStackedWidget, QToolButton, QVBoxLayout,
-    QWidget)
+    QDoubleSpinBox, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QLineEdit, QListView, QListWidget,
+    QListWidgetItem, QMainWindow, QPushButton, QScrollArea,
+    QSizePolicy, QSpacerItem, QStackedWidget, QToolButton,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -136,7 +136,7 @@ class Ui_MainWindow(object):
         self.scrollArea_settings.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 566, 911))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, -285, 570, 911))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.widget1_rW = QWidget(self.scrollAreaWidgetContents)
@@ -612,6 +612,7 @@ class Ui_MainWindow(object):
         self.lineEdit_maxScaleFactor.setObjectName(u"lineEdit_maxScaleFactor")
         sizePolicy4.setHeightForWidth(self.lineEdit_maxScaleFactor.sizePolicy().hasHeightForWidth())
         self.lineEdit_maxScaleFactor.setSizePolicy(sizePolicy4)
+        self.lineEdit_maxScaleFactor.setMaxLength(4)
 
         self.horizontalLayout_14.addWidget(self.lineEdit_maxScaleFactor)
 
@@ -749,6 +750,7 @@ class Ui_MainWindow(object):
         self.lineEdit_upscalerSharpness.setObjectName(u"lineEdit_upscalerSharpness")
         sizePolicy4.setHeightForWidth(self.lineEdit_upscalerSharpness.sizePolicy().hasHeightForWidth())
         self.lineEdit_upscalerSharpness.setSizePolicy(sizePolicy4)
+        self.lineEdit_upscalerSharpness.setMaxLength(2)
 
         self.horizontalLayout_15.addWidget(self.lineEdit_upscalerSharpness)
 
@@ -792,13 +794,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_19)
 
-        self.lineEdit_mouseSensitivity = QLineEdit(self.widget_39)
-        self.lineEdit_mouseSensitivity.setObjectName(u"lineEdit_mouseSensitivity")
-        sizePolicy4.setHeightForWidth(self.lineEdit_mouseSensitivity.sizePolicy().hasHeightForWidth())
-        self.lineEdit_mouseSensitivity.setSizePolicy(sizePolicy4)
-        self.lineEdit_mouseSensitivity.setClearButtonEnabled(False)
+        self.doubleSpinBox_mouseSensitivity = QDoubleSpinBox(self.widget_39)
+        self.doubleSpinBox_mouseSensitivity.setObjectName(u"doubleSpinBox_mouseSensitivity")
+        self.doubleSpinBox_mouseSensitivity.setDecimals(1)
+        self.doubleSpinBox_mouseSensitivity.setValue(1.000000000000000)
 
-        self.horizontalLayout_21.addWidget(self.lineEdit_mouseSensitivity)
+        self.horizontalLayout_21.addWidget(self.doubleSpinBox_mouseSensitivity)
 
 
         self.verticalLayout_21.addWidget(self.widget_39)
@@ -1064,7 +1065,6 @@ class Ui_MainWindow(object):
 
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Upscaler Sharpness (minimum of 20 to max of 0)", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"Mouse Sensitivity factor", None))
-        self.lineEdit_mouseSensitivity.setPlaceholderText(QCoreApplication.translate("MainWindow", u"1.00", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Adaptive Sync", None))
         self.checkBox_adaptiveSync.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"AppID (Found in game's properties page on Steam)", None))

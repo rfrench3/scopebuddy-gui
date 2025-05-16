@@ -30,6 +30,8 @@ class MainWindow(QMainWindow):
         self.ui.lineEdit_oWidth.setValidator(QIntValidator())  # 4 digits in Qt Designer to ensure sane configs
         self.ui.lineEdit_rWidth.setValidator(QIntValidator())
         self.ui.lineEdit_fps.setValidator(QIntValidator())
+        self.ui.lineEdit_maxScaleFactor.setValidator(QIntValidator())
+        self.ui.lineEdit_upscalerSharpness.setValidator(QIntValidator())
 
     def get_gamescope_args(self) -> str: #search for the config file, return args if it exists
         # Check if the config file exists
@@ -53,13 +55,21 @@ class MainWindow(QMainWindow):
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
 
-        def apply_lineEdit_input(lineEdit, arg):
+        def apply_lineEdit_input(lineEdit:int, arg):
             if lineEdit.text().isdigit():
-                self.config_list.append(str(arg + ' ' + lineEdit.text() + ' '))
+                self.config_list.append(f'{arg} {lineEdit.text()} ')                
             
-        def apply_checkbox_input(checkBox, arg): #appends checkbox input to the config list
+        def apply_combobox_input(comboBox, arg): #appends combobox input to the config list (unless default)
+            if comboBox.currentIndex() != 0:
+                self.config_list.append(f'{arg} {comboBox.currentText()} ')
+
+        def apply_checkbox_input(checkBox, arg): #appends checkbox input to the config list 
             if checkBox.isChecked():
-                self.config_list.append(str(arg + ' '))
+                self.config_list.append(f'{arg} ')
+
+        def apply_doubleSpinBox_input(doubleSpinBox, arg): #preferred for float values
+            if doubleSpinBox.value() != 1.0:
+                self.config_list.append(f'{arg} {doubleSpinBox.value()} ')
 
         # IMPLEMENTED ARGUMENTS
         # TODO: implement more
@@ -71,7 +81,18 @@ class MainWindow(QMainWindow):
         apply_lineEdit_input(self.ui.lineEdit_oHeight,'-H')
         apply_lineEdit_input(self.ui.lineEdit_oWidth,'-W')
         apply_checkbox_input(self.ui.checkBox_steam,'-s')
-        
+        apply_checkbox_input(self.ui.checkBox_hdr,'--hdr-enabled')
+        apply_lineEdit_input(self.ui.lineEdit_maxScaleFactor,'-m')
+        apply_combobox_input(self.ui.comboBox_upscalerType,'-S')
+        apply_combobox_input(self.ui.comboBox_upscalerFilter,'-F')
+        apply_lineEdit_input(self.ui.lineEdit_upscalerSharpness,'--sharpness')
+        apply_doubleSpinBox_input(self.ui.doubleSpinBox_mouseSensitivity,'-s')
+        apply_checkbox_input(self.ui.checkBox_adaptiveSync,'--adaptive-sync')
+
+        #apply_checkbox_input(self.ui.checkBox_,'-')
+        #apply_lineEdit_input(self.ui.lineEdit_,'-')
+        #apply_combobox_input(self.ui.comboBox_,'-')
+
         generated_config = ''
         for argument in self.config_list:
             generated_config += argument

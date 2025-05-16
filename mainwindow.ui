@@ -230,8 +230,8 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
-                <width>566</width>
+                <y>-285</y>
+                <width>570</width>
                 <height>911</height>
                </rect>
               </property>
@@ -1102,6 +1102,9 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="maxLength">
+                        <number>4</number>
+                       </property>
                       </widget>
                      </item>
                     </layout>
@@ -1374,6 +1377,9 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="maxLength">
+                        <number>2</number>
+                       </property>
                       </widget>
                      </item>
                     </layout>
@@ -1456,18 +1462,12 @@
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_mouseSensitivity">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
+                      <widget class="QDoubleSpinBox" name="doubleSpinBox_mouseSensitivity">
+                       <property name="decimals">
+                        <number>1</number>
                        </property>
-                       <property name="placeholderText">
-                        <string>1.00</string>
-                       </property>
-                       <property name="clearButtonEnabled">
-                        <bool>false</bool>
+                       <property name="value">
+                        <double>1.000000000000000</double>
                        </property>
                       </widget>
                      </item>
