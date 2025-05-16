@@ -39,7 +39,7 @@
 
 - in-GUI support for non-gamescope functionality of scopebuddy
 
-
+- pretty window for setting up --display-index
 
 
 
