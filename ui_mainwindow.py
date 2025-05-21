@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowWJwEbP.ui'
+## Form generated from reading UI file 'mainwindowHpIYrU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -142,7 +142,7 @@ class Ui_MainWindow(object):
         self.scrollArea_settings.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, -139, 570, 960))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 570, 1009))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.widget1_rW = QWidget(self.scrollAreaWidgetContents)
@@ -417,6 +417,48 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.widget6_fullscreen)
 
+        self.widget_29 = QWidget(self.scrollAreaWidgetContents)
+        self.widget_29.setObjectName(u"widget_29")
+        sizePolicy6.setHeightForWidth(self.widget_29.sizePolicy().hasHeightForWidth())
+        self.widget_29.setSizePolicy(sizePolicy6)
+        self.verticalLayout_23 = QVBoxLayout(self.widget_29)
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
+        self.widget_31 = QWidget(self.widget_29)
+        self.widget_31.setObjectName(u"widget_31")
+        sizePolicy7.setHeightForWidth(self.widget_31.sizePolicy().hasHeightForWidth())
+        self.widget_31.setSizePolicy(sizePolicy7)
+        self.horizontalLayout_23 = QHBoxLayout(self.widget_31)
+        self.horizontalLayout_23.setSpacing(0)
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.horizontalLayout_23.setContentsMargins(0, 0, 0, 0)
+        self.label_21 = QLabel(self.widget_31)
+        self.label_21.setObjectName(u"label_21")
+
+        self.horizontalLayout_23.addWidget(self.label_21)
+
+        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_23.addItem(self.horizontalSpacer_21)
+
+        self.checkBox_borderless = QCheckBox(self.widget_31)
+        self.checkBox_borderless.setObjectName(u"checkBox_borderless")
+        self.checkBox_borderless.setTristate(False)
+
+        self.horizontalLayout_23.addWidget(self.checkBox_borderless)
+
+
+        self.verticalLayout_23.addWidget(self.widget_31)
+
+        self.line_22 = QFrame(self.widget_29)
+        self.line_22.setObjectName(u"line_22")
+        self.line_22.setFrameShape(QFrame.Shape.HLine)
+        self.line_22.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_23.addWidget(self.line_22)
+
+
+        self.verticalLayout_5.addWidget(self.widget_29)
+
         self.widget7_hdr = QWidget(self.scrollAreaWidgetContents)
         self.widget7_hdr.setObjectName(u"widget7_hdr")
         sizePolicy6.setHeightForWidth(self.widget7_hdr.sizePolicy().hasHeightForWidth())
@@ -585,6 +627,91 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_5.addWidget(self.widget_24)
+
+        self.widget__16_mouseSensitivity = QWidget(self.scrollAreaWidgetContents)
+        self.widget__16_mouseSensitivity.setObjectName(u"widget__16_mouseSensitivity")
+        sizePolicy6.setHeightForWidth(self.widget__16_mouseSensitivity.sizePolicy().hasHeightForWidth())
+        self.widget__16_mouseSensitivity.setSizePolicy(sizePolicy6)
+        self.verticalLayout_21 = QVBoxLayout(self.widget__16_mouseSensitivity)
+        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
+        self.widget_39 = QWidget(self.widget__16_mouseSensitivity)
+        self.widget_39.setObjectName(u"widget_39")
+        sizePolicy7.setHeightForWidth(self.widget_39.sizePolicy().hasHeightForWidth())
+        self.widget_39.setSizePolicy(sizePolicy7)
+        self.horizontalLayout_21 = QHBoxLayout(self.widget_39)
+        self.horizontalLayout_21.setSpacing(0)
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.horizontalLayout_21.setContentsMargins(0, 0, 0, 0)
+        self.label_19 = QLabel(self.widget_39)
+        self.label_19.setObjectName(u"label_19")
+
+        self.horizontalLayout_21.addWidget(self.label_19)
+
+        self.horizontalSpacer_19 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_21.addItem(self.horizontalSpacer_19)
+
+        self.doubleSpinBox_mouseSensitivity = QDoubleSpinBox(self.widget_39)
+        self.doubleSpinBox_mouseSensitivity.setObjectName(u"doubleSpinBox_mouseSensitivity")
+        self.doubleSpinBox_mouseSensitivity.setDecimals(1)
+        self.doubleSpinBox_mouseSensitivity.setValue(1.000000000000000)
+
+        self.horizontalLayout_21.addWidget(self.doubleSpinBox_mouseSensitivity)
+
+
+        self.verticalLayout_21.addWidget(self.widget_39)
+
+        self.line_20 = QFrame(self.widget__16_mouseSensitivity)
+        self.line_20.setObjectName(u"line_20")
+        self.line_20.setFrameShape(QFrame.Shape.HLine)
+        self.line_20.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_21.addWidget(self.line_20)
+
+
+        self.verticalLayout_5.addWidget(self.widget__16_mouseSensitivity)
+
+        self.widget__17_ = QWidget(self.scrollAreaWidgetContents)
+        self.widget__17_.setObjectName(u"widget__17_")
+        sizePolicy6.setHeightForWidth(self.widget__17_.sizePolicy().hasHeightForWidth())
+        self.widget__17_.setSizePolicy(sizePolicy6)
+        self.verticalLayout_22 = QVBoxLayout(self.widget__17_)
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.widget_41 = QWidget(self.widget__17_)
+        self.widget_41.setObjectName(u"widget_41")
+        sizePolicy7.setHeightForWidth(self.widget_41.sizePolicy().hasHeightForWidth())
+        self.widget_41.setSizePolicy(sizePolicy7)
+        self.horizontalLayout_22 = QHBoxLayout(self.widget_41)
+        self.horizontalLayout_22.setSpacing(0)
+        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
+        self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
+        self.label_20 = QLabel(self.widget_41)
+        self.label_20.setObjectName(u"label_20")
+
+        self.horizontalLayout_22.addWidget(self.label_20)
+
+        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_22.addItem(self.horizontalSpacer_20)
+
+        self.checkBox_adaptiveSync = QCheckBox(self.widget_41)
+        self.checkBox_adaptiveSync.setObjectName(u"checkBox_adaptiveSync")
+        self.checkBox_adaptiveSync.setTristate(False)
+
+        self.horizontalLayout_22.addWidget(self.checkBox_adaptiveSync)
+
+
+        self.verticalLayout_22.addWidget(self.widget_41)
+
+        self.line_21 = QFrame(self.widget__17_)
+        self.line_21.setObjectName(u"line_21")
+        self.line_21.setFrameShape(QFrame.Shape.HLine)
+        self.line_21.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_22.addWidget(self.line_21)
+
+
+        self.verticalLayout_5.addWidget(self.widget__17_)
 
         self.widget__11_AdvancedSettings = QWidget(self.scrollAreaWidgetContents)
         self.widget__11_AdvancedSettings.setObjectName(u"widget__11_AdvancedSettings")
@@ -822,91 +949,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addItem(self.verticalSpacer)
 
-        self.widget__16_mouseSensitivity = QWidget(self.scrollAreaWidgetContents)
-        self.widget__16_mouseSensitivity.setObjectName(u"widget__16_mouseSensitivity")
-        sizePolicy6.setHeightForWidth(self.widget__16_mouseSensitivity.sizePolicy().hasHeightForWidth())
-        self.widget__16_mouseSensitivity.setSizePolicy(sizePolicy6)
-        self.verticalLayout_21 = QVBoxLayout(self.widget__16_mouseSensitivity)
-        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
-        self.widget_39 = QWidget(self.widget__16_mouseSensitivity)
-        self.widget_39.setObjectName(u"widget_39")
-        sizePolicy7.setHeightForWidth(self.widget_39.sizePolicy().hasHeightForWidth())
-        self.widget_39.setSizePolicy(sizePolicy7)
-        self.horizontalLayout_21 = QHBoxLayout(self.widget_39)
-        self.horizontalLayout_21.setSpacing(0)
-        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
-        self.horizontalLayout_21.setContentsMargins(0, 0, 0, 0)
-        self.label_19 = QLabel(self.widget_39)
-        self.label_19.setObjectName(u"label_19")
-
-        self.horizontalLayout_21.addWidget(self.label_19)
-
-        self.horizontalSpacer_19 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_21.addItem(self.horizontalSpacer_19)
-
-        self.doubleSpinBox_mouseSensitivity = QDoubleSpinBox(self.widget_39)
-        self.doubleSpinBox_mouseSensitivity.setObjectName(u"doubleSpinBox_mouseSensitivity")
-        self.doubleSpinBox_mouseSensitivity.setDecimals(1)
-        self.doubleSpinBox_mouseSensitivity.setValue(1.000000000000000)
-
-        self.horizontalLayout_21.addWidget(self.doubleSpinBox_mouseSensitivity)
-
-
-        self.verticalLayout_21.addWidget(self.widget_39)
-
-        self.line_20 = QFrame(self.widget__16_mouseSensitivity)
-        self.line_20.setObjectName(u"line_20")
-        self.line_20.setFrameShape(QFrame.Shape.HLine)
-        self.line_20.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.verticalLayout_21.addWidget(self.line_20)
-
-
-        self.verticalLayout_5.addWidget(self.widget__16_mouseSensitivity)
-
-        self.widget__17_ = QWidget(self.scrollAreaWidgetContents)
-        self.widget__17_.setObjectName(u"widget__17_")
-        sizePolicy6.setHeightForWidth(self.widget__17_.sizePolicy().hasHeightForWidth())
-        self.widget__17_.setSizePolicy(sizePolicy6)
-        self.verticalLayout_22 = QVBoxLayout(self.widget__17_)
-        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
-        self.widget_41 = QWidget(self.widget__17_)
-        self.widget_41.setObjectName(u"widget_41")
-        sizePolicy7.setHeightForWidth(self.widget_41.sizePolicy().hasHeightForWidth())
-        self.widget_41.setSizePolicy(sizePolicy7)
-        self.horizontalLayout_22 = QHBoxLayout(self.widget_41)
-        self.horizontalLayout_22.setSpacing(0)
-        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
-        self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
-        self.label_20 = QLabel(self.widget_41)
-        self.label_20.setObjectName(u"label_20")
-
-        self.horizontalLayout_22.addWidget(self.label_20)
-
-        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_22.addItem(self.horizontalSpacer_20)
-
-        self.checkBox_adaptiveSync = QCheckBox(self.widget_41)
-        self.checkBox_adaptiveSync.setObjectName(u"checkBox_adaptiveSync")
-        self.checkBox_adaptiveSync.setTristate(False)
-
-        self.horizontalLayout_22.addWidget(self.checkBox_adaptiveSync)
-
-
-        self.verticalLayout_22.addWidget(self.widget_41)
-
-        self.line_21 = QFrame(self.widget__17_)
-        self.line_21.setObjectName(u"line_21")
-        self.line_21.setFrameShape(QFrame.Shape.HLine)
-        self.line_21.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.verticalLayout_22.addWidget(self.line_21)
-
-
-        self.verticalLayout_5.addWidget(self.widget__17_)
-
         self.scrollArea_settings.setWidget(self.scrollAreaWidgetContents)
 
         self.gridLayout_3.addWidget(self.scrollArea_settings, 0, 0, 1, 1)
@@ -1088,23 +1130,77 @@ class Ui_MainWindow(object):
         self.toolButton_removeGame.setToolTip(QCoreApplication.translate("MainWindow", u"TODO: removes selected game-specific slot", None))
 #endif // QT_CONFIG(tooltip)
         self.toolButton_removeGame.setText(QCoreApplication.translate("MainWindow", u"\u2613", None))
+#if QT_CONFIG(tooltip)
+        self.widget1_rW.setToolTip(QCoreApplication.translate("MainWindow", u"Width (measured in pixels) that the game will render at", None))
+#endif // QT_CONFIG(tooltip)
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Rendered Width", None))
+        self.lineEdit_rWidth.setPlaceholderText(QCoreApplication.translate("MainWindow", u"1920", None))
+#if QT_CONFIG(tooltip)
+        self.widget2_rH.setToolTip(QCoreApplication.translate("MainWindow", u"Height (measured in pixels) that the game will render at", None))
+#endif // QT_CONFIG(tooltip)
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Rendered Height", None))
+        self.lineEdit_rHeight.setPlaceholderText(QCoreApplication.translate("MainWindow", u"1080", None))
+#if QT_CONFIG(tooltip)
+        self.widget3_fps.setToolTip(QCoreApplication.translate("MainWindow", u"Maximum amount of frames per second (FPS) the game will attempt to render", None))
+#endif // QT_CONFIG(tooltip)
         self.label.setText(QCoreApplication.translate("MainWindow", u"Refresh Rate (FPS)", None))
+        self.lineEdit_fps.setPlaceholderText(QCoreApplication.translate("MainWindow", u"120", None))
+#if QT_CONFIG(tooltip)
+        self.widget4_oW.setToolTip(QCoreApplication.translate("MainWindow", u"Width (in pixels) of the window you will see", None))
+#endif // QT_CONFIG(tooltip)
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Output Width", None))
+        self.lineEdit_oWidth.setPlaceholderText(QCoreApplication.translate("MainWindow", u"2560", None))
+#if QT_CONFIG(tooltip)
+        self.widget5_oH.setToolTip(QCoreApplication.translate("MainWindow", u"Height (in pixels) of the window you will see", None))
+#endif // QT_CONFIG(tooltip)
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Output Height", None))
+        self.lineEdit_oHeight.setPlaceholderText(QCoreApplication.translate("MainWindow", u"1440", None))
+#if QT_CONFIG(tooltip)
+        self.widget6_fullscreen.setToolTip(QCoreApplication.translate("MainWindow", u"Should the game launch in fullscreen? (Toggle with Windows key + F)", None))
+#endif // QT_CONFIG(tooltip)
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Fullscreen", None))
         self.checkBox_fullscreen.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.widget_29.setToolTip(QCoreApplication.translate("MainWindow", u"Should the game window have borders when not in fullscreen?", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_21.setText(QCoreApplication.translate("MainWindow", u"Borderless Window", None))
+        self.checkBox_borderless.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.widget7_hdr.setToolTip(QCoreApplication.translate("MainWindow", u"Enables support for HDR features supported by some monitors", None))
+#endif // QT_CONFIG(tooltip)
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"High Dynamic Range (HDR) Support", None))
         self.checkBox_hdr.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.widget9_steam.setToolTip(QCoreApplication.translate("MainWindow", u"Enables the Steam Overlay when in-game (by default, Shift + Tab opens this menu)", None))
+#endif // QT_CONFIG(tooltip)
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Steam Overlay", None))
         self.checkBox_steam.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.widget__10mangohud.setToolTip(QCoreApplication.translate("MainWindow", u"Enables the MangoHUD performance Overlay", None))
+#endif // QT_CONFIG(tooltip)
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"MangoHUD Overlay", None))
         self.checkBox_mango.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.widget_24.setToolTip(QCoreApplication.translate("MainWindow", u"Should every window launched be forced into fullscreen? (Primarily relevant for games with dedicated launchers)", None))
+#endif // QT_CONFIG(tooltip)
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"Force Fullscreen within Gamescope Window", None))
         self.checkBox_forceInternalFullscreen.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Mouse Sensitivity factor", None))
+#if QT_CONFIG(tooltip)
+        self.widget__17_.setToolTip(QCoreApplication.translate("MainWindow", u"Enables support for Variable Refresh Rate features like Gsync and Freesync", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Variable Refresh Rate (Adaptive Sync)", None))
+        self.checkBox_adaptiveSync.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.widget__11_AdvancedSettings.setToolTip(QCoreApplication.translate("MainWindow", u"These are settings I believe will not be relevant to most users, so they are separated to minimize confusion.", None))
+#endif // QT_CONFIG(tooltip)
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Advanced Settings", None))
+#if QT_CONFIG(tooltip)
+        self.widget__12_maxScaleFactor.setToolTip(QCoreApplication.translate("MainWindow", u"Maximum factor for the scaling of the game window (the default of 0 means unlimited).\n"
+"For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.", None))
+#endif // QT_CONFIG(tooltip)
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Maximum Scale Factor", None))
+        self.lineEdit_maxScaleFactor.setPlaceholderText(QCoreApplication.translate("MainWindow", u"0 (no strict limit)", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Upscaler Type", None))
         self.comboBox_upscalerType.setItemText(0, QCoreApplication.translate("MainWindow", u"Automatic (Default)", None))
         self.comboBox_upscalerType.setItemText(1, QCoreApplication.translate("MainWindow", u"Integer", None))
@@ -1120,9 +1216,10 @@ class Ui_MainWindow(object):
         self.comboBox_upscalerFilter.setItemText(4, QCoreApplication.translate("MainWindow", u"Nvidia NIS 1.0.3", None))
 
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Upscaler Sharpness (minimum of 20 to max of 0)", None))
-        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Mouse Sensitivity factor", None))
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Adaptive Sync", None))
-        self.checkBox_adaptiveSync.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.lineEdit_upscalerSharpness.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.lineEdit_upscalerSharpness.setPlaceholderText("")
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"AppID (Found in game's properties page on Steam)", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"spawn a new instance of the default settings page here, below the AppID", None))
         self.pushButton_exit.setText(QCoreApplication.translate("MainWindow", u"Exit App", None))

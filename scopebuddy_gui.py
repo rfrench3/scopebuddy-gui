@@ -115,6 +115,7 @@ class MainWindow(QMainWindow):
             ('lineEdit', self.ui.lineEdit_rWidth, '-w'),
             ('lineEdit', self.ui.lineEdit_fps, '-r'),
             ('checkbox', self.ui.checkBox_fullscreen, '-f'),
+            ('checkbox', self.ui.checkBox_borderless, '-b'),
             ('lineEdit', self.ui.lineEdit_oHeight, '-H'),
             ('lineEdit', self.ui.lineEdit_oWidth, '-W'),
             ('checkbox', self.ui.checkBox_steam, '-e'),
