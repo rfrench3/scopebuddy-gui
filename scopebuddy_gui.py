@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+
+import sys
+sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
+
 #PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QIntValidator
@@ -8,10 +13,11 @@ from ui_apply_error import Ui_Dialog_ApplyError
 from ui_game_specific_selector import Ui_Form
 
 # non-GUI imports
-import sys  
+  
 import os
 from re import search # for searching for gamescope args in the config file
 import subprocess # for running the shell script that finds gamescope and scopebuddy
+import shutil # for checking if dependencies are installed
 
 class MainWindow(QMainWindow): 
     def __init__(self):
@@ -248,16 +254,13 @@ class DialogApply(QDialog):
         self.close()
 
 # return path to program if it exists, None if it doesn't. for determining if gamescope/scopebuddy are installed
-def locate_dependency(program:str):
-    # Check if the required dependency is installed
-    try:
-        # Run the shell script and capture the output
-        result = subprocess.run(["./locatepath.sh", program], capture_output=True, text=True)
-        print(result.stdout)
-        return result.stdout
-    except Exception:
-        print(f"Error, Unable to run the shell script due to: {Exception}")
-        return None
+def locate_dependency(program: str) -> str | None:
+    path = shutil.which(program)
+    if path:
+        print(f"{program} found at: {path}")
+    else:
+        print(f"{program} not found.")
+    return path
 
 def verify_dependencies_present(programs:list):
     # Check if the required dependencies are installed
