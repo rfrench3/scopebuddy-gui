@@ -10,14 +10,12 @@ from ui_mainwindow import Ui_MainWindow  # Import generated UI file
 from ui_about import Ui_Dialog_About  # Import generated UI file
 from ui_apply_confirmation import Ui_Dialog_Apply
 from ui_apply_error import Ui_Dialog_ApplyError
-from ui_game_specific_selector import Ui_Form
 
 # non-GUI imports
   
 import os
 from re import search # for searching for gamescope args in the config file
 import subprocess # for running the shell script that finds gamescope and scopebuddy
-import shutil # for checking if dependencies are installed
 
 class MainWindow(QMainWindow): 
     def __init__(self):
@@ -255,12 +253,23 @@ class DialogApply(QDialog):
 
 # return path to program if it exists, None if it doesn't. for determining if gamescope/scopebuddy are installed
 def locate_dependency(program: str) -> str | None:
-    path = shutil.which(program)
-    if path:
-        print(f"{program} found at: {path}")
-    else:
-        print(f"{program} not found.")
-    return path
+    try:
+        result = subprocess.run(
+            ["flatpak-spawn", "--host", "which", program],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        path = result.stdout.strip()
+        if path:
+            print(f"{program} found at: {path}")
+            return path
+        else:
+            print(f"{program} not found.")
+            return None
+    except subprocess.CalledProcessError:
+        print(f"{program} not found or 'which' failed.")
+        return None
 
 def verify_dependencies_present(programs:list):
     # Check if the required dependencies are installed

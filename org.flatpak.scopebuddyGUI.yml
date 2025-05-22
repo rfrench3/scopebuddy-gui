@@ -10,6 +10,8 @@ finish-args:
   - --socket=wayland
   - --device=dri
   - --env=QT_QPA_PLATFORM=xcb
+  - --talk-name=org.freedesktop.Flatpak
+  - --filesystem=~/.config/scopebuddy:rw
 
 modules:
   - name: shiboken6
@@ -52,7 +54,6 @@ modules:
     buildsystem: simple
     build-commands:
       - install -Dm755 scopebuddy_gui.py /app/bin/scopebuddy_gui.py
-      - install -Dm755 locatepath.sh /app/bin/locatepath.sh
       - mkdir -p /app/share/scopebuddygui
       - install -m644 *.py /app/share/scopebuddygui/
     sources:
