@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowHpIYrU.ui'
+## Form generated from reading UI file 'mainwindowZYQKUV.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -62,7 +62,7 @@ class Ui_MainWindow(object):
         QListWidgetItem(self.listWidget_gamesList)
         QListWidgetItem(self.listWidget_gamesList)
         self.listWidget_gamesList.setObjectName(u"listWidget_gamesList")
-        self.listWidget_gamesList.setEnabled(False)
+        self.listWidget_gamesList.setEnabled(True)
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(5)
@@ -93,7 +93,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(18, 18, 18, 18)
         self.toolButton_addGame = QToolButton(self.frame_5)
         self.toolButton_addGame.setObjectName(u"toolButton_addGame")
-        self.toolButton_addGame.setEnabled(False)
+        self.toolButton_addGame.setEnabled(True)
         sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy4.setHorizontalStretch(1)
         sizePolicy4.setVerticalStretch(1)
@@ -107,7 +107,7 @@ class Ui_MainWindow(object):
 
         self.toolButton_removeGame = QToolButton(self.frame_5)
         self.toolButton_removeGame.setObjectName(u"toolButton_removeGame")
-        self.toolButton_removeGame.setEnabled(False)
+        self.toolButton_removeGame.setEnabled(True)
         sizePolicy4.setHeightForWidth(self.toolButton_removeGame.sizePolicy().hasHeightForWidth())
         self.toolButton_removeGame.setSizePolicy(sizePolicy4)
         icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.ListRemove))
@@ -966,59 +966,8 @@ class Ui_MainWindow(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.widget_20 = QWidget(self.widget_2)
-        self.widget_20.setObjectName(u"widget_20")
-        sizePolicy6.setHeightForWidth(self.widget_20.sizePolicy().hasHeightForWidth())
-        self.widget_20.setSizePolicy(sizePolicy6)
-        self.verticalLayout_13 = QVBoxLayout(self.widget_20)
-        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
-        self.widget_22 = QWidget(self.widget_20)
-        self.widget_22.setObjectName(u"widget_22")
-        sizePolicy7.setHeightForWidth(self.widget_22.sizePolicy().hasHeightForWidth())
-        self.widget_22.setSizePolicy(sizePolicy7)
-        self.horizontalLayout_13 = QHBoxLayout(self.widget_22)
-        self.horizontalLayout_13.setSpacing(0)
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
-        self.label_11 = QLabel(self.widget_22)
-        self.label_11.setObjectName(u"label_11")
-
-        self.horizontalLayout_13.addWidget(self.label_11)
-
-        self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_13.addItem(self.horizontalSpacer_12)
-
-        self.lineEdit_appID = QLineEdit(self.widget_22)
-        self.lineEdit_appID.setObjectName(u"lineEdit_appID")
-        sizePolicy8.setHeightForWidth(self.lineEdit_appID.sizePolicy().hasHeightForWidth())
-        self.lineEdit_appID.setSizePolicy(sizePolicy8)
-
-        self.horizontalLayout_13.addWidget(self.lineEdit_appID)
-
-
-        self.verticalLayout_13.addWidget(self.widget_22)
-
-        self.line_12 = QFrame(self.widget_20)
-        self.line_12.setObjectName(u"line_12")
-        self.line_12.setFrameShape(QFrame.Shape.HLine)
-        self.line_12.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.verticalLayout_13.addWidget(self.line_12)
-
-
-        self.gridLayout.addWidget(self.widget_20, 0, 0, 1, 1)
-
 
         self.verticalLayout_8.addWidget(self.widget_2)
-
-        self.widget = QWidget(self.page)
-        self.widget.setObjectName(u"widget")
-        self.label_6 = QLabel(self.widget)
-        self.label_6.setObjectName(u"label_6")
-        self.label_6.setGeometry(QRect(60, 50, 461, 141))
-
-        self.verticalLayout_8.addWidget(self.widget)
 
         self.stackedWidget_settingsPanel.addWidget(self.page)
 
@@ -1220,8 +1169,6 @@ class Ui_MainWindow(object):
         self.lineEdit_upscalerSharpness.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.lineEdit_upscalerSharpness.setPlaceholderText("")
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"AppID (Found in game's properties page on Steam)", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"spawn a new instance of the default settings page here, below the AppID", None))
         self.pushButton_exit.setText(QCoreApplication.translate("MainWindow", u"Exit App", None))
         self.variable_displayGamescope.setText(QCoreApplication.translate("MainWindow", u"currentGamescope", None))
         self.pushButton_about.setText(QCoreApplication.translate("MainWindow", u"About", None))
