@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'apply_confirmationeuDfEm.ui'
+## Form generated from reading UI file 'apply_confirmationcffBaE.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -16,15 +16,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QGridLayout,
-    QHBoxLayout, QLabel, QPushButton, QScrollArea,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QHBoxLayout, QLabel, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Dialog_Apply(object):
     def setupUi(self, Dialog_Apply):
         if not Dialog_Apply.objectName():
             Dialog_Apply.setObjectName(u"Dialog_Apply")
         Dialog_Apply.setWindowModality(Qt.WindowModality.ApplicationModal)
-        Dialog_Apply.resize(400, 446)
+        Dialog_Apply.resize(348, 346)
         Dialog_Apply.setModal(True)
         self.verticalLayout = QVBoxLayout(Dialog_Apply)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -55,6 +55,7 @@ class Ui_Dialog_Apply(object):
         self.label_4 = QLabel(self.widget_3)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
+        self.label_4.setWordWrap(True)
 
         self.gridLayout.addWidget(self.label_4, 1, 0, 1, 1)
 
@@ -131,56 +132,6 @@ class Ui_Dialog_Apply(object):
 
         self.verticalLayout.addWidget(self.frame_2)
 
-        self.frame_3 = QFrame(Dialog_Apply)
-        self.frame_3.setObjectName(u"frame_3")
-        sizePolicy.setHeightForWidth(self.frame_3.sizePolicy().hasHeightForWidth())
-        self.frame_3.setSizePolicy(sizePolicy)
-        self.frame_3.setFrameShape(QFrame.Shape.Box)
-        self.frame_3.setFrameShadow(QFrame.Shadow.Raised)
-        self.gridLayout_2 = QGridLayout(self.frame_3)
-        self.gridLayout_2.setSpacing(0)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.scrollArea = QScrollArea(self.frame_3)
-        self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setFrameShape(QFrame.Shape.NoFrame)
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 363, 190))
-        self.gridLayout_3 = QGridLayout(self.scrollAreaWidgetContents)
-        self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.textLabel = QLabel(self.scrollAreaWidgetContents)
-        self.textLabel.setObjectName(u"textLabel")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.textLabel.sizePolicy().hasHeightForWidth())
-        self.textLabel.setSizePolicy(sizePolicy2)
-        font = QFont()
-        font.setPointSize(12)
-        font.setWeight(QFont.Medium)
-        self.textLabel.setFont(font)
-        self.textLabel.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
-
-        self.gridLayout_3.addWidget(self.textLabel, 0, 0, 1, 1)
-
-        self.var_newConfigPretty = QLabel(self.scrollAreaWidgetContents)
-        self.var_newConfigPretty.setObjectName(u"var_newConfigPretty")
-        self.var_newConfigPretty.setTextFormat(Qt.TextFormat.MarkdownText)
-        self.var_newConfigPretty.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
-        self.var_newConfigPretty.setWordWrap(True)
-
-        self.gridLayout_3.addWidget(self.var_newConfigPretty, 1, 0, 1, 1)
-
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-
-        self.gridLayout_2.addWidget(self.scrollArea, 0, 0, 1, 1)
-
-
-        self.verticalLayout.addWidget(self.frame_3)
-
         self.frame = QFrame(Dialog_Apply)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.Shape.NoFrame)
@@ -213,18 +164,11 @@ class Ui_Dialog_Apply(object):
     def retranslateUi(self, Dialog_Apply):
         Dialog_Apply.setWindowTitle(QCoreApplication.translate("Dialog_Apply", u"Dialog", None))
         self.label.setText(QCoreApplication.translate("Dialog_Apply", u"Are you sure you want to apply the new config?", None))
-        self.label_4.setText(QCoreApplication.translate("Dialog_Apply", u"The current one will remain deactived in the config file.", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog_Apply", u"The current one will remain deactived in the config file, located at ~/.config/scopebuddy", None))
         self.label_2.setText(QCoreApplication.translate("Dialog_Apply", u"Current Configuration: ", None))
         self.var_currentConfig.setText(QCoreApplication.translate("Dialog_Apply", u"VAR_CURRENT_CONFIG", None))
         self.label_3.setText(QCoreApplication.translate("Dialog_Apply", u"New Configuration: ", None))
         self.var_newConfig.setText(QCoreApplication.translate("Dialog_Apply", u"VAR_NEW_CONFIG", None))
-        self.textLabel.setText(QCoreApplication.translate("Dialog_Apply", u"In your new configuration:", None))
-        self.var_newConfigPretty.setText(QCoreApplication.translate("Dialog_Apply", u"- thing one\n"
-" - thing two\n"
-" - thing three\n"
-" - thing four\n"
-" - display based on category, explain the internal rendering at once and then explain the external rendering at once\n"
-" ", None))
         self.pushButton_Apply.setText(QCoreApplication.translate("Dialog_Apply", u"Apply", None))
         self.pushButton_Cancel.setText(QCoreApplication.translate("Dialog_Apply", u"Cancel", None))
     # retranslateUi

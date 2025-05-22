@@ -46,163 +46,6 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QFrame" name="frame">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QListWidget" name="listWidget_gamesList">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>5</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Shape::Box</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
-            </property>
-            <property name="lineWidth">
-             <number>0</number>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
-            </property>
-            <property name="tabKeyNavigation">
-             <bool>true</bool>
-            </property>
-            <property name="movement">
-             <enum>QListView::Movement::Static</enum>
-            </property>
-            <item>
-             <property name="text">
-              <string>Default Settings</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>TODO: Game-specific settings</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item>
-           <widget class="QFrame" name="frame_5">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-              <horstretch>0</horstretch>
-              <verstretch>1</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Shape::Box</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <property name="spacing">
-              <number>18</number>
-             </property>
-             <property name="leftMargin">
-              <number>18</number>
-             </property>
-             <property name="topMargin">
-              <number>18</number>
-             </property>
-             <property name="rightMargin">
-              <number>18</number>
-             </property>
-             <property name="bottomMargin">
-              <number>18</number>
-             </property>
-             <item>
-              <widget class="QToolButton" name="toolButton_addGame">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>1</horstretch>
-                 <verstretch>1</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>TODO: adds slot for game-specific settings</string>
-               </property>
-               <property name="text">
-                <string>+</string>
-               </property>
-               <property name="icon">
-                <iconset theme="QIcon::ThemeIcon::ListAdd"/>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="toolButton_removeGame">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>1</horstretch>
-                 <verstretch>1</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>TODO: removes selected game-specific slot</string>
-               </property>
-               <property name="text">
-                <string>☓</string>
-               </property>
-               <property name="icon">
-                <iconset theme="QIcon::ThemeIcon::ListRemove"/>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QStackedWidget" name="stackedWidget_settingsPanel">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
@@ -249,7 +92,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>570</width>
+                <width>769</width>
                 <height>1009</height>
                </rect>
               </property>
@@ -1992,22 +1835,5 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>listWidget_gamesList</sender>
-   <signal>currentRowChanged(int)</signal>
-   <receiver>stackedWidget_settingsPanel</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>99</x>
-     <y>305</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>496</x>
-     <y>323</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
