@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'apply_errorlEfwIe.ui'
+## Form generated from reading UI file 'apply_erroreMxBoL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -24,7 +24,7 @@ class Ui_Dialog_ApplyError(object):
         if not Dialog_ApplyError.objectName():
             Dialog_ApplyError.setObjectName(u"Dialog_ApplyError")
         Dialog_ApplyError.setWindowModality(Qt.WindowModality.ApplicationModal)
-        Dialog_ApplyError.resize(400, 248)
+        Dialog_ApplyError.resize(400, 177)
         Dialog_ApplyError.setModal(True)
         self.verticalLayout = QVBoxLayout(Dialog_ApplyError)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -92,10 +92,10 @@ class Ui_Dialog_ApplyError(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Error: Your set of arguments are incompatible!</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br />TODO: provide exact error, highlight conflicting input boxes until user interacts with them again<br /><br />Some common issues are:</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0p"
-                        "x; -qt-block-indent:0; text-indent:0px;\">- setting Rendered Width without setting Rendered Height</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- setting Output Width without setting Output Height</p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br />Some common issues are:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- setting Rendered Width without setting Rendered Height</p>\n"
+"<p"
+                        " style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- setting Output Width without setting Output Height</p></body></html>", None))
         self.pushButton_Ok.setText(QCoreApplication.translate("Dialog_ApplyError", u"Ok", None))
     # retranslateUi
 
