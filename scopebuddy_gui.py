@@ -25,8 +25,6 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_apply.clicked.connect(self.apply_clicked)
         self.ui.pushButton_exit.clicked.connect(self.exit_app)
         self.ui.pushButton_about.clicked.connect(self.open_about_dialog)
-        self.lastIndex = 0 # initial value is 0
-        self.ui.listWidget_gamesList.itemClicked.connect(self.game_changed) # when a game is selected, the game-specific config will be shown
 
         # Input field validation 
         self.ui.lineEdit_oHeight.setValidator(QIntValidator()) # ensures valid inputs.
@@ -198,19 +196,6 @@ class MainWindow(QMainWindow):
         print("Opening about dialog...")
         dialog = DialogAbout()
         dialog.exec() #TODO: popup can go behind the main window, while blocking inputs on the main window...
-
-    def game_changed(self):
-        index = self.ui.listWidget_gamesList.currentRow()
-        if self.lastIndex != index:
-            print('selected config changed')
-            #TODO: if you drag from one elment on the gamesList and move to another, 
-            # it does not seem to detect the element you end up on.
-
-
-
-
-            self.lastIndex = index
-
 
 class DialogAbout(QDialog):
     def __init__(self):
