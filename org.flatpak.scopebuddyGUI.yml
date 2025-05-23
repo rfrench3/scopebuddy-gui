@@ -12,6 +12,10 @@ finish-args:
   - --env=QT_QPA_PLATFORM=xcb
   - --talk-name=org.freedesktop.Flatpak
   - --filesystem=~/.config/scopebuddy:rw
+  - --env=QT_LOGGING_RULES=qt.dbus.integration=false
+  - --filesystem=xdg-config/kdeglobals:ro
+  - --filesystem=xdg-config/gtk-3.0:ro
+  - --filesystem=xdg-config/gtk-4.0:ro
 
 modules:
   - name: shiboken6
@@ -56,6 +60,9 @@ modules:
       - install -Dm755 scopebuddy_gui.py /app/bin/scopebuddy_gui.py
       - mkdir -p /app/share/scopebuddygui
       - install -m644 *.py /app/share/scopebuddygui/
+      - install -Dm644 org.flatpak.scopebuddyGUI.svg /app/share/icons/hicolor/scalable/apps/org.flatpak.scopebuddyGUI.svg
+      - install -Dm644 org.flatpak.scopebuddyGUI.desktop /app/share/applications/org.flatpak.scopebuddyGUI.desktop
+      - install -Dm644 org.flatpak.scopebuddyGUI.png /app/share/icons/hicolor/128x128/apps/org.flatpak.scopebuddyGUI.png
     sources:
       - type: dir
         path: .
