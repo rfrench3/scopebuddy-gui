@@ -1,5 +1,15 @@
 # To-Do List
 
+## First User notes/feedback
+
+- Old installations of Bazzite may not have the scopebuddy folder and therefore the GUI needs to be able to create it
+- a link or tutorial within the README.md to the releases section is needed
+- if -w and -h are not specified, gamescope seems to default to the Steamdeck's 720p
+- default settings within the app must be based on the already active configs
+- default new settings should not be arbitrary values
+- better detection of whether or not the tool has actually changed a file or not
+ 
+
 ## Features (add new stuff)
 
 - DEFAULT SETTINGS:
