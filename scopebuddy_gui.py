@@ -14,7 +14,59 @@ from ui_apply_error import Ui_Dialog_ApplyError
 import os
 from scbgui_functions import * # import the functions from scbgui_functions.py
 
+
+
 scbpath = os.path.expanduser('~/.config/scopebuddy/scb.conf') #TODO: should this use xdg_config_path? (yes)
+
+
+
+def create_config_path(scbpath) -> bool: #create .config/scopebuddy, return True if successful
+    if os.path.exists(scbpath):
+        return True
+    print('config file does not exist, checking for Gamescope and Scopebuddy...')
+    if not verify_dependencies_present(['gamescope', 'scopebuddy']):
+        print('Gamescope or ScopeBuddy not found, unable to create config file.')
+        return False
+    print("dependencies present, generating default file...")
+    
+    try: #generates new config file with default values
+        os.makedirs(os.path.dirname(scbpath), exist_ok=True)
+        with open(scbpath,'w') as file:
+            # Create scopebuddy's default file (TODO: must be manually updated if ScopeBuddy changes)
+            file.write("# This is the config file that let's you assign defaults for gamescope when using the scopebuddy script\n")
+            file.write("# lines starting with # are ignored\n")
+            file.write("# Conf files matching the games Steam AppID stored in ~/.conf/scopebuddy/AppID/ will be sourced after\n")
+            file.write("# ~/.config/scopebuddy/scb.conf or whichever file you specify with SCB_CONF=someotherfile.conf env var in the launch options.\n")
+            file.write("# \n")
+            file.write("# Example for always exporting specific environment variables for gamescope\n")
+            file.write("#export XKB_DEFAULT_LAYOUT=no\n")
+            file.write("#export MANGOHUD_CONFIG=preset=2\n")
+            file.write("#\n")
+            file.write("# Example for providing default gamescope arguments through scopebuddy if no arguments are given to the scopebuddy script, this does not need to be exported.\n")
+            file.write("# To not use this default set of arguments, just launch scb with SCB_NOSCOPE=1 or just add any gamescope argument before the '-- %command%' then this variable will be ignored\n")
+            file.write("#SCB_GAMESCOPE_ARGS=\"--mangoapp -f -w 2560 -h 1440 -W 2560 -H 1440 -r 180 --force-grab-cursor --hdr-enabled -e\"\n")
+            file.write("#\n")
+            file.write("# To auto-detect KDE display width, height, refresh, VRR and HDR states, you can use SCB_AUTO_* {RES|HDR|VRR}\n")
+            file.write("# These vars will override any previously set values for -W and -H or append --hdr-enabled and --adaptive-sync\n")
+            file.write("# automatically depending on the current settings for your active display, or the display chosen with -O /\n")
+            file.write("# --prefer-output flags in gamescsope.\n")
+            file.write("#SCB_AUTO_RES=1\n")
+            file.write("#SCB_AUTO_HDR=1\n")
+            file.write("#SCB_AUTO_VRR=1\n")
+            file.write("# To debug scopebuddy output, uncomment the following line. After launching games, the executed cmd will be output to ~/.config/scopebuddy/scopebuddy.log\n")
+            file.write("#SCB_DEBUG=1\n")
+            file.write("###\n")
+            file.write("## FOR ADVANCED USE INSIDE AN APPID CONFIG\n")
+            file.write("###\n")
+            file.write("# The config files are treated as a bash script by scopebuddy, this means you can use bash to do simple tasks before the game runs\n")
+            file.write("# or you can check which mode scopebuddy is running in and apply settings accordingly, below are some handy variables for scripting.\n")
+            file.write("# $SCB_NOSCOPE will be set to 1 if we are running in no gamescope mode\n")
+            file.write("# $SCB_GAMEMODE will be set to 1 if we are running inside steam gamemode (which means SCB_NOSCOPE will also be set to 1 due to nested gamescope not working in gamemode)\n")
+            file.write("# $command will contain everything steam expanded %command% into\n")
+    except OSError as e:
+        print(f"Error creating config file: {e}")
+
+create_config_path(scbpath) # creates the config file if it does not exist
 
 
 class MainWindow(QMainWindow,Mixins): 
