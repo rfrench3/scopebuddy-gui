@@ -19,9 +19,9 @@ from scbgui_functions import * # import the functions from scbgui_functions.py
 scbpath = os.path.expanduser('~/.config/scopebuddy/scb.conf') #TODO: should this use xdg_config_path? (yes)
 
 
-
 def create_config_path(scbpath) -> bool: #create .config/scopebuddy, return True if successful
     if os.path.exists(scbpath):
+        print('ospathexists')
         return True
     print('config file does not exist, checking for Gamescope and Scopebuddy...')
     if not verify_dependencies_present(['gamescope', 'scopebuddy']):

@@ -232,6 +232,10 @@ class Mixins:
 
 
     def read_gamescope_args(self) -> str: #output gamescope args as string
+        #TODO: bandaid solution, this is able to create the file only because this code somehow runs before the code that ensures the file exists, and only within the flatpak build...
+        if not os.path.exists(scbpath):
+            self.create_config_path()
+
         with open(scbpath, 'r') as file:
             lines = file.readlines()
             for line in lines:
