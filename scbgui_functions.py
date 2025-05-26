@@ -147,20 +147,26 @@ class Mixins:
             if match:
                 lineEdit.setText(match.group(1))
             
-        def set_combobox_input(comboBox, arg): #appends combobox input to the config list (unless default)
+        def set_combobox_input(comboBox, arg):
             args = self.read_gamescope_args()
-            match = search(rf'{arg} (\d+)', args)
+            match = search(rf'{arg} ([^\s]+)', args)
             if match:
-                return match.group(1)
+                #TODO:figure out how to set the combobox to the correct index based on the value
+                value = match.group(1)
+                for index in range(comboBox.count()):
+                    if comboBox.itemText(index) == value:
+                        comboBox.setCurrentIndex(index)
+                        break
+                
 
-        def set_checkbox_input(checkBox, arg): #appends checkbox input to the config list 
+        def set_checkbox_input(checkBox, arg):
             checkBox.setChecked(arg in self.read_gamescope_args()) # set checkbox state based on config
 
         def set_doubleSpinBox_input(doubleSpinBox, arg): #preferred for float values
             args = self.read_gamescope_args()
             match = search(rf'{arg} ([\d.]+)', args)
             if match:
-                doubleSpinBox.setValue(match.group(1))
+                doubleSpinBox.setValue(float(match.group(1)))
   
 
         def set_arguments(settings):
@@ -200,24 +206,6 @@ class Mixins:
 
         set_arguments(self.settings) # apply the current config to the UI elements
 
-        #pass#TODO: apply current config to the UI elements
-        self.ui.checkBox_mango.setChecked('--mangoapp' in self.read_gamescope_args()) # set checkbox state based on config
-        self.ui.lineEdit_rHeight
-        self.ui.lineEdit_rWidth
-        self.ui.lineEdit_fps
-        self.ui.checkBox_fullscreen.setChecked('-f' in self.read_gamescope_args())
-        self.ui.checkBox_borderless.setChecked('-b' in self.read_gamescope_args())
-        self.ui.lineEdit_oHeight
-        self.ui.lineEdit_oWidth
-        self.ui.checkBox_steam.setChecked('-e' in self.read_gamescope_args())
-        self.ui.checkBox_hdr.setChecked('--hdr-enabled' in self.read_gamescope_args())
-        self.ui.lineEdit_maxScaleFactor
-        self.ui.comboBox_upscalerType
-        self.ui.comboBox_upscalerFilter
-        self.ui.lineEdit_upscalerSharpness
-        self.ui.doubleSpinBox_mouseSensitivity
-        self.ui.checkBox_adaptiveSync.setChecked('--adaptive-sync' in self.read_gamescope_args())
-        self.ui.checkBox_forceInternalFullscreen.setChecked('--force-windows-fullscreen' in self.read_gamescope_args())
 
 
     def read_gamescope_args(self) -> str: #output gamescope args as string
