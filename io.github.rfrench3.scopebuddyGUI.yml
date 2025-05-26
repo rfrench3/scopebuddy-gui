@@ -1,4 +1,4 @@
-id: org.flatpak.scopebuddyGUI
+id: io.github.scopebuddyGUI
 runtime: org.freedesktop.Platform
 runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
@@ -11,11 +11,9 @@ finish-args:
   - --device=dri
   - --env=QT_QPA_PLATFORM=xcb
   - --talk-name=org.freedesktop.Flatpak
-  - --filesystem=~/.config/scopebuddy:rw
+  - --filesystem=~/.config/scopebuddy:create
   - --env=QT_LOGGING_RULES=qt.dbus.integration=false
   - --filesystem=xdg-config/kdeglobals:ro
-  - --filesystem=xdg-config/gtk-3.0:ro
-  - --filesystem=xdg-config/gtk-4.0:ro
 
 modules:
   - name: shiboken6
