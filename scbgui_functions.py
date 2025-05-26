@@ -105,6 +105,8 @@ class Mixins:
                     apply_combobox_input(input_widget, arg)
                 elif widget_type == 'doubleSpinBox':
                     apply_doubleSpinBox_input(input_widget, arg)
+                elif widget_type == 'additionalArgs':
+                    self.config_list.append(f'{input_widget.text()} ')
                 else:
                     raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
                 
@@ -127,6 +129,7 @@ class Mixins:
             ('doubleSpinBox', self.ui.doubleSpinBox_mouseSensitivity, '-s'),
             ('checkbox', self.ui.checkBox_adaptiveSync, '--adaptive-sync'),
             ('checkbox', self.ui.checkBox_forceInternalFullscreen, '--force-windows-fullscreen'),
+            ('additionalArgs', self.ui.lineEdit_unimplementedSettings, '--placeholder-value')
             ]
         
         compile_arguments(self.settings)
