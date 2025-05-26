@@ -45,11 +45,6 @@ class MainWindow(QMainWindow,Mixins):
             self.ui.variable_displayGamescope.setText("Gamescope or ScopeBuddy not found, no changes made will be saved.")
             self.ui.variable_displayGamescope.setStyleSheet("color: red;")
 
-        
-
-        
-
-
         self.apply_current_to_ui()
 
     # ON-CLICK METHODS
@@ -80,7 +75,7 @@ class DialogAbout(QDialog):
         super().__init__()
         self.ui = Ui_Dialog_About()
         self.ui.setupUi(self)
-        self.setWindowTitle("About ScopeBuddy GUI")  # Set the window title
+        self.setWindowTitle("About ScopeBuddy GUI")  
         self.ui.pushButton_okay.clicked.connect(self.close)
 
 class Dialog_ApplyError(QDialog):
@@ -88,7 +83,7 @@ class Dialog_ApplyError(QDialog):
         super().__init__()
         self.ui = Ui_Dialog_ApplyError()
         self.ui.setupUi(self)
-        self.setWindowTitle("Error!")  # Set the window title
+        self.setWindowTitle("Error!")  
         self.ui.pushButton_Ok.clicked.connect(self.close)
 
 class DialogApply(QDialog):
@@ -96,7 +91,7 @@ class DialogApply(QDialog):
         super().__init__()
         self.ui = Ui_Dialog_Apply()
         self.ui.setupUi(self)
-        self.setWindowTitle("Apply Changes?")  # Set the window title
+        self.setWindowTitle("Apply Changes?") 
         self.ui.var_currentConfig.setText(MainWindow.read_gamescope_args(window))
         self.ui.var_newConfig.setText(MainWindow.generate_new_config(window))
 

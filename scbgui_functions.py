@@ -141,46 +141,66 @@ class Mixins:
     
     def apply_current_to_ui(self): #checks current config, applies it to the UI
 
-        def set_lineEdit_input(lineEdit:int, arg):
+        def remove_arg(unimplemented,arg,match):
+            # Remove the first instance of the value after the argument (e.g., '-s 1.5')
+            try:
+                arg_index = unimplemented.index(arg)
+                # Ensure the next item exists and matches the value
+                if arg_index + 1 < len(unimplemented) and unimplemented[arg_index + 1] == match.group(1):
+                    unimplemented.pop(arg_index + 1)
+            except ValueError:
+                pass
+            unimplemented.remove(arg) if arg in unimplemented else None
+
+        def set_lineEdit_input(lineEdit:int, arg,unimplemented):
             args = self.read_gamescope_args()
             match = search(rf'{arg} (\d+)', args)
             if match:
                 lineEdit.setText(match.group(1))
+                remove_arg(unimplemented,arg,match)
+                
             
-        def set_combobox_input(comboBox, arg):
+        def set_combobox_input(comboBox, arg,unimplemented):
             args = self.read_gamescope_args()
             match = search(rf'{arg} ([^\s]+)', args)
             if match:
-                #TODO:figure out how to set the combobox to the correct index based on the value
                 value = match.group(1)
                 for index in range(comboBox.count()):
                     if comboBox.itemText(index) == value:
                         comboBox.setCurrentIndex(index)
-                        break
+                        remove_arg(unimplemented,arg,match)
                 
 
-        def set_checkbox_input(checkBox, arg):
+        def set_checkbox_input(checkBox, arg,unimplemented):
             checkBox.setChecked(arg in self.read_gamescope_args()) # set checkbox state based on config
+            unimplemented.remove(arg) if arg in unimplemented else None
+            
 
-        def set_doubleSpinBox_input(doubleSpinBox, arg): #preferred for float values
+        def set_doubleSpinBox_input(doubleSpinBox, arg,unimplemented): #preferred for float values
             args = self.read_gamescope_args()
             match = search(rf'{arg} ([\d.]+)', args)
             if match:
                 doubleSpinBox.setValue(float(match.group(1)))
+                remove_arg(unimplemented,arg,match)
+
   
 
         def set_arguments(settings):
+            unimplemented = self.read_gamescope_args().split()
             for widget_type, input_widget, arg in settings:
                 if widget_type == 'checkbox':
-                    set_checkbox_input(input_widget, arg)
+                    set_checkbox_input(input_widget, arg,unimplemented)
+                    unimplemented.remove(arg) if arg in unimplemented else None # remove the argument from the unimplemented list
                 elif widget_type == 'lineEdit':
-                    set_lineEdit_input(input_widget, arg)
+                    set_lineEdit_input(input_widget, arg,unimplemented)
                 elif widget_type == 'comboBox':
-                    set_combobox_input(input_widget, arg)
+                    set_combobox_input(input_widget, arg,unimplemented)
                 elif widget_type == 'doubleSpinBox':
-                    set_doubleSpinBox_input(input_widget, arg)
+                    set_doubleSpinBox_input(input_widget, arg,unimplemented)
                 else:
                     raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
+            self.ui.lineEdit_unimplementedSettings.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
+            
         
         # IMPLEMENTED ARGUMENTS
         self.settings = [

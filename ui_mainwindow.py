@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowOrOGqm.ui'
+## Form generated from reading UI file 'mainwindowGaMSqn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -1135,8 +1135,8 @@ class Ui_MainWindow(object):
         self.comboBox_upscalerFilter.setItemText(0, QCoreApplication.translate("MainWindow", u"Linear (Default)", None))
         self.comboBox_upscalerFilter.setItemText(1, QCoreApplication.translate("MainWindow", u"Nearest", None))
         self.comboBox_upscalerFilter.setItemText(2, QCoreApplication.translate("MainWindow", u"Pixel", None))
-        self.comboBox_upscalerFilter.setItemText(3, QCoreApplication.translate("MainWindow", u"AMD FSR 1.0", None))
-        self.comboBox_upscalerFilter.setItemText(4, QCoreApplication.translate("MainWindow", u"Nvidia NIS 1.0.3", None))
+        self.comboBox_upscalerFilter.setItemText(3, QCoreApplication.translate("MainWindow", u"FSR", None))
+        self.comboBox_upscalerFilter.setItemText(4, QCoreApplication.translate("MainWindow", u"NIS", None))
 
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Upscaler Sharpness (minimum of 20 to max of 0)", None))
 #if QT_CONFIG(tooltip)

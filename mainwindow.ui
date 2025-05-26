@@ -1519,12 +1519,12 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                        </item>
                        <item>
                         <property name="text">
-                         <string>AMD FSR 1.0</string>
+                         <string>FSR</string>
                         </property>
                        </item>
                        <item>
                         <property name="text">
-                         <string>Nvidia NIS 1.0.3</string>
+                         <string>NIS</string>
                         </property>
                        </item>
                       </widget>
