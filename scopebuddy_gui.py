@@ -14,7 +14,7 @@ from ui_apply_error import Ui_Dialog_ApplyError
 import os
 from scbgui_functions import * # import the functions from scbgui_functions.py
 
-scbpath = os.path.expanduser('~/.config/scopebuddy/scb.conf')
+scbpath = os.path.expanduser('~/.config/scopebuddy/scb.conf') #TODO: should this use xdg_config_path? (yes)
 
 
 class MainWindow(QMainWindow,Mixins): 
