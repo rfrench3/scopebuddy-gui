@@ -16,6 +16,7 @@ from scbgui_functions import * # import the functions from scbgui_functions.py
 
 scbpath = os.path.expanduser('~/.config/scopebuddy/scb.conf')
 
+
 class MainWindow(QMainWindow,Mixins): 
     def __init__(self):
         super().__init__()
@@ -44,9 +45,12 @@ class MainWindow(QMainWindow,Mixins):
             self.ui.variable_displayGamescope.setText("Gamescope or ScopeBuddy not found, no changes made will be saved.")
             self.ui.variable_displayGamescope.setStyleSheet("color: red;")
 
-        #TODO: apply current config to the UI elements
-        self.gamescope_args = self.read_gamescope_args()
-        self.gamescope_args
+        
+
+        
+
+
+        self.apply_current_to_ui()
 
     # ON-CLICK METHODS
 
