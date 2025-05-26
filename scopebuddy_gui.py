@@ -10,12 +10,11 @@ from ui_mainwindow import Ui_MainWindow  # Import generated UI file
 from ui_about import Ui_Dialog_About  # Import generated UI file
 from ui_apply_confirmation import Ui_Dialog_Apply
 from ui_apply_error import Ui_Dialog_ApplyError
-
-# non-GUI imports
   
 import os
 from re import search # for searching for gamescope args in the config file
-import subprocess # for running the shell script that finds gamescope and scopebuddy
+import subprocess # for finding gamescope and scopebuddy
+import scbgui_functions # import the functions from scbgui_functions.py
 
 class MainWindow(QMainWindow): 
     def __init__(self):
@@ -44,6 +43,8 @@ class MainWindow(QMainWindow):
         if not (gamescope_path and scopebuddy_path):
             self.ui.variable_displayGamescope.setText("Gamescope or ScopeBuddy not found, no changes made will be saved.")
             self.ui.variable_displayGamescope.setStyleSheet("color: red;")
+
+        #TODO: apply current config to the UI elements
 
 
 
@@ -271,12 +272,14 @@ def locate_dependency(program: str) -> str | None:
         print(f"{program} not found or 'which' failed.")
         return None
 
-def verify_dependencies_present(programs:list):
+def verify_dependencies_present(programs:list) -> bool:
     # Check if the required dependencies are installed
     for program in programs:
         if not locate_dependency(program):
             return False
     return True #false if any program is not found, true otherwise
+
+
     
 
 app = QApplication([]) # pass the arguments to the QApplication constructor
