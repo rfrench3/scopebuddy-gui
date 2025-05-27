@@ -8,7 +8,12 @@ import os
 from re import search # for searching for gamescope args in the config file
 import subprocess # for finding gamescope and scopebuddy
 
-scbpath = os.path.expanduser('~/.config/scopebuddy/scb.conf')
+config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
+print(f'config_dir: {config_dir}')
+
+os.makedirs(config_dir, exist_ok=True)
+scbpath = os.path.join(config_dir, "scb.conf")
+print(f'scbpath: {scbpath}') 
 
 def verify_dependencies_present(programs:list) -> bool:
     # Check if the required dependencies are installed
