@@ -16,21 +16,20 @@ from scbgui_functions import * # import the functions from scbgui_functions.py
 
 
 
-scbpath = os.path.expanduser('~/.config/scopebuddy/scb.conf') #TODO: should this use xdg_config_path? (yes)
+config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
+print(f'config_dir: {config_dir}')
 
+os.makedirs(config_dir, exist_ok=True)
+scbpath = os.path.join(config_dir, "scb.conf")
+print(f'scbpath: {scbpath}') 
 
-def create_config_path(scbpath) -> bool: #create .config/scopebuddy, return True if successful
-    if os.path.exists(scbpath):
-        print('ospathexists')
-        return True
-    print('config file does not exist, checking for Gamescope and Scopebuddy...')
-    if not verify_dependencies_present(['gamescope', 'scopebuddy']):
-        print('Gamescope or ScopeBuddy not found, unable to create config file.')
-        return False
-    print("dependencies present, generating default file...")
-    
+def create_config_file(scbpath) -> bool: #create scb.conf if it doesn't exist, return True if successful
     try: #generates new config file with default values
-        os.makedirs(os.path.dirname(scbpath), exist_ok=True)
+        if os.path.exists(scbpath):
+            print(f"Config file already exists at {scbpath}, skipping creation.")
+            return True
+        else:
+            print(f"Creating config file at {scbpath}...")        
         with open(scbpath,'w') as file:
             # Create scopebuddy's default file (TODO: must be manually updated if ScopeBuddy changes)
             file.write("# This is the config file that let's you assign defaults for gamescope when using the scopebuddy script\n")
@@ -66,7 +65,7 @@ def create_config_path(scbpath) -> bool: #create .config/scopebuddy, return True
     except OSError as e:
         print(f"Error creating config file: {e}")
 
-create_config_path(scbpath) # creates the config file if it does not exist
+create_config_file(scbpath) # creates the config file if it does not exist
 
 
 class MainWindow(QMainWindow,Mixins): 
