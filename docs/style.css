@@ -1,0 +1,61 @@
+body {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    background: #1b1b1b;
+    color: #dadada;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 2em;
+    color: #9500d4;
+    font-size: 2.5em;
+    letter-spacing: 1px;
+}
+
+p {
+    max-width: 700px;
+    margin: 2em auto;
+    font-size: 1.15em;
+    line-height: 1.7;
+    background: #3b3b3b;
+    padding: 1.2em 1.5em;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+a {
+    color: #377bd4;
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #285aa1;
+    text-decoration: underline;
+}
+
+.title-card {
+    max-width: 800px;
+    margin: 3em auto;
+    background: #3a3a3a;
+    padding: 2.5em 2em;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    text-align: center;
+}
+
+.title-card h1 {
+    margin-top: 0;
+    color: #2a5d9f;
+}
+
+.title-card p {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 1.5em 0;
+}
