@@ -7,32 +7,65 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <div class="title-card">
-            <h1>Welcome to ScopeBuddy GUI!</h1>
+    <div class="top-bar">
+        <a class="nav-btn" href="#about">ScopeBuddy GUI Docs</a>
+        <div class="nav-btn-group">
+            <a class="nav-btn" href="#benefits">Benefits</a>
+            <a class="nav-btn" href="#usage">Usage</a>
+            <a class="nav-btn" href="#steam">Steam</a>
+            <a class="nav-btn" href="#lutris">Lutris</a>
+            <a class="nav-btn" href="#heroic">Heroic</a>
+            <a class="nav-btn" href="#troubleshooting">Troubleshooting</a>
+        </div>
+    </div>
+        <div class="title-card" id="about">
+            <h1>About this Tool</h1>
             <p><a href="https://github.com/ValveSoftware/gamescope" target="_blank">Gamescope</a> is a micro-compositor made by ValveSoftware that is used to simplify running games and other software. It can handle a lot of things many games struggle with such as extreme resolutions, entering fullscreen, extremely wide monitors, and more! This can greatly reduce glitchy behavior, improving the gaming experience.</p>
             <p><a href="https://github.com/HikariKnight/ScopeBuddy" target="_blank">Scopebuddy</a> is a tool made by HikariKnight that makes it easier to use Gamescope. It allows you to do many things, which includes creating a general Gamescope configuration for all of your games.</p>
             <p><a href="https://github.com/rfrench3/scopebuddy-gui" target="_blank">Scopebuddy GUI</a> (this program) lacks many of the advanced features present in Scopebuddy itself, but provides an easy to use UI for many very useful features of scopebuddy.</p>
         </div>
-        <div class="title-card">
+        <div class="title-card" id="benefits">
+            <h1>Benefits</h1>
+            <p>Using Gamescope can have many benefits with any setup, and can be especially helpful for very unusual monitors (very high resolution, ultrawide, etc)!</p>
+            <p>It allows you to easily configure your games and how they perform. You can maximize quality by setting a high resolution, or supercharge performance by using a lower resolution! It allows you to fine-tune a variety of game-related settings to your liking.</p>
+            <p>For example, I personally have a very high-resolution 3:2 aspect ratio screen paired with a computer that can struggle with modern games at that resolution. Gamescope allows me to play games at a reasonable 1080p resolution while avoiding any potential issues that come with my odd aspect ratio! I have some games I have only managed to open with Gamescope.</p>
+        </div>
+        <div class="title-card" id="usage">
             <h1>Creating a config</h1>
             <p>A text field left blank is the same as a checkbox left unchecked – it will use Gamescope's default setting. Sometimes a field cannot be left blank, such as providing width without height, because Gamescope does not allow for it.
-            <p>When the GUI applies a new config, it comments out the old config in ~/.config/scopebuddy/ while adding a new line with the new config. This means worse-case, you can manually reapply any old configuration! It can build up over time with excessive config editing, but text files are small and it is easy enough to manually clean out if ever necessary.</p>
-            <p>Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power – it does aim to be safe to use alongside any such advanced configuration, however.</p>
+            <p>When the GUI applies a new config, it deactivates the old config in ~/.config/scopebuddy/ without removing it, adding in the new one. This means worse-case, you can manually reapply any old configuration! It can build up over time with excessive config editing, but text files are small and it is easy enough to manually clean out if ever necessary.</p>
+            <p>Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power – it is safe to use alongside any such advanced configuration, however.</p>
         </div>
-        <div class="title-card">
+        <div class="title-card" id="steam">
             <h1>Applying your config - Steam</h1>
             <p>guide for steam</p>
         </div>
-        <div class="title-card">
+        <div class="title-card" id="lutris">
             <h1>Applying your config - Lutris</h1>
             <p>guide for lutris</p>
         </div>
-        <div class="title-card">
+        <div class="title-card" id="heroic">
             <h1>Applying your config - Heroic</h1>
             <p>guide for heroic</p>
         </div>
-        <div class="title-card">
+        <div class="title-card" id="troubleshooting">
             <h1>Troubleshooting</h1>
+            <h2>Low resolution, poor visual quality</h2>
+            <p>Make sure the resolution you chose the game to render at is a "regular, nice" value. Some examples are 1080p (width 1920 * height 1080), 1440p (width 2560 * height 1440), half of the resolution of your screen, exactly the resolution of your screen, etc.</p>
+            <p style="color: rgb(255, 88, 88);">Leaving the rendered resolution fields blank will lead to their default 720p resolution, which will look very low-quality on many screens! Setting the rendered resolution too high will cause poor performance.</p>
+            <p>If setting the rendered width and height to match your screen fails, you can also check the in-game settings to see if they can solve the problem! For example, I have noticed that Overwatch 2 works best with Gamescope when it is run in borderless window mode.</p>
+            <h2></h2>
+            <p></p>
+            <h2></h2>
+            <p></p>
+            <h2></h2>
+            <p></p>
+            <h2></h2>
+            <p></p>
+            <h2></h2>
+            <p></p>
+            <h2></h2>
+            <p></p>
             <p>common issues (low resolution, heoric not seeing gamescope, etc)</p>
         </div>
     </body>

@@ -1,9 +1,18 @@
+html {
+    scroll-behavior: smooth;
+}
+
+:target {
+    scroll-margin-top: 80px;
+}
+
 body {
     font-family: 'Segoe UI', 'Arial', sans-serif;
     background: #1b1b1b;
     color: #dadada;
     margin: 0;
     padding: 0;
+    padding-top: 4.5em;
 }
 
 h1 {
@@ -58,4 +67,50 @@ a:hover {
     border-radius: 0;
     padding: 0;
     margin: 1.5em 0;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: #2a5d9f;
+    color: #fff;
+    padding: 1.2em 2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav-btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0em;
+    flex: 1;
+}
+
+.top-bar-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.nav-btn {
+    color: #fff;
+    
+    border: none;
+    border-radius: 0px;
+    padding: 0.7em 1.5em;
+    font-size: 1em;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav-btn:hover {
+    background: #285aa1;
+    color: #fff;
 }
