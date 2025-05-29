@@ -1941,6 +1941,12 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
        </item>
        <item>
         <widget class="QLabel" name="label_6">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Sunken</enum>
+         </property>
          <property name="text">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://rfrench3.github.io/scopebuddy-gui/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#bfbce9;&quot;&gt;Visit Help Guide&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>

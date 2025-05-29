@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowUBlPHC.ui'
+## Form generated from reading UI file 'mainwindowJFLgPN.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -1021,6 +1021,8 @@ class Ui_MainWindow(object):
 
         self.label_6 = QLabel(self.frame_4)
         self.label_6.setObjectName(u"label_6")
+        self.label_6.setFrameShape(QFrame.Shape.StyledPanel)
+        self.label_6.setFrameShadow(QFrame.Shadow.Sunken)
         self.label_6.setTextFormat(Qt.TextFormat.RichText)
         self.label_6.setOpenExternalLinks(True)
 
