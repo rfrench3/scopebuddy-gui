@@ -7,7 +7,6 @@ sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QIntValidator
 from ui_mainwindow import Ui_MainWindow  # Import generated UI file
-from ui_about import Ui_Dialog_About  # Import generated UI file
 from ui_apply_confirmation import Ui_Dialog_Apply
 from ui_apply_error import Ui_Dialog_ApplyError
   
@@ -79,7 +78,6 @@ class MainWindow(QMainWindow,Mixins):
         # Button actions
         self.ui.pushButton_apply.clicked.connect(self.apply_clicked)
         self.ui.pushButton_exit.clicked.connect(self.exit_app)
-        self.ui.pushButton_about.clicked.connect(self.open_about_dialog)
 
         # Input field validation 
         self.ui.lineEdit_oHeight.setValidator(QIntValidator()) # ensures valid inputs.
@@ -116,18 +114,6 @@ class MainWindow(QMainWindow,Mixins):
         print("Exiting application...")
         sys.exit()
 
-    def open_about_dialog(self):
-        print("Opening about dialog...")
-        dialog = DialogAbout()
-        dialog.exec() #TODO: popup can go behind the main window, while blocking inputs on the main window...
-
-class DialogAbout(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_Dialog_About()
-        self.ui.setupUi(self)
-        self.setWindowTitle("About ScopeBuddy GUI")  
-        self.ui.pushButton_okay.clicked.connect(self.close)
 
 class Dialog_ApplyError(QDialog):
     def __init__(self):

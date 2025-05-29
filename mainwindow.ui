@@ -91,7 +91,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-657</y>
+                <y>0</y>
                 <width>769</width>
                 <height>1123</height>
                </rect>
@@ -1917,7 +1917,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>514</width>
+            <width>501</width>
             <height>36</height>
            </rect>
           </property>
@@ -1940,24 +1940,15 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_about">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>40</height>
-          </size>
-         </property>
+        <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>About</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://rfrench3.github.io/scopebuddy-gui/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#bfbce9;&quot;&gt;Visit Help Guide&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
-         <property name="flat">
-          <bool>false</bool>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

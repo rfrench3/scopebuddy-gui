@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowGaMSqn.ui'
+## Form generated from reading UI file 'mainwindowUBlPHC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.scrollArea_settings.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, -657, 769, 1123))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 769, 1123))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.widget1_rW = QWidget(self.scrollAreaWidgetContents)
@@ -1002,7 +1002,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 514, 36))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 501, 36))
         self.gridLayout_2 = QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.variable_displayGamescope = QLabel(self.scrollAreaWidgetContents_2)
@@ -1019,14 +1019,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.scrollArea)
 
-        self.pushButton_about = QPushButton(self.frame_4)
-        self.pushButton_about.setObjectName(u"pushButton_about")
-        sizePolicy4.setHeightForWidth(self.pushButton_about.sizePolicy().hasHeightForWidth())
-        self.pushButton_about.setSizePolicy(sizePolicy4)
-        self.pushButton_about.setMaximumSize(QSize(16777215, 40))
-        self.pushButton_about.setFlat(False)
+        self.label_6 = QLabel(self.frame_4)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setTextFormat(Qt.TextFormat.RichText)
+        self.label_6.setOpenExternalLinks(True)
 
-        self.horizontalLayout_2.addWidget(self.pushButton_about)
+        self.horizontalLayout_2.addWidget(self.label_6)
 
         self.pushButton_apply = QPushButton(self.frame_4)
         self.pushButton_apply.setObjectName(u"pushButton_apply")
@@ -1151,7 +1149,7 @@ class Ui_MainWindow(object):
         self.lineEdit_unimplementedSettings.setPlaceholderText(QCoreApplication.translate("MainWindow", u"EXAMPLE: --force-grab-cursor --nested-unfocused-refresh 10 -g", None))
         self.pushButton_exit.setText(QCoreApplication.translate("MainWindow", u"Exit App", None))
         self.variable_displayGamescope.setText(QCoreApplication.translate("MainWindow", u"currentGamescope", None))
-        self.pushButton_about.setText(QCoreApplication.translate("MainWindow", u"About", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://rfrench3.github.io/scopebuddy-gui/\"><span style=\" text-decoration: underline; color:#bfbce9;\">Visit Help Guide</span></a></p></body></html>", None))
         self.pushButton_apply.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
     # retranslateUi
 
