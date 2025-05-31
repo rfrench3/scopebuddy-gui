@@ -55,7 +55,8 @@
             <img src="images/Desktop2.png" alt="Steam Launch Options Example" style="max-width:100%;border:1px solid #ccc;margin-top:1em;">
             <h2>Big Picture Mode</h2>
             <ul>
-                <li style="color: rgb(255, 88, 88);">On the SteamDeck interface (gamescope session), I am uncertain of the effects of gamescope launch options. If you use them, let me know what happens! Otherwise, use Gamescope within a full desktop environment (KDE, GNOME, etc)</li>
+                <li style="color: rgb(255, 88, 88);">On the SteamDeck interface (gamescope session), using scopebuddy results in gamescope launch arguments being ignored as they would otherwise prevent the game from starting; gamescope cannot be run within itself.</li>
+                <p style="color: rgb(255, 88, 88);"><strong>Enter desktop mode to launch games for the settings in Scopebuddy GUI to work!</strong></p>
                 <p></p>
                 <li>Navigate to your Library and select the game you want to use with Gamescope.</li>
                 <p></p>
@@ -73,11 +74,11 @@
         </div>
         <div class="title-card" id="lutris">
             <h1>Applying your config - Lutris</h1>
-            <p>guide for lutris</p>
+            <p>guide for lutris not yet created</p>
         </div>
         <div class="title-card" id="heroic">
             <h1>Applying your config - Heroic</h1>
-            <p>guide for heroic</p>
+            <p>guide for heroic not yet created</p>
         </div>
         <div class="title-card" id="troubleshooting">
             <h1>Troubleshooting</h1>
@@ -87,17 +88,13 @@
             <p>If setting the rendered width and height to match your screen fails, you can also check the in-game settings to see if they can solve the problem! For example, I have noticed that Overwatch 2 works best with Gamescope when it is run in borderless window mode.</p>
             <h2></h2>
             <p></p>
-            <h2></h2>
-            <p></p>
-            <h2></h2>
-            <p></p>
-            <h2></h2>
-            <p></p>
-            <h2></h2>
-            <p></p>
-            <h2></h2>
-            <p></p>
             <p>Over time, this section will be filled with issues that are commonly reported. If you have an issue, especially one that seems common, post it in the GitHub!</p>
+        </div>
+        <div class="title-card" id="general_info">
+            <h1>General Information</h1>
+            <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. This website only uses HTML and CSS. The app itself is built from source with the following commands (run inside of the app's main folder):</p>
+            <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
+            <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI --verbose</code></li>
         </div>
     </body>
 </html>
