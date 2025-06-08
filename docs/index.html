@@ -74,6 +74,7 @@
         </div>
         <div class="title-card" id="lutris">
             <h1>Applying your config - Lutris</h1>
+            <p>There is currently not an easy way to use scopebuddy with Lutris. I recommend you instead use the built-in gamescope configuration provided by Lutris.</p>
             <p>guide for lutris not yet created</p>
         </div>
         <div class="title-card" id="heroic">
@@ -91,10 +92,11 @@
             <p>Over time, this section will be filled with issues that are commonly reported. If you have an issue, especially one that seems common, post it in the GitHub!</p>
         </div>
         <div class="title-card" id="general_info">
-            <h1>General Information</h1>
+            <h1>Developer Information</h1>
             <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. This website only uses HTML and CSS. The app itself is built from source with the following commands (run inside of the app's main folder):</p>
             <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
             <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI --verbose</code></li>
+            <p>Testing the app is done using venv.</p>
         </div>
     </body>
 </html>
