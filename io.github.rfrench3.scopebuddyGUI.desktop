@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=ScopeBuddy GUI
-Comment=Configure ScopeBuddy
-Exec=scopebuddy_gui.py
-Icon=io.github.rfrench3.scopebuddyGUI
-Terminal=false
-Type=Application
-Categories=Utility;
-StartupNotify=true

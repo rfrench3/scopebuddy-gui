@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/images">
-        <file>images/Desktop1.png</file>
-        <file>images/Desktop2.png</file>
-        <file>images/BigPicture1.png</file>
-        <file>images/BigPicture2.png</file>
-        <file>images/BigPicture3.png</file>
-    </qresource>
-</RCC>
