@@ -5,11 +5,11 @@ sdk: org.freedesktop.Sdk
 command: scopebuddy_gui.py
 
 finish-args:
-  - --socket=x11
   - --share=ipc
   - --socket=wayland
+  - --socket=fallback-x11
   - --device=dri
-  - --env=QT_QPA_PLATFORM=xcb
+  - --env=QT_QPA_PLATFORM=wayland;xcb
   - --filesystem=xdg-config/scopebuddy:create
   - --env=QT_LOGGING_RULES=qt.dbus.integration=false
   - --filesystem=xdg-config/kdeglobals:ro
