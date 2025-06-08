@@ -14,6 +14,6 @@ This GUI is only useful if you also have scopebuddy and gamescope installed, and
 
 Within the source folder, run:
 
-- flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml
+- flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddy-gui.yml
 
-- flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI --verbose
+- flatpak build-bundle repo scopebuddy-gui.flatpak io.github.rfrench3.scopebuddy-gui --verbose
