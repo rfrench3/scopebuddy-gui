@@ -79,7 +79,10 @@ class Mixins:
             with open(scbpath, 'w') as file:
                 file.writelines(lines)
 
-        self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display updated config
+        if self.read_gamescope_args().strip() != '':
+            self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
+        else:
+            self.ui.variable_displayGamescope.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
 
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
@@ -134,6 +137,7 @@ class Mixins:
             ('doubleSpinBox', self.ui.doubleSpinBox_mouseSensitivity, '-s'),
             ('checkbox', self.ui.checkBox_adaptiveSync, '--adaptive-sync'),
             ('checkbox', self.ui.checkBox_forceInternalFullscreen, '--force-windows-fullscreen'),
+            ('checkbox', self.ui.checkBox_forceGrabCursor, '--force-grab-cursor'),
             ('additionalArgs', self.ui.lineEdit_unimplementedSettings, '--placeholder-value')
             ]
         
@@ -207,7 +211,7 @@ class Mixins:
                     set_doubleSpinBox_input(input_widget, arg,unimplemented)
                 else:
                     raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
-            self.ui.lineEdit_unimplementedSettings.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
+                self.ui.lineEdit_unimplementedSettings.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
             
         
         # IMPLEMENTED ARGUMENTS
@@ -229,12 +233,11 @@ class Mixins:
             ('doubleSpinBox', self.ui.doubleSpinBox_mouseSensitivity, '-s'),
             ('checkbox', self.ui.checkBox_adaptiveSync, '--adaptive-sync'),
             ('checkbox', self.ui.checkBox_forceInternalFullscreen, '--force-windows-fullscreen'),
+            ('checkbox', self.ui.checkBox_forceGrabCursor, '--force-grab-cursor'),
             ]
         
 
         set_arguments(self.settings) # apply the current config to the UI elements
-
-
 
     def read_gamescope_args(self) -> str: #output gamescope args as string
         #TODO: bandaid solution, this is able to create the file only because this code somehow runs before the code that ensures the file exists, and only within the flatpak build...

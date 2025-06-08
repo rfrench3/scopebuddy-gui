@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowJFLgPN.ui'
+## Form generated from reading UI file 'mainwindowGlXJmR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.scrollArea_settings.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 769, 1123))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, -273, 769, 1172))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.widget1_rW = QWidget(self.scrollAreaWidgetContents)
@@ -508,6 +508,50 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_5.addWidget(self.widget__10mangohud)
+
+        self.widget11_forcegrabcursor = QWidget(self.scrollAreaWidgetContents)
+        self.widget11_forcegrabcursor.setObjectName(u"widget11_forcegrabcursor")
+        sizePolicy2.setHeightForWidth(self.widget11_forcegrabcursor.sizePolicy().hasHeightForWidth())
+        self.widget11_forcegrabcursor.setSizePolicy(sizePolicy2)
+        self.verticalLayout_13 = QVBoxLayout(self.widget11_forcegrabcursor)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.widget_33 = QWidget(self.widget11_forcegrabcursor)
+        self.widget_33.setObjectName(u"widget_33")
+        sizePolicy3.setHeightForWidth(self.widget_33.sizePolicy().hasHeightForWidth())
+        self.widget_33.setSizePolicy(sizePolicy3)
+        self.horizontalLayout_13 = QHBoxLayout(self.widget_33)
+        self.horizontalLayout_13.setSpacing(0)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.label_11 = QLabel(self.widget_33)
+        self.label_11.setObjectName(u"label_11")
+
+        self.horizontalLayout_13.addWidget(self.label_11)
+
+        self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_12)
+
+        self.checkBox_forceGrabCursor = QCheckBox(self.widget_33)
+        self.checkBox_forceGrabCursor.setObjectName(u"checkBox_forceGrabCursor")
+        self.checkBox_forceGrabCursor.setEnabled(True)
+        self.checkBox_forceGrabCursor.setChecked(True)
+        self.checkBox_forceGrabCursor.setTristate(False)
+
+        self.horizontalLayout_13.addWidget(self.checkBox_forceGrabCursor)
+
+
+        self.verticalLayout_13.addWidget(self.widget_33)
+
+        self.line_12 = QFrame(self.widget11_forcegrabcursor)
+        self.line_12.setObjectName(u"line_12")
+        self.line_12.setFrameShape(QFrame.Shape.HLine)
+        self.line_12.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_13.addWidget(self.line_12)
+
+
+        self.verticalLayout_5.addWidget(self.widget11_forcegrabcursor)
 
         self.widget_24 = QWidget(self.scrollAreaWidgetContents)
         self.widget_24.setObjectName(u"widget_24")
@@ -1103,6 +1147,11 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"MangoHUD Overlay", None))
         self.checkBox_mango.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
+#if QT_CONFIG(tooltip)
+        self.widget11_forcegrabcursor.setToolTip(QCoreApplication.translate("MainWindow", u"Ensures the mouse stays where it should in certain situations.", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Force Grab Cursor", None))
+        self.checkBox_forceGrabCursor.setText(QCoreApplication.translate("MainWindow", u"Enable?", None))
 #if QT_CONFIG(tooltip)
         self.widget_24.setToolTip(QCoreApplication.translate("MainWindow", u"Should every window launched be forced into fullscreen? (Primarily relevant for games with dedicated launchers)", None))
 #endif // QT_CONFIG(tooltip)
