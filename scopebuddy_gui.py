@@ -13,8 +13,6 @@ from ui_apply_error import Ui_Dialog_ApplyError
 import os
 from scbgui_functions import * # import the functions from scbgui_functions.py
 
-
-
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
 print(f'config_dir: {config_dir}')
 
@@ -28,7 +26,7 @@ def create_config_file(scbpath) -> bool: #create scb.conf if it doesn't exist, r
             print(f"Config file already exists at {scbpath}, skipping creation.")
             return True
         else:
-            print(f"Creating config file at {scbpath}...")        
+            print(f"Creating config file at {scbpath}...")
         with open(scbpath,'w') as file:
             # Create scopebuddy's default file (TODO: must be manually updated if ScopeBuddy changes)
             file.write("# This is the config file that let's you assign defaults for gamescope when using the scopebuddy script\n")
@@ -66,7 +64,6 @@ def create_config_file(scbpath) -> bool: #create scb.conf if it doesn't exist, r
 
 create_config_file(scbpath) # creates the config file if it does not exist
 
-
 class MainWindow(QMainWindow,Mixins): 
     def __init__(self):
         super().__init__()
@@ -90,12 +87,6 @@ class MainWindow(QMainWindow,Mixins):
         self.ui.lineEdit_maxScaleFactor.setValidator(QIntValidator())
         self.ui.lineEdit_upscalerSharpness.setValidator(QIntValidator())
 
-        gamescope_path = locate_dependency('gamescope') # check if gamescope is installed
-        scopebuddy_path = locate_dependency('scopebuddy')
-        if not (gamescope_path and scopebuddy_path):
-            self.ui.variable_displayGamescope.setText("Gamescope or ScopeBuddy not found, no changes made will be saved.")
-            self.ui.variable_displayGamescope.setStyleSheet("color: red;")
-
         self.apply_current_to_ui()
 
     # ON-CLICK METHODS
@@ -115,7 +106,6 @@ class MainWindow(QMainWindow,Mixins):
     def exit_app(self):
         print("Exiting application...")
         sys.exit()
-
 
 class Dialog_ApplyError(QDialog):
     def __init__(self):
@@ -139,12 +129,6 @@ class DialogApply(QDialog):
         self.ui.pushButton_Apply.clicked.connect(self.apply_changes)
         self.answer = False #changes will not be applied unless explictly confirmed
         
-        if not (locate_dependency('gamescope') and locate_dependency('scopebuddy')):
-            print("Gamescope or ScopeBuddy not found, disabling file writing.")
-            self.ui.pushButton_Apply.setEnabled(False)
-            self.ui.label.setText("Gamescope or ScopeBuddy not found, unable to write to config file.")
-            self.ui.label.setStyleSheet("color: red;")
-            self.ui.label_4.setText('Ensure they are properly installed for this program to work.')
     
     def apply_changes(self):
         self.answer = True #changes have been explicitly confirmed

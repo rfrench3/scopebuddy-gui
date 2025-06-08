@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.rfrench3.scopebuddy-gui</id>
+  <id>io.github.rfrench3.scopebuddyGUI</id>
 
   <name translate="no">Scopebuddy GUI</name>
   <summary>Allows you to configure Gamescope through a GUI for Scopebuddy</summary>
@@ -13,9 +13,6 @@
   </developer>
 
   <description>
-    <p>
-    This GUI requires both Gamescope and Scopebuddy to be installed! If they are not, it will do nothing.
-    </p>
     <p>
       GUI for scopebuddy, a tool which makes editing launch options such as Gamescope far less of a hassle. This GUI guides users to properly use gamescope/scopebuddy by writing to ~/.config/scopebuddy/scb.conf for the user. It was made with Python and Qt Designer.
     </p>
@@ -38,7 +35,7 @@
     <display_length compare="ge">768</display_length>
   </requires>
 
-  <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
+  <launchable type="desktop-id">io.github.rfrench3.scopebuddyGUI.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <image>https://github.com/rfrench3/scopebuddy-gui/blob/main/images/mainWindow.png?raw=true</image>

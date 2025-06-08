@@ -15,33 +15,6 @@ os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
 print(f'scbpath: {scbpath}') 
 
-def verify_dependencies_present(programs:list) -> bool:
-    # Check if the required dependencies are installed
-    for program in programs:
-        if not locate_dependency(program):
-            return False
-    return True #false if any program is not found, true otherwise
-
-def locate_dependency(program: str) -> str | None:
-    # return path to program if it exists, None if it doesn't. for determining if gamescope/scopebuddy are installed
-    try:
-        result = subprocess.run(
-            ["flatpak-spawn", "--host", "which", program],
-            capture_output=True,
-            text=True,
-            check=True
-        )
-        path = result.stdout.strip()
-        if path:
-            print(f"{program} found at: {path}")
-            return path
-        else:
-            print(f"{program} not found.")
-            return None
-    except subprocess.CalledProcessError:
-        print(f"{program} not found or 'which' failed.")
-        return None
-
 class Mixins: 
     def ensure_valid_args(self) -> tuple:
         #TODO: Before adding more checks, make a general function for checking
@@ -258,12 +231,7 @@ class Mixins:
     def create_config_path(self) -> bool: #create .config/scopebuddy, return True if successful
         if os.path.exists(scbpath):
             return True
-        print('config file does not exist, checking for Gamescope and Scopebuddy...')
-        if not verify_dependencies_present(['gamescope', 'scopebuddy']):
-            print('Gamescope or ScopeBuddy not found, unable to create config file.')
-            return False
-        print("dependencies present, generating default file...")
-        
+        print('config file does not exist, generating default file...')
         try: #generates new config file with default values
             os.makedirs(os.path.dirname(scbpath), exist_ok=True)
             with open(scbpath,'w') as file:
@@ -306,7 +274,6 @@ class Mixins:
     def make_gamescope_line(self) -> bool: #if config file doesn't have the gamescope args line, create one
         if not self.create_config_path(): # runs the function and detects if it fails
             raise FileNotFoundError("Config file or location creation failed.")
-        # The file does exist, so read it and return the gamescope arguments
         with open(scbpath, 'r+') as file:
             lines = file.readlines()
             for line in lines:
