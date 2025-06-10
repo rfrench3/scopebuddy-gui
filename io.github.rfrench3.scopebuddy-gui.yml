@@ -4,7 +4,7 @@ runtime-version: '6.9'
 sdk: org.kde.Sdk
 base: io.qt.PySide.BaseApp
 base-version: '6.9'
-command: scopebuddy
+command: scopebuddygui
 finish-args:
   - --share=ipc
   - --socket=wayland
@@ -24,7 +24,7 @@ modules:
   - name: scopebuddygui
     buildsystem: simple
     build-commands:
-      - install -Dm755 scopebuddy_gui.py /app/bin/scopebuddy
+      - install -Dm755 scopebuddy_gui.py /app/bin/scopebuddygui
       - mkdir -p /app/share/scopebuddygui
       - install -m644 *.py /app/share/scopebuddygui/
       - install -Dm644 io.github.rfrench3.scopebuddy-gui.svg /app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg
