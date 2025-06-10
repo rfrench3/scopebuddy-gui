@@ -63,6 +63,7 @@ modules:
       - install -Dm644 io.github.rfrench3.scopebuddy-gui.png /app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png
       - install -Dm644 io.github.rfrench3.scopebuddy-gui.metainfo.xml /app/share/metainfo/io.github.rfrench3.scopebuddy-gui.metainfo.xml
     sources:
-      - type: dir
-        path: .
+      - type: git
+        url: https://github.com/rfrench3/scopebuddy-gui.git
+        tag: main
 
