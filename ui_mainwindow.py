@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowGlXJmR.ui'
+## Form generated from reading UI file 'mainwindowOslmKU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -34,8 +34,9 @@ class Ui_MainWindow(object):
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_9 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_9.setSpacing(6)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.verticalLayout_9.setContentsMargins(0, -1, -1, -1)
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 6)
         self.frame_2 = QFrame(self.centralwidget)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.Shape.StyledPanel)
@@ -43,7 +44,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9 = QHBoxLayout(self.frame_2)
         self.horizontalLayout_9.setSpacing(0)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.horizontalLayout_9.setContentsMargins(0, -1, 0, 0)
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.stackedWidget_settingsPanel = QStackedWidget(self.frame_2)
         self.stackedWidget_settingsPanel.setObjectName(u"stackedWidget_settingsPanel")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Ignored)
@@ -65,7 +66,7 @@ class Ui_MainWindow(object):
         self.scrollArea_settings.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, -273, 769, 1172))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 775, 1172))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.widget1_rW = QWidget(self.scrollAreaWidgetContents)
@@ -1046,7 +1047,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 501, 36))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 495, 36))
         self.gridLayout_2 = QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.variable_displayGamescope = QLabel(self.scrollAreaWidgetContents_2)
@@ -1081,6 +1082,10 @@ class Ui_MainWindow(object):
         self.pushButton_apply.setChecked(False)
 
         self.horizontalLayout_2.addWidget(self.pushButton_apply)
+
+        self.horizontalSpacer = QSpacerItem(6, 1, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
 
         self.verticalLayout_9.addWidget(self.frame_4)
