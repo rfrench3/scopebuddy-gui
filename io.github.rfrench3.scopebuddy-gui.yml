@@ -24,6 +24,7 @@ modules:
   - name: scopebuddygui
     buildsystem: simple
     build-commands:
+      - sed -i 's|Exec=.*|Exec=scopebuddygui|' io.github.rfrench3.scopebuddy-gui.desktop
       - install -Dm755 scopebuddy_gui.py /app/bin/scopebuddygui
       - mkdir -p /app/share/scopebuddygui
       - install -m644 *.py /app/share/scopebuddygui/
@@ -34,4 +35,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/rfrench3/scopebuddy-gui.git
-        tag: v0.3.1-stable
+        tag: v0.3.2-flathub-RC2
