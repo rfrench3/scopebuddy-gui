@@ -35,4 +35,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/rfrench3/scopebuddy-gui.git
-        tag: v0.3.2-flathub-RC2
+        tag: main #USE A TAGGED RELEASE WHEN SUBMITTING THIS!
