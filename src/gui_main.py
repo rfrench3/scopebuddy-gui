@@ -70,16 +70,27 @@ create_config_file(scbpath) # creates the config file if it does not exist
 class MainWindowLogic:
     def __init__(self, window):
         self.window = window
-        self.rwidth = self.window.findChild(QLineEdit, "lineEdit_rWidth")
-        if self.rwidth:
-            self.rwidth.setEnabled(False)
 
+        #Only numbers are valid for these entries, so block non-numbers
+        self.accept_only_numbers = [
+            "lineEdit_rWidth","lineEdit_oWidth","lineEdit_rHeight",
+            "lineEdit_oHeight","lineEdit_fps","lineEdit_maxScaleFactor",
+            "lineEdit_upscalerSharpness"]
+        for object in self.accept_only_numbers:
+            widget = self.window.findChild(QLineEdit, object)
+            if widget:
+                widget.setValidator(QIntValidator())
+
+
+
+
+# Logic that loads the main window
 app = QApplication([])
 
 loader = QUiLoader()
 ui_main = QFile("./src/mainwindow.ui")
 ui_main.open(QFile.ReadOnly)
-window_main = loader.load(ui_main)  # No parent!
+window_main = loader.load(ui_main)
 ui_main.close()
 
 logic = MainWindowLogic(window_main)
