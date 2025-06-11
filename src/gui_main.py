@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox
 from PySide6.QtGui import QIntValidator
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
@@ -64,7 +64,31 @@ def create_config_file(scbpath) -> bool | None: #create scb.conf if it doesn't e
 
 create_config_file(scbpath) # creates the config file if it does not exist
 
-"""
+
+
+
+class MainWindowLogic:
+    def __init__(self, window):
+        self.window = window
+        self.rwidth = self.window.findChild(QLineEdit, "lineEdit_rWidth")
+        if self.rwidth:
+            self.rwidth.setEnabled(False)
+
+app = QApplication([])
+
+loader = QUiLoader()
+ui_main = QFile("./src/mainwindow.ui")
+ui_main.open(QFile.ReadOnly)
+window_main = loader.load(ui_main)  # No parent!
+ui_main.close()
+
+logic = MainWindowLogic(window_main)
+
+window_main.show()
+app.exec()
+
+
+'''
 app = QApplication([])
 
 loader = QUiLoader()
@@ -75,7 +99,6 @@ ui_file.close()
 
 window.show()
 app.exec()
-"""
 
 class MainWindow(QMainWindow,Mixins): 
     def __init__(self):
@@ -147,31 +170,8 @@ class DialogApply(QDialog):
         self.answer = True #changes have been explicitly confirmed
         self.close()
 
-
-
-
-'''
 app = QApplication([]) # pass the arguments to the QApplication constructor
 window = MainWindow()
 window.show()
 app.exec()
 '''
-
-app = QApplication([])
-
-loader = QUiLoader()
-
-# Get the directory where this script is located
-script_dir = os.path.dirname(os.path.abspath(__file__))
-ui_path = os.path.join(script_dir, "mainwindow.ui")
-
-if not os.path.exists(ui_path):
-    raise FileNotFoundError(f"mainwindow.ui not found at {ui_path}")
-
-ui_file = QFile(ui_path)
-ui_file.open(QFile.ReadOnly)
-window = loader.load(ui_file)
-ui_file.close()
-
-window.show()
-app.exec()
