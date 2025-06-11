@@ -23,7 +23,7 @@ cleanup-commands:
 modules:
   - name: scopebuddygui
     buildsystem: simple
-    build-commands:
+    build-commands: # FULLY REDO BUILD COMMANDS! THESE WILL NOT WORK IN THIS BRANCH!
       - sed -i 's|Exec=.*|Exec=scopebuddygui|' io.github.rfrench3.scopebuddy-gui.desktop
       - install -Dm755 scopebuddy_gui.py /app/bin/scopebuddygui
       - mkdir -p /app/share/scopebuddygui

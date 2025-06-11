@@ -6,7 +6,7 @@
 # ScopeBuddy GUI
 Graphical Frontend for the scopebuddy tool.
 
-This GUI is only useful if you also have scopebuddy and gamescope installed, and it currently does not install those dependencies for you.
+This GUI is only useful if you also have scopebuddy and gamescope installed, and it currently does not install those dependencies for you. The documentation contains links to the required programs.
 
 - [Link to the documentation! (in progress)](https://rfrench3.github.io/scopebuddy-gui)
 
