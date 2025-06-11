@@ -6,21 +6,20 @@ sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 #PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QIntValidator
-from ui_mainwindow import Ui_MainWindow  # Import generated UI file
-from ui_apply_confirmation import Ui_Dialog_Apply
-from ui_apply_error import Ui_Dialog_ApplyError
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
   
 import os
-from scbgui_functions import * # import the functions from scbgui_functions.py
+from gui_functions import * 
 
+# Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
 print(f'config_dir: {config_dir}')
-
 os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
 print(f'scbpath: {scbpath}') 
 
-def create_config_file(scbpath) -> bool: #create scb.conf if it doesn't exist, return True if successful
+def create_config_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
     try: #generates new config file with default values
         if os.path.exists(scbpath):
             print(f"Config file already exists at {scbpath}, skipping creation.")
@@ -59,10 +58,24 @@ def create_config_file(scbpath) -> bool: #create scb.conf if it doesn't exist, r
             file.write("# $SCB_NOSCOPE will be set to 1 if we are running in no gamescope mode\n")
             file.write("# $SCB_GAMEMODE will be set to 1 if we are running inside steam gamemode (which means SCB_NOSCOPE will also be set to 1 due to nested gamescope not working in gamemode)\n")
             file.write("# $command will contain everything steam expanded %command% into\n")
+        return True
     except OSError as e:
         print(f"Error creating config file: {e}")
 
 create_config_file(scbpath) # creates the config file if it does not exist
+
+"""
+app = QApplication([])
+
+loader = QUiLoader()
+ui_file = QFile("your_form.ui")
+ui_file.open(QFile.ReadOnly)
+window = loader.load(ui_file)
+ui_file.close()
+
+window.show()
+app.exec()
+"""
 
 class MainWindow(QMainWindow,Mixins): 
     def __init__(self):
@@ -137,9 +150,28 @@ class DialogApply(QDialog):
 
 
 
-
+'''
 app = QApplication([]) # pass the arguments to the QApplication constructor
 window = MainWindow()
 window.show()
 app.exec()
+'''
 
+app = QApplication([])
+
+loader = QUiLoader()
+
+# Get the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+ui_path = os.path.join(script_dir, "mainwindow.ui")
+
+if not os.path.exists(ui_path):
+    raise FileNotFoundError(f"mainwindow.ui not found at {ui_path}")
+
+ui_file = QFile(ui_path)
+ui_file.open(QFile.ReadOnly)
+window = loader.load(ui_file)
+ui_file.close()
+
+window.show()
+app.exec()
