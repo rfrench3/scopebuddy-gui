@@ -16,17 +16,7 @@ scbpath = os.path.join(config_dir, "scb.conf")
 print(f'scbpath: {scbpath}') 
 
 class Mixins: 
-    def ensure_valid_args(self) -> tuple:
-        #TODO: Before adding more checks, make a general function for checking
-        if self.ui.lineEdit_rHeight.text() == '' and self.ui.lineEdit_rWidth.text() != '':
-            print("Invalid arguments: -h is empty, but -w is not.")
-            return (False,'-w','-h')
-        
-        if self.ui.lineEdit_oHeight.text() == '' and self.ui.lineEdit_oWidth.text() != '':
-            print("Invalid arguments: -H is empty, but -W is not.")
-            return (False,'-W','-H')
-        
-        return (True,) #nothing went wrong
+    
 
     def apply_global_config(self):
         # set the config
@@ -53,9 +43,9 @@ class Mixins:
                 file.writelines(lines)
 
         if self.read_gamescope_args().strip() != '':
-            self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
+            self.displayGamescope.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
         else:
-            self.ui.variable_displayGamescope.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
+            self.displayGamescope.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
 
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
@@ -93,29 +83,28 @@ class Mixins:
                 
         # IMPLEMENTED ARGUMENTS
         self.settings = [
-            ('checkbox', self.ui.checkBox_mango, '--mangoapp'),
-            ('lineEdit', self.ui.lineEdit_rHeight, '-h'),
-            ('lineEdit', self.ui.lineEdit_rWidth, '-w'),
-            ('lineEdit', self.ui.lineEdit_fps, '-r'),
-            ('checkbox', self.ui.checkBox_fullscreen, '-f'),
-            ('checkbox', self.ui.checkBox_borderless, '-b'),
-            ('lineEdit', self.ui.lineEdit_oHeight, '-H'),
-            ('lineEdit', self.ui.lineEdit_oWidth, '-W'),
-            ('checkbox', self.ui.checkBox_steam, '-e'),
-            ('checkbox', self.ui.checkBox_hdr, '--hdr-enabled'),
-            ('lineEdit', self.ui.lineEdit_maxScaleFactor, '-m'),
-            ('comboBox', self.ui.comboBox_upscalerType, '-S'),
-            ('comboBox', self.ui.comboBox_upscalerFilter, '-F'),
-            ('lineEdit', self.ui.lineEdit_upscalerSharpness, '--sharpness'),
-            ('doubleSpinBox', self.ui.doubleSpinBox_mouseSensitivity, '-s'),
-            ('checkbox', self.ui.checkBox_adaptiveSync, '--adaptive-sync'),
-            ('checkbox', self.ui.checkBox_forceInternalFullscreen, '--force-windows-fullscreen'),
-            ('checkbox', self.ui.checkBox_forceGrabCursor, '--force-grab-cursor'),
-            ('additionalArgs', self.ui.lineEdit_unimplementedSettings, '--placeholder-value')
+            ('checkbox', self.mangoHUD, '--mangoapp'),
+            ('lineEdit', self.rHeight, '-h'),
+            ('lineEdit', self.rWidth, '-w'),
+            ('lineEdit', self.fps, '-r'),
+            ('checkbox', self.fullscreen, '-f'),
+            ('checkbox', self.bWindow, '-b'),
+            ('lineEdit', self.oHeight, '-H'),
+            ('lineEdit', self.oWidth, '-W'),
+            ('checkbox', self.steam, '-e'),
+            ('checkbox', self.hdr, '--hdr-enabled'),
+            ('lineEdit', self.maxScale, '-m'),
+            ('comboBox', self.upscalerType, '-S'),
+            ('comboBox', self.upscalerFilter, '-F'),
+            ('lineEdit', self.upscalerSharpness, '--sharpness'),
+            ('doubleSpinBox', self.mouseSensitivity, '-s'),
+            ('checkbox', self.vrr, '--adaptive-sync'),
+            ('checkbox', self.fullscreenInGamescope, '--force-windows-fullscreen'),
+            ('checkbox', self.fgCursor, '--force-grab-cursor'),
+            ('additionalArgs', self.unimplemented, '--placeholder-value')
             ]
         
         compile_arguments(self.settings)
-
 
         generated_config = ''
         for argument in self.config_list:
@@ -184,29 +173,29 @@ class Mixins:
                     set_doubleSpinBox_input(input_widget, arg,unimplemented)
                 else:
                     raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
-                self.ui.lineEdit_unimplementedSettings.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
+                self.unimplemented.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
             
         
         # IMPLEMENTED ARGUMENTS
         self.settings = [
-            ('checkbox', self.ui.checkBox_mango, '--mangoapp'),
-            ('lineEdit', self.ui.lineEdit_rHeight, '-h'),
-            ('lineEdit', self.ui.lineEdit_rWidth, '-w'),
-            ('lineEdit', self.ui.lineEdit_fps, '-r'),
-            ('checkbox', self.ui.checkBox_fullscreen, '-f'),
-            ('checkbox', self.ui.checkBox_borderless, '-b'),
-            ('lineEdit', self.ui.lineEdit_oHeight, '-H'),
-            ('lineEdit', self.ui.lineEdit_oWidth, '-W'),
-            ('checkbox', self.ui.checkBox_steam, '-e'),
-            ('checkbox', self.ui.checkBox_hdr, '--hdr-enabled'),
-            ('lineEdit', self.ui.lineEdit_maxScaleFactor, '-m'),
-            ('comboBox', self.ui.comboBox_upscalerType, '-S'),
-            ('comboBox', self.ui.comboBox_upscalerFilter, '-F'),
-            ('lineEdit', self.ui.lineEdit_upscalerSharpness, '--sharpness'),
-            ('doubleSpinBox', self.ui.doubleSpinBox_mouseSensitivity, '-s'),
-            ('checkbox', self.ui.checkBox_adaptiveSync, '--adaptive-sync'),
-            ('checkbox', self.ui.checkBox_forceInternalFullscreen, '--force-windows-fullscreen'),
-            ('checkbox', self.ui.checkBox_forceGrabCursor, '--force-grab-cursor'),
+            ('checkbox', self.mangoHUD, '--mangoapp'),
+            ('lineEdit', self.rHeight, '-h'),
+            ('lineEdit', self.rWidth, '-w'),
+            ('lineEdit', self.fps, '-r'),
+            ('checkbox', self.fullscreen, '-f'),
+            ('checkbox', self.bWindow, '-b'),
+            ('lineEdit', self.oHeight, '-H'),
+            ('lineEdit', self.oWidth, '-W'),
+            ('checkbox', self.steam, '-e'),
+            ('checkbox', self.hdr, '--hdr-enabled'),
+            ('lineEdit', self.maxScale, '-m'),
+            ('comboBox', self.upscalerType, '-S'),
+            ('comboBox', self.upscalerFilter, '-F'),
+            ('lineEdit', self.upscalerSharpness, '--sharpness'),
+            ('doubleSpinBox', self.mouseSensitivity, '-s'),
+            ('checkbox', self.vrr, '--adaptive-sync'),
+            ('checkbox', self.fullscreenInGamescope, '--force-windows-fullscreen'),
+            ('checkbox', self.fgCursor, '--force-grab-cursor'),
             ]
         
 
@@ -286,4 +275,4 @@ class Mixins:
                 file.write('\n')
             file.write("SCB_GAMESCOPE_ARGS=\"\"\n")
             return True
-        
+

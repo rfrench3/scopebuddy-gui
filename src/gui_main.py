@@ -65,8 +65,10 @@ def create_config_file(scbpath) -> bool | None: #create scb.conf if it doesn't e
 create_config_file(scbpath) # creates the config file if it does not exist
 
 class SharedLogic:
-    def define_widget(self,Type,name:str) -> str:
+    def define_widget(self,Type,name:str):
         return self.window.findChild(Type, name)
+    
+
     
 
 
@@ -83,6 +85,8 @@ class MainWindowLogic(SharedLogic):
             widget = self.window.findChild(QLineEdit, object)
             if widget:
                 widget.setValidator(QIntValidator())
+
+        #Define all of the widgets
         #self. = self.define_widget(,"")
         self.rWidth = self.define_widget(QLineEdit,"lineEdit_rWidth")
         self.rHeight = self.define_widget(QLineEdit,"lineEdit_rHeight")
@@ -107,15 +111,57 @@ class MainWindowLogic(SharedLogic):
         self.apply = self.define_widget(QPushButton,"pushButton_apply")
         self.displayGamescope = self.define_widget(QLabel,"variable_displayGamescope")
 
+            
+        self.exitApp.clicked.connect(self.handle_exit)
+        self.apply.clicked.connect(self.handle_apply)
+    
+    def handle_exit(self):
+        print("Exiting application...")
+        QApplication.quit()
+
+    def handle_apply(self):
+        print("Apply button clicked...")
+        dialog = ApplyWindowLogic(self.window)
+        dialog.exec()
+
+    def ensure_valid_args(self) -> tuple:
+        #TODO: Before adding more checks, make a general function for checking
+        if self.rHeight().text() == '' and self.rWidth.text() != '':
+            print("Invalid arguments: -h is empty, but -w is not.")
+            return (False,'-w','-h')
+        
+        if self.oHeight.text() == '' and self.oWidth.text() != '':
+            print("Invalid arguments: -H is empty, but -W is not.")
+            return (False,'-W','-H')
+        
+        return (True,) #nothing went wrong        
+
         
 
-        
+class ApplyWindowLogic(QDialog, SharedLogic):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loader = QUiLoader()
+        ui_apply = QFile("./src/apply_confirmation.ui")
+        ui_apply.open(QFile.ReadOnly)
+        loaded = loader.load(ui_apply, self)
+        ui_apply.close()
+        self.setWindowTitle("Apply Changes?")
+        # Set the layout of the dialog to the loaded widget's layout
+        if loaded.layout():
+            self.setLayout(loaded.layout())
+        # Connect the Cancel button to close the dialog
+        self.cancel = self.findChild(QPushButton, "pushButton_Cancel")
+        if self.cancel:
+            self.cancel.clicked.connect(self.close)
+        #
+        self.apply = self.findChild(QPushButton, "pushButton_Apply")
+        if self.apply:
+            self.apply.clicked.connect(self.close)
 
-class ApplyWindowLogic:
-    def __init__(self, window):
-        self.window = window
 
-class ApplyErrorWindowLogic:
+
+class ApplyErrorWindowLogic(QDialog):
     def __init__(self, window):
         self.window = window
 
