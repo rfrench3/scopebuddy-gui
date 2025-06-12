@@ -375,9 +375,13 @@ class ApplyWindowLogic(QDialog, SharedLogic):
             self.cancel.clicked.connect(self.close)
         self.apply = self.findChild(QPushButton, "pushButton_Apply")
         if self.apply:
-            self.apply_global_config()
-            self.display_gamescope_args(logic.displayGamescope)
-            self.apply.clicked.connect(self.close)
+            self.apply.clicked.connect(self.apply_clicked)
+            
+    def apply_clicked(self):
+        self.apply_global_config()
+        self.display_gamescope_args(logic.displayGamescope)
+        self.close()
+
 
 
 
