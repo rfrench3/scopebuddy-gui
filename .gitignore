@@ -4,3 +4,4 @@
 /repo
 /.venv
 scopebuddyGUI.flatpak
+/src/__pycache__

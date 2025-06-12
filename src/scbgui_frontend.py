@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# This portion of the codebase is dedicated to connecting
+# elements of the Qt Interface to code found in scbgui_backend.py
+
 import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
@@ -10,7 +13,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
   
 import os
-from gui_functions import * 
+from scbgui_backend import * 
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
@@ -64,9 +67,91 @@ def create_config_file(scbpath) -> bool | None: #create scb.conf if it doesn't e
 
 create_config_file(scbpath) # creates the config file if it does not exist
 
-class SharedLogic:
-    def define_widget(self,Type,name:str):
-        return self.window.findChild(Type, name)
+class SharedLogic: # for logic used in multiple windows
+    def read_gamescope_args(self) -> str: #output gamescope args as string
+        with open(scbpath, 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                if line.startswith('SCB_GAMESCOPE_ARGS='):
+                    match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
+                    if match:
+                        return match.group(1)
+                    else:
+                        print('WARNING: CHECK UNCOMMENTED LINES!') # config file has incorrect format
+                        #TODO: comment out the bad line and make a new good line?
+            return ''
+        
+    def display_gamescope_args(self): #for displaying to user, not for logic
+        if self.read_gamescope_args().strip() != '':
+            self.displayGamescope.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
+        else:
+            self.displayGamescope.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
+    
+    def generate_new_config(self) -> str: #output a new config string based on the user input
+        self.config_list = []
+
+        def apply_lineEdit_input(lineEdit:int, arg):
+            if lineEdit.text().isdigit():
+                self.config_list.append(f'{arg} {lineEdit.text()} ')                
+            
+        def apply_combobox_input(comboBox, arg): #appends combobox input to the config list (unless default)
+            if comboBox.currentIndex() != 0:
+                self.config_list.append(f'{arg} {comboBox.currentText()} ')
+
+        def apply_checkbox_input(checkBox, arg): #appends checkbox input to the config list 
+            if checkBox.isChecked():
+                self.config_list.append(f'{arg} ')
+
+        def apply_doubleSpinBox_input(doubleSpinBox, arg): #preferred for float values
+            if doubleSpinBox.value() != 1.0:
+                self.config_list.append(f'{arg} {doubleSpinBox.value()} ')
+
+        def compile_arguments(settings):
+            for widget_type, input_widget, arg in settings:
+                if widget_type == 'checkbox':
+                    apply_checkbox_input(input_widget, arg)
+                elif widget_type == 'lineEdit':
+                    apply_lineEdit_input(input_widget, arg)
+                elif widget_type == 'comboBox':
+                    apply_combobox_input(input_widget, arg)
+                elif widget_type == 'doubleSpinBox':
+                    apply_doubleSpinBox_input(input_widget, arg)
+                elif widget_type == 'additionalArgs':
+                    self.config_list.append(f'{input_widget.text()} ')
+                else:
+                    raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
+                
+        # IMPLEMENTED ARGUMENTS
+        self.settings = [
+            ('checkbox', logic.mangoHUD, '--mangoapp'),
+            ('lineEdit', logic.rHeight, '-h'),
+            ('lineEdit', logic.rWidth, '-w'),
+            ('lineEdit', logic.fps, '-r'),
+            ('checkbox', logic.fullscreen, '-f'),
+            ('checkbox', logic.bWindow, '-b'),
+            ('lineEdit', logic.oHeight, '-H'),
+            ('lineEdit', logic.oWidth, '-W'),
+            ('checkbox', logic.steam, '-e'),
+            ('checkbox', logic.hdr, '--hdr-enabled'),
+            ('lineEdit', logic.maxScale, '-m'),
+            ('comboBox', logic.upscalerType, '-S'),
+            ('comboBox', logic.upscalerFilter, '-F'),
+            ('lineEdit', logic.upscalerSharpness, '--sharpness'),
+            ('doubleSpinBox', logic.mouseSensitivity, '-s'),
+            ('checkbox', logic.vrr, '--adaptive-sync'),
+            ('checkbox', logic.fullscreenInGamescope, '--force-windows-fullscreen'),
+            ('checkbox', logic.fgCursor, '--force-grab-cursor'),
+            ('additionalArgs', logic.unimplemented, '--placeholder-value')
+            ]
+        
+        compile_arguments(self.settings)
+
+        generated_config = ''
+        for argument in self.config_list:
+            generated_config += argument
+        
+        print(f'The generated config file is {generated_config}')
+        return generated_config
     
 
     
@@ -74,7 +159,7 @@ class SharedLogic:
 
 class MainWindowLogic(SharedLogic):
     def __init__(self, window):
-        self.window = window
+        self.window = window #logical to use because it is not a subclass of any Qt class
 
         #Only numbers are valid for these entries, so block non-numbers
         self.accept_only_numbers = [
@@ -86,40 +171,44 @@ class MainWindowLogic(SharedLogic):
             if widget:
                 widget.setValidator(QIntValidator())
 
-        #Define all of the widgets
-        #self. = self.define_widget(,"")
-        self.rWidth = self.define_widget(QLineEdit,"lineEdit_rWidth")
-        self.rHeight = self.define_widget(QLineEdit,"lineEdit_rHeight")
-        self.oWidth = self.define_widget(QLineEdit,"lineEdit_oWidth")
-        self.oHeight = self.define_widget(QLineEdit,"lineEdit_oHeight")
-        self.fps = self.define_widget(QLineEdit,"lineEdit_fps")
-        self.maxScale = self.define_widget(QLineEdit,"lineEdit_maxScaleFactor")
-        self.upscalerSharpness = self.define_widget(QLineEdit,"lineEdit_upscalerSharpness")
-        self.fullscreen = self.define_widget(QCheckBox,"checkBox_fullscreen")
-        self.bWindow = self.define_widget(QCheckBox,"checkBox_borderless")
-        self.hdr = self.define_widget(QCheckBox,"checkBox_hdr")
-        self.steam = self.define_widget(QCheckBox,"checkBox_steam")
-        self.mangoHUD = self.define_widget(QCheckBox,"checkBox_mango")
-        self.fgCursor = self.define_widget(QCheckBox,"checkBox_forceGrabCursor")
-        self.fullscreenInGamescope = self.define_widget(QCheckBox,"checkBox_forceInternalFullscreen")
-        self.mouseSensitivity = self.define_widget(QDoubleSpinBox,"doubleSpinBox_mouseSensitivity")
-        self.vrr = self.define_widget(QCheckBox,"checkBox_adaptiveSync")
-        self.upscalerType = self.define_widget(QComboBox,"comboBox_upscalerType")
-        self.upscalerFilter = self.define_widget(QComboBox,"comboBox_upscalerFilter")
-        self.unimplemented = self.define_widget(QLineEdit,"lineEdit_unimplementedSettings")
-        self.exitApp = self.define_widget(QPushButton,"pushButton_exit")
-        self.apply = self.define_widget(QPushButton,"pushButton_apply")
-        self.displayGamescope = self.define_widget(QLabel,"variable_displayGamescope")
+        # connect ui elements to code
+        #self. = self.window.findChild(,"")
+        self.rWidth = self.window.findChild(QLineEdit,"lineEdit_rWidth")
+        self.rHeight = self.window.findChild(QLineEdit,"lineEdit_rHeight")
+        self.oWidth = self.window.findChild(QLineEdit,"lineEdit_oWidth")
+        self.oHeight = self.window.findChild(QLineEdit,"lineEdit_oHeight")
+        self.fps = self.window.findChild(QLineEdit,"lineEdit_fps")
+        self.maxScale = self.window.findChild(QLineEdit,"lineEdit_maxScaleFactor")
+        self.upscalerSharpness = self.window.findChild(QLineEdit,"lineEdit_upscalerSharpness")
+        self.fullscreen = self.window.findChild(QCheckBox,"checkBox_fullscreen")
+        self.bWindow = self.window.findChild(QCheckBox,"checkBox_borderless")
+        self.hdr = self.window.findChild(QCheckBox,"checkBox_hdr")
+        self.steam = self.window.findChild(QCheckBox,"checkBox_steam")
+        self.mangoHUD = self.window.findChild(QCheckBox,"checkBox_mango")
+        self.fgCursor = self.window.findChild(QCheckBox,"checkBox_forceGrabCursor")
+        self.fullscreenInGamescope = self.window.findChild(QCheckBox,"checkBox_forceInternalFullscreen")
+        self.mouseSensitivity = self.window.findChild(QDoubleSpinBox,"doubleSpinBox_mouseSensitivity")
+        self.vrr = self.window.findChild(QCheckBox,"checkBox_adaptiveSync")
+        self.upscalerType = self.window.findChild(QComboBox,"comboBox_upscalerType")
+        self.upscalerFilter = self.window.findChild(QComboBox,"comboBox_upscalerFilter")
+        self.unimplemented = self.window.findChild(QLineEdit,"lineEdit_unimplementedSettings")
+        self.exitApp = self.window.findChild(QPushButton,"pushButton_exit")
+        self.proceed = self.window.findChild(QPushButton,"pushButton_continue")
+        self.displayGamescope = self.window.findChild(QLabel,"variable_displayGamescope")
+        # These
 
-            
+        self.displayGamescope = self.display_gamescope_args()
+        
+
+        # On click actions
         self.exitApp.clicked.connect(self.handle_exit)
-        self.apply.clicked.connect(self.handle_apply)
+        self.proceed.clicked.connect(self.handle_proceed)
     
     def handle_exit(self):
         print("Exiting application...")
         QApplication.quit()
 
-    def handle_apply(self):
+    def handle_proceed(self):
         print("Apply button clicked...")
         dialog = ApplyWindowLogic(self.window)
         dialog.exec()
@@ -141,20 +230,28 @@ class MainWindowLogic(SharedLogic):
 class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
         super().__init__(parent)
+        # Establish UI of apply window
         loader = QUiLoader()
         ui_apply = QFile("./src/apply_confirmation.ui")
         ui_apply.open(QFile.ReadOnly)
         loaded = loader.load(ui_apply, self)
         ui_apply.close()
         self.setWindowTitle("Apply Changes?")
-        # Set the layout of the dialog to the loaded widget's layout
         if loaded.layout():
             self.setLayout(loaded.layout())
-        # Connect the Cancel button to close the dialog
+
+        # connect ui elements to code
+        self.currentConfig = self.findChild(QLabel,"var_currentConfig")
+        self.newConfig = self.findChild(QLabel,"var_newConfig")
+
+        # display changes vs original
+        self.currentConfig.setText(self.read_gamescope_args())
+        self.newConfig.setText(self.generate_new_config())
+
+        # On-click actions
         self.cancel = self.findChild(QPushButton, "pushButton_Cancel")
         if self.cancel:
             self.cancel.clicked.connect(self.close)
-        #
         self.apply = self.findChild(QPushButton, "pushButton_Apply")
         if self.apply:
             self.apply.clicked.connect(self.close)

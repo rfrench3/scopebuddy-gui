@@ -1,12 +1,11 @@
-# This file contains functions for the scopebuddy-gui application.
-# They are here because some of them are extremely long and would clutter the main file.
+# This portion of the codebase is dedicated to backend
+# code that is not dependent on any GUI toolkit.
 
 import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
 import os
 from re import search # for searching for gamescope args in the config file
-import subprocess # for finding gamescope and scopebuddy
 
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
 print(f'config_dir: {config_dir}')
@@ -16,8 +15,6 @@ scbpath = os.path.join(config_dir, "scb.conf")
 print(f'scbpath: {scbpath}') 
 
 class Mixins: 
-    
-
     def apply_global_config(self):
         # set the config
         the_config = self.generate_new_config()
@@ -202,10 +199,6 @@ class Mixins:
         set_arguments(self.settings) # apply the current config to the UI elements
 
     def read_gamescope_args(self) -> str: #output gamescope args as string
-        #TODO: bandaid solution, this is able to create the file only because this code somehow runs before the code that ensures the file exists, and only within the flatpak build...
-        if not os.path.exists(scbpath):
-            self.create_config_path()
-
         with open(scbpath, 'r') as file:
             lines = file.readlines()
             for line in lines:
