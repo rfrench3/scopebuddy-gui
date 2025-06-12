@@ -5,15 +5,16 @@
 
 import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
+import os
+from re import search # for searching for gamescope args in the config file
 
 #PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
 from PySide6.QtGui import QIntValidator, QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
-  
-import os
-from scbgui_backend import * 
+
+
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
@@ -67,6 +68,7 @@ def create_config_file(scbpath) -> bool | None: #create scb.conf if it doesn't e
 
 create_config_file(scbpath) # creates the config file if it does not exist
 
+#TODO: move this into backend file at some point
 class SharedLogic: # for logic used in multiple windows
     def read_gamescope_args(self) -> str: #output gamescope args as string
         with open(scbpath, 'r') as file:
@@ -81,11 +83,11 @@ class SharedLogic: # for logic used in multiple windows
                         #TODO: comment out the bad line and make a new good line?
             return ''
         
-    def display_gamescope_args(self): #for displaying to user, not for logic
+    def display_gamescope_args(self,widget): #for displaying to user, not for logic
         if self.read_gamescope_args().strip() != '':
-            self.displayGamescope.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
+            widget.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
         else:
-            self.displayGamescope.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
+            widget.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
     
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
@@ -153,12 +155,99 @@ class SharedLogic: # for logic used in multiple windows
         print(f'The generated config file is {generated_config}')
         return generated_config
     
+    def apply_current_to_ui(self): #checks current config, applies it to the UI
+
+        def remove_arg(unimplemented,arg,match):
+            # Remove the first instance of the value after the argument (e.g., '-s 1.5')
+            try:
+                arg_index = unimplemented.index(arg)
+                # Ensure the next item exists and matches the value
+                if arg_index + 1 < len(unimplemented) and unimplemented[arg_index + 1] == match.group(1):
+                    unimplemented.pop(arg_index + 1)
+            except ValueError:
+                pass
+            unimplemented.remove(arg) if arg in unimplemented else None
+
+        def set_lineEdit_input(lineEdit:int, arg,unimplemented):
+            args = self.read_gamescope_args()
+            match = search(rf'{arg} (\d+)', args)
+            if match:
+                lineEdit.setText(match.group(1))
+                remove_arg(unimplemented,arg,match)
+                
+            
+        def set_combobox_input(comboBox, arg,unimplemented):
+            args = self.read_gamescope_args()
+            match = search(rf'{arg} ([^\s]+)', args)
+            if match:
+                value = match.group(1)
+                for index in range(comboBox.count()):
+                    if comboBox.itemText(index) == value:
+                        comboBox.setCurrentIndex(index)
+                        remove_arg(unimplemented,arg,match)
+                
+
+        def set_checkbox_input(checkBox, arg,unimplemented):
+            checkBox.setChecked(arg in self.read_gamescope_args()) # set checkbox state based on config
+            unimplemented.remove(arg) if arg in unimplemented else None
+            
+
+        def set_doubleSpinBox_input(doubleSpinBox, arg,unimplemented): #preferred for float values
+            args = self.read_gamescope_args()
+            match = search(rf'{arg} ([\d.]+)', args)
+            if match:
+                doubleSpinBox.setValue(float(match.group(1)))
+                remove_arg(unimplemented,arg,match)
+
+  
+
+        def set_arguments(settings):
+            unimplemented = self.read_gamescope_args().split()
+            for widget_type, input_widget, arg in settings:
+                if widget_type == 'checkbox':
+                    set_checkbox_input(input_widget, arg,unimplemented)
+                    unimplemented.remove(arg) if arg in unimplemented else None # remove the argument from the unimplemented list
+                elif widget_type == 'lineEdit':
+                    set_lineEdit_input(input_widget, arg,unimplemented)
+                elif widget_type == 'comboBox':
+                    set_combobox_input(input_widget, arg,unimplemented)
+                elif widget_type == 'doubleSpinBox':
+                    set_doubleSpinBox_input(input_widget, arg,unimplemented)
+                else:
+                    raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
+                self.unimplemented.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
+            
+        # IMPLEMENTED ARGUMENTS
+        self.settings = [
+            ('checkbox', self.mangoHUD, '--mangoapp'),
+            ('lineEdit', self.rHeight, '-h'),
+            ('lineEdit', self.rWidth, '-w'),
+            ('lineEdit', self.fps, '-r'),
+            ('checkbox', self.fullscreen, '-f'),
+            ('checkbox', self.bWindow, '-b'),
+            ('lineEdit', self.oHeight, '-H'),
+            ('lineEdit', self.oWidth, '-W'),
+            ('checkbox', self.steam, '-e'),
+            ('checkbox', self.hdr, '--hdr-enabled'),
+            ('lineEdit', self.maxScale, '-m'),
+            ('comboBox', self.upscalerType, '-S'),
+            ('comboBox', self.upscalerFilter, '-F'),
+            ('lineEdit', self.upscalerSharpness, '--sharpness'),
+            ('doubleSpinBox', self.mouseSensitivity, '-s'),
+            ('checkbox', self.vrr, '--adaptive-sync'),
+            ('checkbox', self.fullscreenInGamescope, '--force-windows-fullscreen'),
+            ('checkbox', self.fgCursor, '--force-grab-cursor'),
+            ]
+        
+        set_arguments(self.settings) # apply the current config to the UI elements
+
+    
 
     
 
 
 class MainWindowLogic(SharedLogic):
-    def __init__(self, window):
+    def __init__(self, window): #for reference in other classes, self.widget becomes logic.widget
         self.window = window #logical to use because it is not a subclass of any Qt class
 
         #Only numbers are valid for these entries, so block non-numbers
@@ -195,9 +284,9 @@ class MainWindowLogic(SharedLogic):
         self.exitApp = self.window.findChild(QPushButton,"pushButton_exit")
         self.proceed = self.window.findChild(QPushButton,"pushButton_continue")
         self.displayGamescope = self.window.findChild(QLabel,"variable_displayGamescope")
-        # These
-
-        self.displayGamescope = self.display_gamescope_args()
+        
+        self.display_gamescope_args(self.displayGamescope)
+        self.apply_current_to_ui()
         
 
         # On click actions
