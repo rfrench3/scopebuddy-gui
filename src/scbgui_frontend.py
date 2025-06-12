@@ -23,10 +23,27 @@ os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
 print(f'scbpath: {scbpath}') 
 
-def create_config_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
-    try: #generates new config file with default values
+def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
+    def ensure_gamescope_line() -> bool: #if config file doesn't have the gamescope args line, create one
+        with open(scbpath, 'r+') as file:
+            lines = file.readlines()
+            for line in lines:
+                if line.startswith('SCB_GAMESCOPE_ARGS='):
+                    match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
+                    if match:
+                        return True
+            # no match was found, so create the necessary line
+            file.seek(0, os.SEEK_END) # ensure we are at the end of the file
+            if lines and not lines[-1].endswith('\n'):
+                file.write('\n')
+            file.write("SCB_GAMESCOPE_ARGS=\"\"\n")
+            return True
+
+
+    try: #generates new config file with default values if necessary
         if os.path.exists(scbpath):
-            print(f"Config file already exists at {scbpath}, skipping creation.")
+            print(f"Config file already exists at {scbpath}, ensuring the proper format...")
+            ensure_gamescope_line()
             return True
         else:
             print(f"Creating config file at {scbpath}...")
@@ -66,7 +83,7 @@ def create_config_file(scbpath) -> bool | None: #create scb.conf if it doesn't e
     except OSError as e:
         print(f"Error creating config file: {e}")
 
-create_config_file(scbpath) # creates the config file if it does not exist
+ensure_file(scbpath) # makes sure the scb.conf file exists and works properly
 
 #TODO: move this into backend file at some point
 class SharedLogic: # for logic used in multiple windows
@@ -241,10 +258,25 @@ class SharedLogic: # for logic used in multiple windows
         
         set_arguments(self.settings) # apply the current config to the UI elements
 
-    
+    def apply_global_config(self):
+        # set the config
+        the_config = self.generate_new_config()
 
-    
+        # Open the config file
+        with open(scbpath, 'r') as file:
+            lines = file.readlines()
 
+            # Find the line that starts with SCB_GAMESCOPE_ARGS
+            for i, line in enumerate(lines):
+                if line.startswith('SCB_GAMESCOPE_ARGS'):
+                    commented_line = f"# commented out by scopebuddy-gui: {line}"# Comment out the original line
+                    new_line = f'SCB_GAMESCOPE_ARGS="{the_config}"\n'# Create the new line
+                    lines[i:i+1] = [commented_line, new_line]# Replace with the commented + new line
+                    break
+
+            # Write the modified lines back to the file
+            with open(scbpath, 'w') as file:
+                file.writelines(lines)
 
 class MainWindowLogic(SharedLogic):
     def __init__(self, window): #for reference in other classes, self.widget becomes logic.widget
@@ -343,6 +375,8 @@ class ApplyWindowLogic(QDialog, SharedLogic):
             self.cancel.clicked.connect(self.close)
         self.apply = self.findChild(QPushButton, "pushButton_Apply")
         if self.apply:
+            self.apply_global_config()
+            self.display_gamescope_args(logic.displayGamescope)
             self.apply.clicked.connect(self.close)
 
 
