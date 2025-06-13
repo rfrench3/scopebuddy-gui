@@ -15,13 +15,15 @@ from PySide6.QtCore import QFile
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
 
 # bundle of ui-launching code
-def launch_window(ui_path:str):
+def launch_window(ui_path:str,window_title:str):
     # new_window = launch_window(pathToUI)
     loader = QUiLoader()
     ui = QFile(ui_path)
     ui.open(QFile.ReadOnly)
     variable_name = loader.load(ui)
     ui.close()
+    variable_name.setWindowTitle(window_title)
+    #variable_name.setWindowIcon(QIcon("./src/img/io.github.rfrench3.scopebuddy-gui.svg"))
     return variable_name
 
 
@@ -375,10 +377,10 @@ class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Establish UI of apply window
-        ui_apply = launch_window(uipath_confirm)
+        ui_apply = launch_window(uipath_confirm,"Apply Changes?")
         if ui_apply.layout():#TODO: could this be moved into launch_window?
             self.setLayout(ui_apply.layout())
-        self.setWindowTitle("Apply Changes?")
+        #self.setWindowTitle("Apply Changes?")
 
         # connect ui elements to code
         self.currentConfig = self.findChild(QLabel,"var_currentConfig")
@@ -406,8 +408,8 @@ class ApplyErrorWindowLogic(QDialog):
         super().__init__(parent)
         # Establish UI of apply window
 
-        ui_error = launch_window(uipath_error)
-        self.setWindowTitle("Configuration Error!")
+        ui_error = launch_window(uipath_error,"Configuration Error!")
+        #self.setWindowTitle("Configuration Error!")
         if ui_error.layout():
             self.setLayout(ui_error.layout())
         # On-click actions
@@ -420,12 +422,12 @@ class ApplyErrorWindowLogic(QDialog):
 app = QApplication([])
 
 
-window_main = launch_window(uipath_main)
+window_main = launch_window(uipath_main,"Scopebuddy GUI")
 
 logic = MainWindowLogic(window_main)
 
 # Set main window attributes
-window_main.setWindowTitle("Scopebuddy GUI")
+#window_main.setWindowTitle("Scopebuddy GUI")
 
 if not in_flatpak():
     # AppStream (metainfo.xml) handles setting the icon when its packaged into a flatpak
