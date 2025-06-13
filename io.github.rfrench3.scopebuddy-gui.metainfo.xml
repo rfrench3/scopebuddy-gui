@@ -4,6 +4,7 @@
 
   <name translate="no">Scopebuddy GUI</name>
   <summary>Allows you to configure Gamescope through a GUI for Scopebuddy</summary>
+  <icon type="stock">io.github.rfrench3.scopebuddy-gui</icon>
 
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-only</project_license>

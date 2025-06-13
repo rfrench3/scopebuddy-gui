@@ -6,12 +6,35 @@ import os
 from re import search # for searching for gamescope args in the config file
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
+from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
 from PySide6.QtGui import QIntValidator, QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 
+# used to update paths based on environment. returns True/False result of os.path.exists
+in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
 
+# bundle of ui-launching code
+def launch_window(ui_path:str):
+    # new_window = launch_window(pathToUI)
+    loader = QUiLoader()
+    ui = QFile(ui_path)
+    ui.open(QFile.ReadOnly)
+    variable_name = loader.load(ui)
+    ui.close()
+    return variable_name
+
+
+if in_flatpak():
+    print('IN FLATPAK!')
+    uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
+    uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
+    uipath_error = "/app/share/scopebuddygui/apply_error.ui"
+else:
+    print('NOT IN FLATPAK!')
+    uipath_main = "./src/mainwindow.ui"
+    uipath_confirm = "./src/apply_confirmation.ui"
+    uipath_error = "./src/apply_error.ui"
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
@@ -352,14 +375,10 @@ class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Establish UI of apply window
-        loader = QUiLoader()
-        ui_apply = QFile("./src/apply_confirmation.ui")
-        ui_apply.open(QFile.ReadOnly)
-        loaded = loader.load(ui_apply, self)
-        ui_apply.close()
+        ui_apply = launch_window(uipath_confirm)
+        if ui_apply.layout():#TODO: could this be moved into launch_window?
+            self.setLayout(ui_apply.layout())
         self.setWindowTitle("Apply Changes?")
-        if loaded.layout():
-            self.setLayout(loaded.layout())
 
         # connect ui elements to code
         self.currentConfig = self.findChild(QLabel,"var_currentConfig")
@@ -386,14 +405,11 @@ class ApplyErrorWindowLogic(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Establish UI of apply window
-        loader = QUiLoader()
-        ui_apply = QFile("./src/apply_error.ui")
-        ui_apply.open(QFile.ReadOnly)
-        loaded = loader.load(ui_apply, self)
-        ui_apply.close()
+
+        ui_error = launch_window(uipath_error)
         self.setWindowTitle("Configuration Error!")
-        if loaded.layout():
-            self.setLayout(loaded.layout())
+        if ui_error.layout():
+            self.setLayout(ui_error.layout())
         # On-click actions
         self.ok = self.findChild(QPushButton, "pushButton_ok")
         if self.ok:
@@ -403,17 +419,17 @@ class ApplyErrorWindowLogic(QDialog):
 # Logic that loads the main window
 app = QApplication([])
 
-loader = QUiLoader()
-ui_main = QFile("./src/mainwindow.ui")
-ui_main.open(QFile.ReadOnly)
-window_main = loader.load(ui_main)
-ui_main.close()
+
+window_main = launch_window(uipath_main)
 
 logic = MainWindowLogic(window_main)
 
 # Set main window attributes
-window_main.setWindowTitle("Scopebuddy GUI")  
-window_main.setWindowIcon(QIcon("./src/img/io.github.rfrench3.scopebuddy-gui.svg"))
+window_main.setWindowTitle("Scopebuddy GUI")
+
+if not in_flatpak():
+    # AppStream (metainfo.xml) handles setting the icon when its packaged into a flatpak
+    window_main.setWindowIcon(QIcon("./src/img/io.github.rfrench3.scopebuddy-gui.svg"))
 
 window_main.show()
 app.exec()
