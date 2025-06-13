@@ -41,10 +41,10 @@
   <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/rfrench3/scopebuddy-gui/blob/main/images/mainWindow.png?raw=true</image>
+      <image type="local">/src/img/mainWindow.png</image>
     </screenshot>
     <screenshot>
-      <image>https://github.com/rfrench3/scopebuddy-gui/blob/main/images/applyWindow.png?raw=true</image>
+      <image type="local">/src/img/applyWindow.png</image>
     </screenshot>
   </screenshots>
 </component>

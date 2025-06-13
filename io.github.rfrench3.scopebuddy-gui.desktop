@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=ScopeBuddy GUI
 Comment=Configure ScopeBuddy
-Exec=scopebuddy
+Exec=scopebuddygui
 Icon=io.github.rfrench3.scopebuddy-gui
 Terminal=false
 Type=Application
