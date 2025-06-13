@@ -4,6 +4,7 @@
 
   <name translate="no">Scopebuddy GUI</name>
   <summary>Allows you to configure Gamescope through a GUI for Scopebuddy</summary>
+  <icon type="stock">io.github.rfrench3.scopebuddy-gui</icon>
 
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-only</project_license>
@@ -41,10 +42,10 @@
   <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/rfrench3/scopebuddy-gui/blob/main/images/mainWindow.png?raw=true</image>
+      <image type="local">/src/img/mainWindow.png</image>
     </screenshot>
     <screenshot>
-      <image>https://github.com/rfrench3/scopebuddy-gui/blob/main/images/applyWindow.png?raw=true</image>
+      <image type="local">/src/img/applyWindow.png</image>
     </screenshot>
   </screenshots>
 </component>
