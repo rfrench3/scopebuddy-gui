@@ -1,13 +1,7 @@
-<table width="100%">
-    <tr>
-        <td align="center" width="50%">
-        <p style="font-size:2.5em; font-weight:bold; margin:0;">ScopeBuddy GUI</p>
-        </td>
-        <td align="center" width="50%">
-            <img src="src/img/io.github.rfrench3.scopebuddy-gui.svg" alt="ScopeBuddy GUI Logo" height="120">
-        </td>
-    </tr>
-</table>
+
+<h1 align="center">ScopeBuddy GUI</h1>
+
+<img align="center" src="src/img/io.github.rfrench3.scopebuddy-gui.svg" alt="ScopeBuddy GUI Logo">
 
 <h2 align="center">A Graphical Frontend for the scopebuddy tool.</h2>
 
