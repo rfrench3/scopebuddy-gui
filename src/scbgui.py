@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-# This portion of the codebase is dedicated to connecting
-# elements of the Qt Interface to code found in scbgui_backend.py
-
 import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 import os
@@ -85,7 +82,6 @@ def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, r
 
 ensure_file(scbpath) # makes sure the scb.conf file exists and works properly
 
-#TODO: move this into backend file at some point
 class SharedLogic: # for logic used in multiple windows
     def read_gamescope_args(self) -> str: #output gamescope args as string
         with open(scbpath, 'r') as file:
@@ -386,9 +382,6 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.display_gamescope_args(logic.displayGamescope)
         self.close()
 
-
-
-
 class ApplyErrorWindowLogic(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -405,8 +398,6 @@ class ApplyErrorWindowLogic(QDialog):
         self.ok = self.findChild(QPushButton, "pushButton_ok")
         if self.ok:
             self.ok.clicked.connect(self.close)
-
-
 
 
 # Logic that loads the main window
@@ -426,68 +417,3 @@ window_main.setWindowIcon(QIcon("./src/img/io.github.rfrench3.scopebuddy-gui.svg
 
 window_main.show()
 app.exec()
-
-'''
-class MainWindow(QMainWindow,Mixins): 
-    def __init__(self):
-        super().__init__()
-        if self.read_gamescope_args().strip() != '':
-            self.ui.variable_displayGamescope.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
-        else:
-            self.ui.variable_displayGamescope.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
-        # Button actions
-        self.ui.pushButton_apply.clicked.connect(self.apply_clicked)
-        self.ui.pushButton_exit.clicked.connect(self.exit_app)
-
-        self.apply_current_to_ui()
-
-    # ON-CLICK METHODS
-
-    def apply_clicked(self):
-        print("Apply button clicked...")
-        if not self.ensure_valid_args()[0]:
-            dialog = Dialog_ApplyError()
-            dialog.exec()
-            raise ValueError
-        dialog = DialogApply()
-        dialog.exec()
-        if dialog.answer:
-            print('Applying changes...')
-            self.apply_global_config()
-
-    def exit_app(self):
-        print("Exiting application...")
-        sys.exit()
-
-class Dialog_ApplyError(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_Dialog_ApplyError()
-        self.ui.setupUi(self)
-        self.setWindowTitle("Error!")  
-        self.ui.pushButton_Ok.clicked.connect(self.close)
-
-class DialogApply(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_Dialog_Apply()
-        self.ui.setupUi(self)
-        self.setWindowTitle("Apply Changes?") 
-        self.ui.var_currentConfig.setText(MainWindow.read_gamescope_args(window))
-        self.ui.var_newConfig.setText(MainWindow.generate_new_config(window))
-
-        #button actions
-        self.ui.pushButton_Cancel.clicked.connect(self.close)
-        self.ui.pushButton_Apply.clicked.connect(self.apply_changes)
-        self.answer = False #changes will not be applied unless explictly confirmed
-        
-    
-    def apply_changes(self):
-        self.answer = True #changes have been explicitly confirmed
-        self.close()
-
-app = QApplication([]) # pass the arguments to the QApplication constructor
-window = MainWindow()
-window.show()
-app.exec()
-'''
