@@ -1,7 +1,7 @@
 
-<h1 align="center">ScopeBuddy GUI</h1>
+<h1>ScopeBuddy GUI</h1>
 
-<img align="center" src="src/img/io.github.rfrench3.scopebuddy-gui.svg" alt="ScopeBuddy GUI Logo">
+<img src="src/img/io.github.rfrench3.scopebuddy-gui.svg" alt="ScopeBuddy GUI Logo">
 
 <h2 align="center">A Graphical Frontend for the scopebuddy tool.</h2>
 
