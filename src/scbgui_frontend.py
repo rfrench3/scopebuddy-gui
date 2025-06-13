@@ -331,12 +331,16 @@ class MainWindowLogic(SharedLogic):
 
     def handle_proceed(self):
         print("Apply button clicked...")
-        dialog = ApplyWindowLogic(self.window)
-        dialog.exec()
+        if not self.ensure_valid_args()[0]:
+            dialog = ApplyErrorWindowLogic(self.window)
+            dialog.exec()
+        else:
+            dialog = ApplyWindowLogic(self.window)
+            dialog.exec()
 
     def ensure_valid_args(self) -> tuple:
         #TODO: Before adding more checks, make a general function for checking
-        if self.rHeight().text() == '' and self.rWidth.text() != '':
+        if self.rHeight.text() == '' and self.rWidth.text() != '':
             print("Invalid arguments: -h is empty, but -w is not.")
             return (False,'-w','-h')
         
@@ -386,8 +390,21 @@ class ApplyWindowLogic(QDialog, SharedLogic):
 
 
 class ApplyErrorWindowLogic(QDialog):
-    def __init__(self, window):
-        self.window = window
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        # Establish UI of apply window
+        loader = QUiLoader()
+        ui_apply = QFile("./src/apply_error.ui")
+        ui_apply.open(QFile.ReadOnly)
+        loaded = loader.load(ui_apply, self)
+        ui_apply.close()
+        self.setWindowTitle("Configuration Error!")
+        if loaded.layout():
+            self.setLayout(loaded.layout())
+        # On-click actions
+        self.ok = self.findChild(QPushButton, "pushButton_ok")
+        if self.ok:
+            self.ok.clicked.connect(self.close)
 
 
 
