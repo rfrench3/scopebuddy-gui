@@ -29,7 +29,7 @@ def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
         variable_name.setWindowIcon(QIcon(iconpath))
     return variable_name
 
-
+# set directories for testing and compiled into a flatpak
 if in_flatpak():
     print('IN FLATPAK!')
     uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
@@ -65,7 +65,7 @@ def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, r
             file.seek(0, os.SEEK_END) # ensure we are at the end of the file
             if lines and not lines[-1].endswith('\n'):
                 file.write('\n')
-            file.write("SCB_GAMESCOPE_ARGS=\"\"\n")
+            file.write('SCB_GAMESCOPE_ARGS=""\n')
             return True
 
 
@@ -108,6 +108,7 @@ def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, r
             file.write("# $SCB_NOSCOPE will be set to 1 if we are running in no gamescope mode\n")
             file.write("# $SCB_GAMEMODE will be set to 1 if we are running inside steam gamemode (which means SCB_NOSCOPE will also be set to 1 due to nested gamescope not working in gamemode)\n")
             file.write("# $command will contain everything steam expanded %command% into\n")
+        ensure_gamescope_line()
         return True
     except OSError as e:
         print(f"Error creating config file: {e}")
@@ -272,7 +273,7 @@ class SharedLogic: # for logic used in multiple windows
             ('checkbox', self.bWindow, '-b'),
             ('lineEdit', self.oHeight, '-H'),
             ('lineEdit', self.oWidth, '-W'),
-            ('checkbox', self.steam, '-e'),
+            ('checkbox', self.steam, '-e'),entirely
             ('checkbox', self.hdr, '--hdr-enabled'),
             ('lineEdit', self.maxScale, '-m'),
             ('comboBox', self.upscalerType, '-S'),
