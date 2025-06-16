@@ -15,15 +15,18 @@ from PySide6.QtCore import QFile
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
 
 # bundle of ui-launching code
-def launch_window(ui_path:str,window_title:str):
-    # new_window = launch_window(pathToUI)
+def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
+    # new_window = launch_window(pathToUI,title,pathToIcon)
     loader = QUiLoader()
     ui = QFile(ui_path)
     ui.open(QFile.ReadOnly)
     variable_name = loader.load(ui)
     ui.close()
+
+    #set window attributes
     variable_name.setWindowTitle(window_title)
-    #variable_name.setWindowIcon(QIcon("./src/img/io.github.rfrench3.scopebuddy-gui.svg"))
+    if iconpath:
+        variable_name.setWindowIcon(QIcon(iconpath))
     return variable_name
 
 
@@ -32,11 +35,15 @@ if in_flatpak():
     uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
     uipath_error = "/app/share/scopebuddygui/apply_error.ui"
+    iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
+    iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
 else:
     print('NOT IN FLATPAK!')
     uipath_main = "./src/mainwindow.ui"
     uipath_confirm = "./src/apply_confirmation.ui"
     uipath_error = "./src/apply_error.ui"
+    iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
+    iconpath_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
@@ -377,7 +384,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Establish UI of apply window
-        ui_apply = launch_window(uipath_confirm,"Apply Changes?")
+        ui_apply = launch_window(uipath_confirm,"Apply Changes?",iconpath_svg)
         if ui_apply.layout():#TODO: could this be moved into launch_window?
             self.setLayout(ui_apply.layout())
         #self.setWindowTitle("Apply Changes?")
@@ -408,7 +415,7 @@ class ApplyErrorWindowLogic(QDialog):
         super().__init__(parent)
         # Establish UI of apply window
 
-        ui_error = launch_window(uipath_error,"Configuration Error!")
+        ui_error = launch_window(uipath_error,"Configuration Error!",iconpath_svg)
         #self.setWindowTitle("Configuration Error!")
         if ui_error.layout():
             self.setLayout(ui_error.layout())
@@ -421,17 +428,8 @@ class ApplyErrorWindowLogic(QDialog):
 # Logic that loads the main window
 app = QApplication([])
 
-
-window_main = launch_window(uipath_main,"Scopebuddy GUI")
-
+window_main = launch_window(uipath_main,"Scopebuddy GUI",iconpath_svg)
 logic = MainWindowLogic(window_main)
-
-# Set main window attributes
-#window_main.setWindowTitle("Scopebuddy GUI")
-
-if not in_flatpak():
-    # AppStream (metainfo.xml) handles setting the icon when its packaged into a flatpak
-    window_main.setWindowIcon(QIcon("./src/img/io.github.rfrench3.scopebuddy-gui.svg"))
 
 window_main.show()
 app.exec()
