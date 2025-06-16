@@ -273,7 +273,7 @@ class SharedLogic: # for logic used in multiple windows
             ('checkbox', self.bWindow, '-b'),
             ('lineEdit', self.oHeight, '-H'),
             ('lineEdit', self.oWidth, '-W'),
-            ('checkbox', self.steam, '-e'),entirely
+            ('checkbox', self.steam, '-e'),
             ('checkbox', self.hdr, '--hdr-enabled'),
             ('lineEdit', self.maxScale, '-m'),
             ('comboBox', self.upscalerType, '-S'),
