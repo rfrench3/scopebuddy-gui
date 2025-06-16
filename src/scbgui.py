@@ -289,7 +289,7 @@ class SharedLogic: # for logic used in multiple windows
 
     def apply_global_config(self):
         # set the config
-        the_config = self.generate_new_config()
+        the_config = self.generate_new_config().strip()
 
         # Open the config file
         with open(scbpath, 'r') as file:
