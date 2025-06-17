@@ -7,9 +7,9 @@ from re import search # for searching for gamescope args in the config file
 
 #PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
-from PySide6.QtGui import QIntValidator, QIcon
+from PySide6.QtGui import QIntValidator, QIcon, QDesktopServices
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile
+from PySide6.QtCore import QFile, QUrl
 
 # used to update paths based on environment. returns True/False result of os.path.exists
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow2.ui")
@@ -440,6 +440,11 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.buttonBox = self.findChild(QDialogButtonBox,"buttonBox")
         self.save_button = self.buttonBox.button(QDialogButtonBox.Save)
         self.abort_button = self.buttonBox.button(QDialogButtonBox.Abort)
+        # Add a custom "Edit Config" button to the buttonBox
+        self.edit_button = QPushButton("Edit Directly")
+        self.buttonBox.addButton(self.edit_button, QDialogButtonBox.ActionRole)
+        
+
 
         # display changes vs original
         self.currentConfig.setText(self.read_gamescope_args())
@@ -448,6 +453,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         # On-click actions
         self.save_button.clicked.connect(self.apply_clicked)
         self.abort_button.clicked.connect(self.close)
+        self.edit_button.clicked.connect(self.open_with_text_editor)
 
 
             
@@ -455,6 +461,9 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.apply_global_config()
         self.display_gamescope_args(logic.statusBar)
         self.close()
+
+    def open_with_text_editor(self):
+        QDesktopServices.openUrl(QUrl.fromLocalFile(scbpath))
 
 # Logic that loads the main window
 app = QApplication([])
