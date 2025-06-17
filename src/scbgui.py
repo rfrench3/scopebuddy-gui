@@ -374,7 +374,6 @@ class MainWindowLogic(SharedLogic):
 
         # Setup UI elements
 
-        self.statusBar.showMessage(self.read_gamescope_args())
         self.display_gamescope_args(self.statusBar)
         self.apply_current_to_ui()
 
@@ -400,11 +399,8 @@ class MainWindowLogic(SharedLogic):
             msg.setWindowTitle("Error!")
             msg.exec()
         else:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.NoIcon)
-            msg.setText("This is a default information dialog.")
-            msg.setWindowTitle("Apply Changes?")
-            msg.exec()
+            dialog = ApplyWindowLogic(self.window)
+            dialog.exec()
 
     def handle_reset(self):
         print('Reset button clicked...')
@@ -435,29 +431,29 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         super().__init__(parent)
         # Establish UI of apply window
         ui_apply = launch_window(uipath_confirm,"Apply Changes?",iconpath_svg)
-        if ui_apply.layout():#TODO: could this be moved into launch_window?
+        if ui_apply.layout():
             self.setLayout(ui_apply.layout())
-        #self.setWindowTitle("Apply Changes?")
 
         # connect ui elements to code
         self.currentConfig = self.findChild(QLabel,"var_currentConfig")
         self.newConfig = self.findChild(QLabel,"var_newConfig")
+        self.buttonBox = self.findChild(QDialogButtonBox,"buttonBox")
+        self.save_button = self.buttonBox.button(QDialogButtonBox.Save)
+        self.abort_button = self.buttonBox.button(QDialogButtonBox.Abort)
 
         # display changes vs original
         self.currentConfig.setText(self.read_gamescope_args())
         self.newConfig.setText(self.generate_new_config())
 
         # On-click actions
-        self.cancel = self.findChild(QPushButton, "pushButton_Cancel")
-        if self.cancel:
-            self.cancel.clicked.connect(self.close)
-        self.apply = self.findChild(QPushButton, "pushButton_Apply")
-        if self.apply:
-            self.apply.clicked.connect(self.apply_clicked)
+        self.save_button.clicked.connect(self.apply_clicked)
+        self.abort_button.clicked.connect(self.close)
+
+
             
     def apply_clicked(self):
         self.apply_global_config()
-        self.display_gamescope_args(logic.displayGamescope)
+        self.display_gamescope_args(logic.statusBar)
         self.close()
 
 # Logic that loads the main window
