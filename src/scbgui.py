@@ -25,7 +25,7 @@ def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
 
     #set window attributes
     variable_name.setWindowTitle(window_title)
-    if iconpath:
+    if iconpath:#leave as default if unspecified
         variable_name.setWindowIcon(QIcon(iconpath))
     return variable_name
 
