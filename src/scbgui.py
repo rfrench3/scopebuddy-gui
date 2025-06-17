@@ -6,7 +6,7 @@ import os
 from re import search # for searching for gamescope args in the config file
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QStatusBar
+from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
 from PySide6.QtGui import QIntValidator, QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
@@ -351,16 +351,22 @@ class MainWindowLogic(SharedLogic):
         self.exitApp = self.window.findChild(QPushButton,"pushButton_exit")
         self.proceed = self.window.findChild(QPushButton,"pushButton_continue")
         self.statusBar = self.window.findChild(QStatusBar,"statusBar")
-        # Display the current gamescope args in the status bar
-        if self.statusBar:
-            self.statusBar.showMessage(self.read_gamescope_args())
+        self.buttonBox = self.window.findChild(QDialogButtonBox,"buttonBox")
+        self.apply_button = self.buttonBox.button(QDialogButtonBox.Apply)
+        self.help_button = self.buttonBox.button(QDialogButtonBox.Help)
+        self.reset_button = self.buttonBox.button(QDialogButtonBox.Reset)
+        self.defaults_button = self.buttonBox.button(QDialogButtonBox.RestoreDefaults)
+
+        # Setup UI elements
+
+        self.statusBar.showMessage(self.read_gamescope_args())
         self.display_gamescope_args(self.statusBar)
         self.apply_current_to_ui()
 
-    
-    def handle_exit(self):
-        print("Exiting application...")
-        QApplication.quit()
+        # Connect the buttonBox buttons to actions
+        
+        self.apply_button.clicked.connect(self.handle_proceed)
+        self.help_button.clicked.connect(lambda: os.system('xdg-open "https://rfrench3.github.io/scopebuddy-gui/"'))
 
     def handle_proceed(self):
         print("Apply button clicked...")
