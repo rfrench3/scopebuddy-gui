@@ -6,13 +6,13 @@ import os
 from re import search # for searching for gamescope args in the config file
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
+from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QStatusBar
 from PySide6.QtGui import QIntValidator, QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 
 # used to update paths based on environment. returns True/False result of os.path.exists
-in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
+in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow2.ui")
 
 # bundle of ui-launching code
 def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
@@ -32,14 +32,14 @@ def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
 # set directories for testing and compiled into a flatpak
 if in_flatpak():
     print('IN FLATPAK!')
-    uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
+    uipath_main = "/app/share/scopebuddygui/mainwindow2.ui"
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
     uipath_error = "/app/share/scopebuddygui/apply_error.ui"
     iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
 else:
     print('NOT IN FLATPAK!')
-    uipath_main = "./src/mainwindow.ui"
+    uipath_main = "./src/mainwindow2.ui"
     uipath_confirm = "./src/apply_confirmation.ui"
     uipath_error = "./src/apply_error.ui"
     iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
@@ -130,10 +130,16 @@ class SharedLogic: # for logic used in multiple windows
             return ''
         
     def display_gamescope_args(self,widget): #for displaying to user, not for logic
-        if self.read_gamescope_args().strip() != '':
-            widget.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
-        else:
-            widget.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
+        if hasattr(widget, "showMessage"):
+            if self.read_gamescope_args().strip() != '':
+                widget.showMessage(f'Current Gamescope Config: {self.read_gamescope_args()}')
+            else:
+                widget.showMessage(f'No Gamescope arguments active!')
+        else: 
+            if self.read_gamescope_args().strip() != '':
+                widget.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
+            else:
+                widget.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
     
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
@@ -344,15 +350,13 @@ class MainWindowLogic(SharedLogic):
         self.unimplemented = self.window.findChild(QLineEdit,"lineEdit_unimplementedSettings")
         self.exitApp = self.window.findChild(QPushButton,"pushButton_exit")
         self.proceed = self.window.findChild(QPushButton,"pushButton_continue")
-        self.displayGamescope = self.window.findChild(QLabel,"variable_displayGamescope")
-        
-        self.display_gamescope_args(self.displayGamescope)
+        self.statusBar = self.window.findChild(QStatusBar,"statusBar")
+        # Display the current gamescope args in the status bar
+        if self.statusBar:
+            self.statusBar.showMessage(self.read_gamescope_args())
+        self.display_gamescope_args(self.statusBar)
         self.apply_current_to_ui()
-        
 
-        # On click actions
-        self.exitApp.clicked.connect(self.handle_exit)
-        self.proceed.clicked.connect(self.handle_proceed)
     
     def handle_exit(self):
         print("Exiting application...")
