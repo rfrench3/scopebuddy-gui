@@ -207,7 +207,8 @@ class SharedLogic: # for logic used in multiple windows
         print(f'The generated config file is {generated_config}')
         return generated_config
     
-    def apply_current_to_ui(self): #checks current config, applies it to the UI
+    def apply_current_to_ui(self,clear=False): 
+        #checks current config, applies it to the UI. Empties UI if clear=True
 
         def remove_arg(unimplemented,arg,match):
             # Remove the first instance of the value after the argument (e.g., '-s 1.5')
@@ -220,7 +221,10 @@ class SharedLogic: # for logic used in multiple windows
                 pass
             unimplemented.remove(arg) if arg in unimplemented else None
 
-        def set_lineEdit_input(lineEdit:int, arg,unimplemented):
+        def set_lineEdit_input(lineEdit:int, arg,unimplemented,clear):
+            if clear:
+                lineEdit.setText('')
+                return
             args = self.read_gamescope_args()
             match = search(rf'{arg} (\d+)', args)
             if match:
@@ -228,7 +232,10 @@ class SharedLogic: # for logic used in multiple windows
                 remove_arg(unimplemented,arg,match)
                 
             
-        def set_combobox_input(comboBox, arg,unimplemented):
+        def set_combobox_input(comboBox, arg,unimplemented,clear):
+            if clear:
+                comboBox.setCurrentIndex(0)
+                return
             args = self.read_gamescope_args()
             match = search(rf'{arg} ([^\s]+)', args)
             if match:
@@ -239,12 +246,18 @@ class SharedLogic: # for logic used in multiple windows
                         remove_arg(unimplemented,arg,match)
                 
 
-        def set_checkbox_input(checkBox, arg,unimplemented):
+        def set_checkbox_input(checkBox, arg,unimplemented,clear):
+            if clear:
+                checkBox.setChecked(False)
+                return
             checkBox.setChecked(arg in self.read_gamescope_args()) # set checkbox state based on config
             unimplemented.remove(arg) if arg in unimplemented else None
             
 
-        def set_doubleSpinBox_input(doubleSpinBox, arg,unimplemented): #preferred for float values
+        def set_doubleSpinBox_input(doubleSpinBox, arg,unimplemented,clear): #preferred for float values
+            if clear:
+                doubleSpinBox.setValue(float(1))
+                return
             args = self.read_gamescope_args()
             match = search(rf'{arg} ([\d.]+)', args)
             if match:
@@ -253,21 +266,24 @@ class SharedLogic: # for logic used in multiple windows
 
   
 
-        def set_arguments(settings):
+        def set_arguments(settings,clear):
             unimplemented = self.read_gamescope_args().split()
             for widget_type, input_widget, arg in settings:
                 if widget_type == 'checkbox':
-                    set_checkbox_input(input_widget, arg,unimplemented)
+                    set_checkbox_input(input_widget, arg,unimplemented,clear)
                     unimplemented.remove(arg) if arg in unimplemented else None # remove the argument from the unimplemented list
                 elif widget_type == 'lineEdit':
-                    set_lineEdit_input(input_widget, arg,unimplemented)
+                    set_lineEdit_input(input_widget, arg,unimplemented,clear)
                 elif widget_type == 'comboBox':
-                    set_combobox_input(input_widget, arg,unimplemented)
+                    set_combobox_input(input_widget, arg,unimplemented,clear)
                 elif widget_type == 'doubleSpinBox':
-                    set_doubleSpinBox_input(input_widget, arg,unimplemented)
+                    set_doubleSpinBox_input(input_widget, arg,unimplemented,clear)
                 else:
                     raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
-                self.unimplemented.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
+                if clear:
+                    self.unimplemented.setText('')
+                else:
+                    self.unimplemented.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
             
         # IMPLEMENTED ARGUMENTS
         self.settings = [
@@ -291,7 +307,8 @@ class SharedLogic: # for logic used in multiple windows
             ('checkbox', self.fgCursor, '--force-grab-cursor'),
             ]
         
-        set_arguments(self.settings) # apply the current config to the UI elements
+
+        set_arguments(self.settings,clear) # apply the current config to the UI elements
 
     def apply_global_config(self):
         # set the config
@@ -367,6 +384,8 @@ class MainWindowLogic(SharedLogic):
         
         self.apply_button.clicked.connect(self.handle_proceed)
         self.help_button.clicked.connect(lambda: os.system('xdg-open "https://rfrench3.github.io/scopebuddy-gui/"'))
+        self.reset_button.clicked.connect(self.handle_reset)
+        self.defaults_button.clicked.connect(self.handle_defaults)
 
     def handle_proceed(self):
         print("Apply button clicked...")
@@ -376,6 +395,16 @@ class MainWindowLogic(SharedLogic):
         else:
             dialog = ApplyWindowLogic(self.window)
             dialog.exec()
+
+    def handle_reset(self):
+        print('Reset button clicked...')
+        self.apply_current_to_ui()
+        pass
+
+    def handle_defaults(self):
+        print('Defaults button clicked...')
+        self.apply_current_to_ui(clear=True)
+        pass
 
     def ensure_valid_args(self) -> tuple:
         #TODO: Before adding more checks, make a general function for checking
