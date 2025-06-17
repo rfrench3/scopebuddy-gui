@@ -42,10 +42,17 @@
   <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image type="local">/src/img/mainWindow.png</image>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v1.0.1/src/img/mainWindow.png</image>
     </screenshot>
     <screenshot>
-      <image type="local">/src/img/applyWindow.png</image>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v1.0.1/src/img/applyWindow.png</image>
     </screenshot>
   </screenshots>
+  <releases>
+    <release version="1.0.2" date="2025-06-17">
+      <description>
+        Initial release.
+      </description>
+    </release>
+  </releases>
 </component>
