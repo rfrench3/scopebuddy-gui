@@ -6,7 +6,7 @@ import os
 from re import search # for searching for gamescope args in the config file
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
+from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
 from PySide6.QtGui import QIntValidator, QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
@@ -34,14 +34,12 @@ if in_flatpak():
     print('IN FLATPAK!')
     uipath_main = "/app/share/scopebuddygui/mainwindow2.ui"
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
-    uipath_error = "/app/share/scopebuddygui/apply_error.ui"
     iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
 else:
     print('NOT IN FLATPAK!')
     uipath_main = "./src/mainwindow2.ui"
     uipath_confirm = "./src/apply_confirmation.ui"
-    uipath_error = "./src/apply_error.ui"
     iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
 
@@ -389,12 +387,24 @@ class MainWindowLogic(SharedLogic):
 
     def handle_proceed(self):
         print("Apply button clicked...")
+
         if not self.ensure_valid_args()[0]:
-            dialog = ApplyErrorWindowLogic(self.window)
-            dialog.exec()
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText(
+                "Your set of arguments will not function!\n"
+                "You must not:\n"
+                "- Set Rendered Width without setting Rendered Height\n"
+                "- Set Output Width without setting Output Height"
+            )
+            msg.setWindowTitle("Error!")
+            msg.exec()
         else:
-            dialog = ApplyWindowLogic(self.window)
-            dialog.exec()
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.NoIcon)
+            msg.setText("This is a default information dialog.")
+            msg.setWindowTitle("Apply Changes?")
+            msg.exec()
 
     def handle_reset(self):
         print('Reset button clicked...')
@@ -449,21 +459,6 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.apply_global_config()
         self.display_gamescope_args(logic.displayGamescope)
         self.close()
-
-class ApplyErrorWindowLogic(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        # Establish UI of apply window
-
-        ui_error = launch_window(uipath_error,"Configuration Error!",iconpath_svg)
-        #self.setWindowTitle("Configuration Error!")
-        if ui_error.layout():
-            self.setLayout(ui_error.layout())
-        # On-click actions
-        self.ok = self.findChild(QPushButton, "pushButton_ok")
-        if self.ok:
-            self.ok.clicked.connect(self.close)
-
 
 # Logic that loads the main window
 app = QApplication([])
