@@ -12,7 +12,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QUrl
 
 # used to update paths based on environment. returns True/False result of os.path.exists
-in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow2.ui")
+in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
 
 # bundle of ui-launching code
 def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
@@ -32,13 +32,13 @@ def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
 # set directories for testing and compiled into a flatpak
 if in_flatpak():
     print('IN FLATPAK!')
-    uipath_main = "/app/share/scopebuddygui/mainwindow2.ui"
+    uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
     iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
 else:
     print('NOT IN FLATPAK!')
-    uipath_main = "./src/mainwindow2.ui"
+    uipath_main = "./src/mainwindow.ui"
     uipath_confirm = "./src/apply_confirmation.ui"
     iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
