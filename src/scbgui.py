@@ -4,10 +4,11 @@ import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 import os
 from re import search # for searching for gamescope args in the config file
+import subprocess # for xdg-open
 
 #PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
-from PySide6.QtGui import QIntValidator, QIcon, QDesktopServices, QAction
+from PySide6.QtGui import QIntValidator, QIcon, QAction
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QUrl
 
@@ -546,7 +547,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.close()
 
     def open_with_text_editor(self):
-        QDesktopServices.openUrl(QUrl.fromLocalFile(scbpath))
+        subprocess.run(["xdg-open", scbpath])
 
 # Logic that loads the main window
 app = QApplication([])
