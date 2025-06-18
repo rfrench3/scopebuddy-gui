@@ -10,7 +10,11 @@ import subprocess # for xdg-open
 from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
 from PySide6.QtGui import QIntValidator, QIcon, QAction
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QUrl
+from PySide6.QtCore import QFile
+
+#TROUBLESHOOTING
+from PySide6.QtGui import QDesktopServices
+from PySide6.QtCore import QUrl
 
 # used to update paths based on environment. returns True/False result of os.path.exists
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
@@ -547,7 +551,24 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.close()
 
     def open_with_text_editor(self):
-        subprocess.run(["xdg-open", scbpath])
+        try:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(scbpath))
+        except:
+            print('Qt thing failed, trying xdg portal now')
+        try:
+            result = subprocess.run(
+                ["xdg-open", scbpath],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            print("xdg-open output:", result.stdout)
+            print("xdg-open error:", result.stderr)
+        except subprocess.CalledProcessError as e:
+            print("xdg-open failed:", e)
+            print("stdout:", e.stdout)
+            print("stderr:", e.stderr)
 
 # Logic that loads the main window
 app = QApplication([])
