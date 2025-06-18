@@ -394,10 +394,11 @@ class MainWindowLogic(SharedLogic):
         self.menu_output.addActions([self.action_1080p_o,self.action_1440p_o,self.action_4k_o])
 
         self.menu_fps = QMenu()
+        self.action_0 = QAction("No fps cap (default)", self.menu_fps)
         self.action_30 = QAction("Set 30fps cap (Low)", self.menu_fps)
         self.action_60 = QAction("Set 60fps cap (Medium)", self.menu_fps)
         self.action_120 = QAction("Set 120fps cap (High)", self.menu_fps)
-        self.menu_fps.addActions([self.action_30,self.action_60,self.action_120])
+        self.menu_fps.addActions([self.action_0,self.action_30,self.action_60,self.action_120])
 
 
 
@@ -415,18 +416,19 @@ class MainWindowLogic(SharedLogic):
 
 
         # Connect actions to slots or functions
-        
-        self.action_1080p_r.triggered.connect(lambda: print("Set rendered resolution to 1920x1080"))
-        self.action_1440p_r.triggered.connect(lambda: print("Set rendered resolution to 2560x1440"))
-        self.action_4k_r.triggered.connect(lambda: print("Set rendered resolution to 4K UHD"))
 
-        self.action_1080p_o.triggered.connect(lambda: print("Set output size to 1920x1080"))
-        self.action_1440p_o.triggered.connect(lambda: print("Set output size to 2560x1440"))
-        self.action_4k_o.triggered.connect(lambda: print("Set output size to 4K UHD"))
+        self.action_1080p_r.triggered.connect(self.handle_menu_renderedResolution_1)
+        self.action_1440p_r.triggered.connect(self.handle_menu_renderedResolution_2)
+        self.action_4k_r.triggered.connect(self.handle_menu_renderedResolution_3)
 
-        self.action_30.triggered.connect(lambda: print("Set max FPS to 30"))
-        self.action_60.triggered.connect(lambda: print("Set max FPS to 60"))
-        self.action_120.triggered.connect(lambda: print("Set max FPS to 120"))
+        self.action_1080p_o.triggered.connect(self.handle_menu_outputResolution_1)
+        self.action_1440p_o.triggered.connect(self.handle_menu_outputResolution_2)
+        self.action_4k_o.triggered.connect(self.handle_menu_outputResolution_3)
+
+        self.action_0.triggered.connect(lambda: self.fps.setText(''))
+        self.action_30.triggered.connect(lambda: self.fps.setText('30'))
+        self.action_60.triggered.connect(lambda: self.fps.setText('60'))
+        self.action_120.triggered.connect(lambda: self.fps.setText('120'))
 
 
         # Connect the buttonBox buttons to actions
@@ -456,6 +458,7 @@ class MainWindowLogic(SharedLogic):
 
     def handle_reset(self):
         print('Reset button clicked...')
+        self.apply_current_to_ui(clear=True)#cleans out all input fields
         self.apply_current_to_ui()
         pass
 
@@ -476,7 +479,33 @@ class MainWindowLogic(SharedLogic):
         
         return (True,) #nothing went wrong        
 
-        
+    # Menu handling section
+
+    def handle_menu_renderedResolution_1(self):
+        print("Set rendered resolution to 1920x1080")
+        self.rWidth.setText('1920')
+        self.rHeight.setText('1080')
+    def handle_menu_renderedResolution_2(self):
+        print("Set rendered resolution to 2560x1440")
+        self.rWidth.setText('2560')
+        self.rHeight.setText('1440')
+    def handle_menu_renderedResolution_3(self):
+        print("Set rendered resolution to 4K UHD")
+        self.rWidth.setText('3840')
+        self.rHeight.setText('2160')
+
+    def handle_menu_outputResolution_1(self):
+        print("Set output resolution to 1920x1080")
+        self.oWidth.setText('1920')
+        self.oHeight.setText('1080')
+    def handle_menu_outputResolution_2(self):
+        print("Set output resolution to 2560x1440")
+        self.oWidth.setText('2560')
+        self.oHeight.setText('1440')
+    def handle_menu_outputResolution_3(self):
+        print("Set output resolution to 4K UHD")
+        self.oWidth.setText('3840')
+        self.oHeight.setText('2160')
 
 class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
