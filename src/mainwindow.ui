@@ -1864,13 +1864,6 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
       </layout>
      </widget>
     </item>
-    <item>
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Orientation::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
