@@ -1874,17 +1874,6 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="variable_displayGamescope">
-   <property name="text">
-    <string>display Gamescope</string>
-   </property>
-   <property name="toolTip">
-    <string>displays Gamescope</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::MenuRole::TextHeuristicRole</enum>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>

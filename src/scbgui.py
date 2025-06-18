@@ -6,8 +6,8 @@ import os
 from re import search # for searching for gamescope args in the config file
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
-from PySide6.QtGui import QIntValidator, QIcon, QDesktopServices
+from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
+from PySide6.QtGui import QIntValidator, QIcon, QDesktopServices, QAction
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QUrl
 
@@ -371,11 +371,63 @@ class MainWindowLogic(SharedLogic):
         self.help_button = self.buttonBox.button(QDialogButtonBox.Help)
         self.reset_button = self.buttonBox.button(QDialogButtonBox.Reset)
         self.defaults_button = self.buttonBox.button(QDialogButtonBox.RestoreDefaults)
+        self.toolButton_renderedResolution = self.window.findChild(QToolButton,"toolButton_renderedResolution")
+        self.toolButton_outputResolution = self.window.findChild(QToolButton,"toolButton_outputResolution")
+        self.toolButton_fps = self.window.findChild(QToolButton,"toolButton_fps")
 
         # Setup UI elements
 
         self.display_gamescope_args(self.statusBar)
         self.apply_current_to_ui()
+
+        # Setup menus
+        self.menu_rendered = QMenu()
+        self.action_1080p_r = QAction("Render at 1920x1080 (Best for compatibility)", self.menu_rendered)
+        self.action_1440p_r = QAction("Render at 2560x1440", self.menu_rendered)
+        self.action_4k_r = QAction("Render at 3840x2160 (4K UHD)", self.menu_rendered)
+        self.menu_rendered.addActions([self.action_1080p_r,self.action_1440p_r,self.action_4k_r])
+        
+        self.menu_output = QMenu()
+        self.action_1080p_o = QAction("Output to 1920x1080", self.menu_output)
+        self.action_1440p_o = QAction("Output to 2560x1440", self.menu_output)
+        self.action_4k_o = QAction("Output to 3840x2160 (4K UHD)", self.menu_output)
+        self.menu_output.addActions([self.action_1080p_o,self.action_1440p_o,self.action_4k_o])
+
+        self.menu_fps = QMenu()
+        self.action_30 = QAction("Set 30fps cap (Low)", self.menu_fps)
+        self.action_60 = QAction("Set 60fps cap (Medium)", self.menu_fps)
+        self.action_120 = QAction("Set 120fps cap (High)", self.menu_fps)
+        self.menu_fps.addActions([self.action_30,self.action_60,self.action_120])
+
+
+
+        self.toolButton_renderedResolution.setMenu(self.menu_rendered)
+        self.toolButton_renderedResolution.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_renderedResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }")
+
+        self.toolButton_outputResolution.setMenu(self.menu_output)
+        self.toolButton_outputResolution.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_outputResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }")
+
+        self.toolButton_fps.setMenu(self.menu_fps)
+        self.toolButton_fps.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_fps.setStyleSheet("QToolButton::menu-indicator { image: none; }")
+
+
+        # Connect actions to slots or functions
+        
+        self.action_1080p_r.triggered.connect(lambda: print("Set rendered resolution to 1920x1080"))
+        self.action_1440p_r.triggered.connect(lambda: print("Set rendered resolution to 2560x1440"))
+        self.action_4k_r.triggered.connect(lambda: print("Set rendered resolution to 4K UHD"))
+
+        self.action_1080p_o.triggered.connect(lambda: print("Set output size to 1920x1080"))
+        self.action_1440p_o.triggered.connect(lambda: print("Set output size to 2560x1440"))
+        self.action_4k_o.triggered.connect(lambda: print("Set output size to 4K UHD"))
+
+        self.action_30.triggered.connect(lambda: print("Set max FPS to 30"))
+        self.action_60.triggered.connect(lambda: print("Set max FPS to 60"))
+        self.action_120.triggered.connect(lambda: print("Set max FPS to 120"))
+
 
         # Connect the buttonBox buttons to actions
         
