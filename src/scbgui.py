@@ -374,9 +374,11 @@ class MainWindowLogic(SharedLogic):
         self.toolButton_renderedResolution = self.window.findChild(QToolButton,"toolButton_renderedResolution")
         self.toolButton_outputResolution = self.window.findChild(QToolButton,"toolButton_outputResolution")
         self.toolButton_fps = self.window.findChild(QToolButton,"toolButton_fps")
-
+        
         # Setup UI elements
 
+        self.defaults_button.setText("Clear")
+        self.reset_button.setText("Set to saved")
         self.display_gamescope_args(self.statusBar)
         self.apply_current_to_ui()
 
