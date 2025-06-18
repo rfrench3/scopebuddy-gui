@@ -551,24 +551,19 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.close()
 
     def open_with_text_editor(self):
-        try:
-            QDesktopServices.openUrl(QUrl.fromLocalFile(scbpath))
-        except:
-            print('Qt thing failed, trying xdg portal now')
-        try:
-            result = subprocess.run(
-                ["xdg-open", scbpath],
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True
-            )
-            print("xdg-open output:", result.stdout)
-            print("xdg-open error:", result.stderr)
-        except subprocess.CalledProcessError as e:
-            print("xdg-open failed:", e)
-            print("stdout:", e.stdout)
-            print("stderr:", e.stderr)
+        #TODO: neither xdg-open or the Qt version of it work, or give any sort of error logs...
+        # Figure out the issue later and just guide the user there for now.
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText(
+            "To reach and edit the config file, you must either:\n"
+            "- Navigate using the files app into the hidden .config folder, and then into the scopebuddy folder\n"
+            "- Enter the following line into a terminal:\n"
+            "xdg-open ~/.config/scopebuddy/scb.conf"
+        )
+        msg.setWindowTitle("Not fully implemented!")
+        msg.exec()
+
 
 # Logic that loads the main window
 app = QApplication([])
