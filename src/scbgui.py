@@ -35,14 +35,14 @@ def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
 
 # set directories for testing and compiled into a flatpak
 if in_flatpak():
-    print('IN FLATPAK!')
+    #print('IN FLATPAK!')
     uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
     iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
     templatepath = "/app/share/default_scb.conf"
 else:
-    print('NOT IN FLATPAK!')
+    #print('NOT IN FLATPAK!')
     uipath_main = "./src/mainwindow.ui"
     uipath_confirm = "./src/apply_confirmation.ui"
     iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
@@ -51,14 +51,14 @@ else:
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
-print(f'config_dir: {config_dir}')
+#print(f'config_dir: {config_dir}')
 os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
-print(f'scbpath: {scbpath}') 
+#print(f'scbpath: {scbpath}') 
 
-print(f"Template exists: {os.path.exists(templatepath)}")
-print(f"Template path: {templatepath}")
-print(f"Target directory writable: {os.access(config_dir, os.W_OK)}")
+#print(f"Template exists: {os.path.exists(templatepath)}")
+#print(f"Template path: {templatepath}")
+#print(f"Target directory writable: {os.access(config_dir, os.W_OK)}")
 
 def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
     def ensure_gamescope_line(): 
@@ -106,11 +106,11 @@ def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, r
             
     try:
         if os.path.exists(scbpath):
-            print(f"Config file already exists at {scbpath}, ensuring the proper format...")
+            #print(f"Config file already exists at {scbpath}, ensuring the proper format...")
             ensure_gamescope_line()
             return
         else:
-            print(f"Creating config file at {scbpath} from template...")
+            #print(f"Creating config file at {scbpath} from template...")
             shutil.copyfile(templatepath, scbpath)
             ensure_gamescope_line()
             return
@@ -129,7 +129,7 @@ class SharedLogic: # for logic used in multiple windows
                     if match:
                         return match.group(1)
                     else:
-                        print('WARNING: CHECK UNCOMMENTED LINES!') # config file has incorrect format
+                        print('Error with config file: Bad SCB_GAMESCOPE_ARGS line detected!') # config file has incorrect format
                         #TODO: comment out the bad line and make a new good line?
             return ''
         
@@ -208,7 +208,7 @@ class SharedLogic: # for logic used in multiple windows
         for argument in self.config_list:
             generated_config += argument
         
-        print(f'The generated config file is {generated_config}')
+        #print(f'The generated config file is {generated_config}')
         return generated_config
     
     def apply_current_to_ui(self,clear=False): 
@@ -451,7 +451,7 @@ class MainWindowLogic(SharedLogic):
         self.defaults_button.clicked.connect(self.handle_defaults)
 
     def handle_proceed(self):
-        print("Apply button clicked...")
+        #print("Apply button clicked...")
 
         if not self.ensure_valid_args()[0]:
             msg = QMessageBox()
@@ -469,13 +469,13 @@ class MainWindowLogic(SharedLogic):
             dialog.exec()
 
     def handle_reset(self):
-        print('Reset button clicked...')
+        #print('Reset button clicked...')
         self.apply_current_to_ui(clear=True)#cleans out all input fields
         self.apply_current_to_ui()
         pass
 
     def handle_defaults(self):
-        print('Defaults button clicked...')
+        #print('Defaults button clicked...')
         self.apply_current_to_ui(clear=True)
         pass
 
@@ -494,28 +494,28 @@ class MainWindowLogic(SharedLogic):
     # Menu handling section
 
     def handle_menu_renderedResolution_1(self):
-        print("Set rendered resolution to 1920x1080")
+        #print("Set rendered resolution to 1920x1080")
         self.rWidth.setText('1920')
         self.rHeight.setText('1080')
     def handle_menu_renderedResolution_2(self):
-        print("Set rendered resolution to 2560x1440")
+        #print("Set rendered resolution to 2560x1440")
         self.rWidth.setText('2560')
         self.rHeight.setText('1440')
     def handle_menu_renderedResolution_3(self):
-        print("Set rendered resolution to 4K UHD")
+        #print("Set rendered resolution to 4K UHD")
         self.rWidth.setText('3840')
         self.rHeight.setText('2160')
 
     def handle_menu_outputResolution_1(self):
-        print("Set output resolution to 1920x1080")
+        #print("Set output resolution to 1920x1080")
         self.oWidth.setText('1920')
         self.oHeight.setText('1080')
     def handle_menu_outputResolution_2(self):
-        print("Set output resolution to 2560x1440")
+        #print("Set output resolution to 2560x1440")
         self.oWidth.setText('2560')
         self.oHeight.setText('1440')
     def handle_menu_outputResolution_3(self):
-        print("Set output resolution to 4K UHD")
+        #print("Set output resolution to 4K UHD")
         self.oWidth.setText('3840')
         self.oHeight.setText('2160')
 
