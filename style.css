@@ -1,0 +1,41 @@
+header {
+  background: #6a6a6a;
+  width: 100%;
+  padding: 3rem 0 2rem 0;
+  color: #fff;
+  margin-bottom: 0rem;
+}
+
+header img {
+  max-width: 12rem;
+  height: auto;
+}
+
+header p {
+  font-size: 1.5rem;
+}
+
+.navigator {
+  color: rgb(255, 255, 255);
+}
+
+.card {
+  background: whitesmoke;
+}
+
+
+/* RTL support for text alignment */
+html[dir="rtl"] .text-center {
+  text-align: right;
+}
+html[dir="rtl"] .text-end {
+  text-align: left;
+}
+html[dir="rtl"] .text-start {
+  text-align: right;
+}
+
+/* RTL: align all content to the right */
+html[dir="rtl"] body {
+  text-align: right;
+}
