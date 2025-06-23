@@ -19,7 +19,7 @@ from PySide6.QtCore import Qt
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
 
 # bundle of ui-launching code
-def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
+def launch_window(ui_path:str,window_title:str="WindowTitle",icon:str=""):
     # new_window = launch_window(pathToUI,title,pathToIcon)
     loader = QUiLoader()
     ui = QFile(ui_path)
@@ -29,25 +29,22 @@ def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
 
     #set window attributes
     variable_name.setWindowTitle(window_title)
-    if iconpath:#leave as default if unspecified
-        variable_name.setWindowIcon(QIcon(iconpath))
+    variable_name.setWindowIcon(QIcon(path_svg))
     return variable_name
 
 # set directories for testing and compiled into a flatpak
 if in_flatpak():
-    #print('IN FLATPAK!')
-    uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
-    uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
-    iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
-    iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
-    templatepath = "/app/share/scopebuddygui/default_scb.conf"
+    path_elements = "/app/share/scopebuddygui/"
+    path_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
+    path_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
 else:
-    #print('NOT IN FLATPAK!')
-    uipath_main = "./src/mainwindow.ui"
-    uipath_confirm = "./src/apply_confirmation.ui"
-    iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
-    iconpath_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
-    templatepath = "./src/default_scb.conf"
+    path_elements = "./src/"
+    path_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
+    path_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
+
+ui_main = path_elements + "mainwindow.ui"
+ui_confirm = path_elements + "apply_confirmation.ui"
+template = path_elements + "default_scb.conf"
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
@@ -56,8 +53,8 @@ os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
 #print(f'scbpath: {scbpath}') 
 
-#print(f"Template exists: {os.path.exists(templatepath)}")
-#print(f"Template path: {templatepath}")
+#print(f"Template exists: {os.path.exists(template)}")
+#print(f"Template path: {template}")
 #print(f"Target directory writable: {os.access(config_dir, os.W_OK)}")
 
 def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
@@ -111,7 +108,7 @@ def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, r
             return
         else:
             #print(f"Creating config file at {scbpath} from template...")
-            shutil.copyfile(templatepath, scbpath)
+            shutil.copyfile(template, scbpath)
             ensure_gamescope_line()
             return
     except Exception as e:
@@ -523,7 +520,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Establish UI of apply window
-        ui_apply = launch_window(uipath_confirm,"Apply Changes?",iconpath_svg)
+        ui_apply = launch_window(ui_confirm,"Apply Changes?",path_svg)
         if ui_apply.layout():
             self.setLayout(ui_apply.layout())
 
@@ -573,7 +570,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
 # Logic that loads the main window
 app = QApplication([])
 
-window_main = launch_window(uipath_main,"Scopebuddy GUI",iconpath_svg)
+window_main = launch_window(ui_main,"Scopebuddy GUI",path_svg)
 logic = MainWindowLogic(window_main)
 
 window_main.show()
