@@ -79,12 +79,12 @@ def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, r
                 else:
                     #the line will be commented out because it will probably cause errors.
                     #a proper line will be placed after it
-                    lines[i:i+1] = [f'#{line}', new_line]
+                    lines[i:i+1] = [f'#SCBGUI_ERROR_PREVENTATION!#{line}', new_line]
                     with open(scbpath, 'w') as file: 
                         file.writelines(lines)
                     return
 
-        # Assume the gamescope_args line has no breaking issues at this point
+        # Assume the gamescope_args line has no breaking issues at this point.
 
         # check for the default commented out line in the config file.
         # if found, place the new gamescope line right after it
