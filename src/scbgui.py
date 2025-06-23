@@ -15,7 +15,7 @@ from PySide6.QtCore import Qt
 
 def in_flatpak() -> bool:
     """Return True if running inside a Flatpak sandbox."""
-    return os.environ.get("FLATPAK_SANDBOX_DIR") is not None
+    return os.path.exists("/.flatpak-info")
 
 # set directories for testing and compiled into a flatpak
 
