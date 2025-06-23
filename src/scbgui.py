@@ -18,57 +18,38 @@ def in_flatpak() -> bool:
     return os.environ.get("FLATPAK_SANDBOX_DIR") is not None
 
 # set directories for testing and compiled into a flatpak
-if in_flatpak():
-    path_elements = "/app/share/scopebuddygui/"
-    path_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
-    path_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
-else:
-    path_elements = "./src/"
-    path_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
-    path_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
 
-ui_main = path_elements + "mainwindow.ui"
-ui_confirm = path_elements + "apply_confirmation.ui"
-template = path_elements + "default_scb.conf"
+path = "/app/share/scopebuddygui/" if in_flatpak() else "./src/"
 
-def icon_path(path_svg,path_png) -> str:
-    # tries to load the svg icon, app falls back to png if it fails
-    icon = QIcon(path_svg)
-    if icon.isNull():
-        path_icon = path_png
-    else:
-        path_icon = path_svg
-    return path_icon
+ui_main = path + "mainwindow.ui"
+ui_confirm = path + "apply_confirmation.ui"
+template = path + "default_scb.conf"
+
 
 # bundle of ui-launching code
-def launch_window(ui_path:str,window_title:str="WindowTitle"):
-    # new_window = launch_window(pathToUI,title)
+def launch_window(ui_file:str,window_title:str="WindowTitle"):
+    """Launch a new window of the given ui element, optionally set the window title."""
     loader = QUiLoader()
-    ui = QFile(ui_path)
-    ui.open(QFile.ReadOnly)
+    ui = QFile(ui_file)
+    ui.open(QFile.OpenModeFlag.ReadOnly)
     variable_name = loader.load(ui)
     ui.close()
 
     #set window attributes
     variable_name.setWindowTitle(window_title)
-    variable_name.setWindowIcon(QIcon(icon_path(path_svg,path_png)))
+    variable_name.setWindowIcon(icon)
     return variable_name
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
-#print(f'config_dir: {config_dir}')
 os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
-#print(f'scbpath: {scbpath}') 
 
-#print(f"Template exists: {os.path.exists(template)}")
-#print(f"Template path: {template}")
-#print(f"Target directory writable: {os.access(config_dir, os.W_OK)}")
-
-def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
+def ensure_file(scbpath) -> None: 
+    """creates scb.conf if it doesn't exist, and calls on ensure_gamescope_line afterwards."""
     def ensure_gamescope_line(): 
-        # if config file doesn't have the gamescope args line, create one in the best place.
-        # this will be where a commented out line is if one is found, or at the end.
+        """ if config file doesn't have the gamescope args line, create one in the best place.
+        this will be where a commented out line is if one is found, or at the end."""
 
         # will be used if the correct line isn't already present
         new_line = f'SCB_GAMESCOPE_ARGS=""\n'
@@ -378,16 +359,16 @@ class MainWindowLogic(SharedLogic):
         self.proceed = self.window.findChild(QPushButton,"pushButton_continue")
         self.statusBar = self.window.findChild(QStatusBar,"statusBar")
         self.buttonBox = self.window.findChild(QDialogButtonBox,"buttonBox")
-        self.apply_button = self.buttonBox.button(QDialogButtonBox.Apply)
-        self.help_button = self.buttonBox.button(QDialogButtonBox.Help)
-        self.reset_button = self.buttonBox.button(QDialogButtonBox.Reset)
-        self.defaults_button = self.buttonBox.button(QDialogButtonBox.RestoreDefaults)
+        self.apply_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Apply)
+        self.help_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Help)
+        self.reset_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Reset)
+        self.defaults_button = self.buttonBox.button(QDialogButtonBox.StandardButton.RestoreDefaults)
         self.toolButton_renderedResolution = self.window.findChild(QToolButton,"toolButton_renderedResolution")
         self.toolButton_outputResolution = self.window.findChild(QToolButton,"toolButton_outputResolution")
         self.toolButton_fps = self.window.findChild(QToolButton,"toolButton_fps")
         # Create a QLabel in the statusBar, aligned to the left and vertically centered
         self.status_label = QLabel()
-        self.status_label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
         self.statusBar.addWidget(self.status_label, 1)
 
         # Setup UI elements
@@ -420,15 +401,15 @@ class MainWindowLogic(SharedLogic):
 
 
         self.toolButton_renderedResolution.setMenu(self.menu_rendered)
-        self.toolButton_renderedResolution.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_renderedResolution.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         self.toolButton_renderedResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }")
 
         self.toolButton_outputResolution.setMenu(self.menu_output)
-        self.toolButton_outputResolution.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_outputResolution.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         self.toolButton_outputResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }")
 
         self.toolButton_fps.setMenu(self.menu_fps)
-        self.toolButton_fps.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_fps.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         self.toolButton_fps.setStyleSheet("QToolButton::menu-indicator { image: none; }")
 
 
@@ -460,7 +441,7 @@ class MainWindowLogic(SharedLogic):
 
         if not self.ensure_valid_args()[0]:
             msg = QMessageBox()
-            msg.setIcon(QMessageBox.Warning)
+            msg.setIcon(QMessageBox.Icon.Warning)
             msg.setText(
                 "Your set of arguments will not function!\n"
                 "You must not:\n"
@@ -468,6 +449,7 @@ class MainWindowLogic(SharedLogic):
                 "- Set Output Width without setting Output Height"
             )
             msg.setWindowTitle("Error!")
+            msg.setWindowIcon(icon)
             msg.exec()
         else:
             dialog = ApplyWindowLogic(self.window)
@@ -536,11 +518,11 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         self.currentConfig = self.findChild(QLabel,"var_currentConfig")
         self.newConfig = self.findChild(QLabel,"var_newConfig")
         self.buttonBox = self.findChild(QDialogButtonBox,"buttonBox")
-        self.save_button = self.buttonBox.button(QDialogButtonBox.Save)
-        self.abort_button = self.buttonBox.button(QDialogButtonBox.Abort)
+        self.save_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Save)
+        self.abort_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Abort)
         # Add a custom "Edit Config" button to the buttonBox
         self.edit_button = QPushButton("Edit Directly")
-        self.buttonBox.addButton(self.edit_button, QDialogButtonBox.ActionRole)
+        self.buttonBox.addButton(self.edit_button, QDialogButtonBox.ButtonRole.ActionRole)
         
 
 
@@ -564,7 +546,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
         #TODO: neither xdg-open or the Qt version of it work, or give any sort of error logs...
         # Figure out the issue later and just guide the user there for now.
         msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
+        msg.setIcon(QMessageBox.Icon.Information)
         msg.setText(
             "To reach and edit the config file, you must either:\n"
             "- Navigate using the files app into the hidden .config folder, and then into the scopebuddy folder\n"
@@ -572,11 +554,13 @@ class ApplyWindowLogic(QDialog, SharedLogic):
             "xdg-open ~/.config/scopebuddy/scb.conf"
         )
         msg.setWindowTitle("Not fully implemented!")
+        msg.setWindowIcon(icon)
         msg.exec()
 
 
 # Logic that loads the main window
 app = QApplication([])
+icon = QIcon.fromTheme("io.github.rfrench3.scopebuddy-gui")
 
 window_main = launch_window(ui_main,"Scopebuddy GUI")
 logic = MainWindowLogic(window_main)
