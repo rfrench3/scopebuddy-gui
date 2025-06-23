@@ -40,7 +40,7 @@ if in_flatpak():
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
     iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
-    templatepath = "/app/share/default_scb.conf"
+    templatepath = "/app/share/scopebuddygui/default_scb.conf"
 else:
     #print('NOT IN FLATPAK!')
     uipath_main = "./src/mainwindow.ui"
