@@ -13,10 +13,9 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6.QtCore import Qt
 
-
-
-# used to update paths based on environment. returns True/False result of os.path.exists
-in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
+def in_flatpak() -> bool:
+    """Return True if running inside a Flatpak sandbox."""
+    return os.environ.get("FLATPAK_SANDBOX_DIR") is not None
 
 # set directories for testing and compiled into a flatpak
 if in_flatpak():
