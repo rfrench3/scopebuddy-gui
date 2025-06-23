@@ -4,12 +4,16 @@ import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 import os
 from re import search # for searching for gamescope args in the config file
+import shutil
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel
-from PySide6.QtGui import QIntValidator, QIcon
+from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
+from PySide6.QtGui import QIntValidator, QIcon, QAction
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
+from PySide6.QtCore import Qt
+
+
 
 # used to update paths based on environment. returns True/False result of os.path.exists
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
@@ -25,92 +29,92 @@ def launch_window(ui_path:str,window_title:str="WindowTitle",iconpath:str=""):
 
     #set window attributes
     variable_name.setWindowTitle(window_title)
-    if iconpath:
+    if iconpath:#leave as default if unspecified
         variable_name.setWindowIcon(QIcon(iconpath))
     return variable_name
 
 # set directories for testing and compiled into a flatpak
 if in_flatpak():
-    print('IN FLATPAK!')
+    #print('IN FLATPAK!')
     uipath_main = "/app/share/scopebuddygui/mainwindow.ui"
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
-    uipath_error = "/app/share/scopebuddygui/apply_error.ui"
     iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
+    templatepath = "/app/share/default_scb.conf"
 else:
-    print('NOT IN FLATPAK!')
+    #print('NOT IN FLATPAK!')
     uipath_main = "./src/mainwindow.ui"
     uipath_confirm = "./src/apply_confirmation.ui"
-    uipath_error = "./src/apply_error.ui"
     iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
+    templatepath = "./src/default_scb.conf"
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
-print(f'config_dir: {config_dir}')
+#print(f'config_dir: {config_dir}')
 os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
-print(f'scbpath: {scbpath}') 
+#print(f'scbpath: {scbpath}') 
+
+#print(f"Template exists: {os.path.exists(templatepath)}")
+#print(f"Template path: {templatepath}")
+#print(f"Target directory writable: {os.access(config_dir, os.W_OK)}")
 
 def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
-    def ensure_gamescope_line() -> bool: #if config file doesn't have the gamescope args line, create one
-        with open(scbpath, 'r+') as file:
+    def ensure_gamescope_line(): 
+        # if config file doesn't have the gamescope args line, create one in the best place.
+        # this will be where a commented out line is if one is found, or at the end.
+
+        # will be used if the correct line isn't already present
+        new_line = f'SCB_GAMESCOPE_ARGS=""\n'
+
+        with open(scbpath, 'r') as file:
             lines = file.readlines()
-            for line in lines:
-                if line.startswith('SCB_GAMESCOPE_ARGS='):
-                    match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
-                    if match:
-                        return True
-            # no match was found, so create the necessary line
-            file.seek(0, os.SEEK_END) # ensure we are at the end of the file
+
+        for i, line in enumerate(lines):
+            if line.startswith('SCB_GAMESCOPE_ARGS='):
+                match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
+                if match:
+                    #the line is exists and is good
+                    return 
+                else:
+                    #the line will be commented out because it will probably cause errors.
+                    #a proper line will be placed after it
+                    lines[i:i+1] = [f'#SCBGUI_ERROR_PREVENTATION!#{line}', new_line]
+                    with open(scbpath, 'w') as file: 
+                        file.writelines(lines)
+                    return
+
+        # Assume the gamescope_args line has no breaking issues at this point.
+
+        # check for the default commented out line in the config file.
+        # if found, place the new gamescope line right after it
+        for i, line in enumerate(lines):
+            if line.startswith('#SCB_GAMESCOPE_ARGS'):
+                lines[i:i+1] = [line, new_line]
+                # Write the modified lines back to the file
+                with open(scbpath, 'w') as file:
+                    file.writelines(lines)
+                return
+    
+        # no match was found, so create the necessary line at the end of the file
+        with open(scbpath, 'a') as file:
             if lines and not lines[-1].endswith('\n'):
                 file.write('\n')
             file.write('SCB_GAMESCOPE_ARGS=""\n')
-            return True
-
-
-    try: #generates new config file with default values if necessary
+        return
+            
+    try:
         if os.path.exists(scbpath):
-            print(f"Config file already exists at {scbpath}, ensuring the proper format...")
+            #print(f"Config file already exists at {scbpath}, ensuring the proper format...")
             ensure_gamescope_line()
-            return True
+            return
         else:
-            print(f"Creating config file at {scbpath}...")
-        with open(scbpath,'w') as file:
-            # Create scopebuddy's default file (TODO: must be manually updated if ScopeBuddy changes)
-            file.write("# This is the config file that let's you assign defaults for gamescope when using the scopebuddy script\n")
-            file.write("# lines starting with # are ignored\n")
-            file.write("# Conf files matching the games Steam AppID stored in ~/.conf/scopebuddy/AppID/ will be sourced after\n")
-            file.write("# ~/.config/scopebuddy/scb.conf or whichever file you specify with SCB_CONF=someotherfile.conf env var in the launch options.\n")
-            file.write("# \n")
-            file.write("# Example for always exporting specific environment variables for gamescope\n")
-            file.write("#export XKB_DEFAULT_LAYOUT=no\n")
-            file.write("#export MANGOHUD_CONFIG=preset=2\n")
-            file.write("#\n")
-            file.write("# Example for providing default gamescope arguments through scopebuddy if no arguments are given to the scopebuddy script, this does not need to be exported.\n")
-            file.write("# To not use this default set of arguments, just launch scb with SCB_NOSCOPE=1 or just add any gamescope argument before the '-- %command%' then this variable will be ignored\n")
-            file.write("#SCB_GAMESCOPE_ARGS=\"--mangoapp -f -w 2560 -h 1440 -W 2560 -H 1440 -r 180 --force-grab-cursor --hdr-enabled -e\"\n")
-            file.write("#\n")
-            file.write("# To auto-detect KDE display width, height, refresh, VRR and HDR states, you can use SCB_AUTO_* {RES|HDR|VRR}\n")
-            file.write("# These vars will override any previously set values for -W and -H or append --hdr-enabled and --adaptive-sync\n")
-            file.write("# automatically depending on the current settings for your active display, or the display chosen with -O /\n")
-            file.write("# --prefer-output flags in gamescsope.\n")
-            file.write("#SCB_AUTO_RES=1\n")
-            file.write("#SCB_AUTO_HDR=1\n")
-            file.write("#SCB_AUTO_VRR=1\n")
-            file.write("# To debug scopebuddy output, uncomment the following line. After launching games, the executed cmd will be output to ~/.config/scopebuddy/scopebuddy.log\n")
-            file.write("#SCB_DEBUG=1\n")
-            file.write("###\n")
-            file.write("## FOR ADVANCED USE INSIDE AN APPID CONFIG\n")
-            file.write("###\n")
-            file.write("# The config files are treated as a bash script by scopebuddy, this means you can use bash to do simple tasks before the game runs\n")
-            file.write("# or you can check which mode scopebuddy is running in and apply settings accordingly, below are some handy variables for scripting.\n")
-            file.write("# $SCB_NOSCOPE will be set to 1 if we are running in no gamescope mode\n")
-            file.write("# $SCB_GAMEMODE will be set to 1 if we are running inside steam gamemode (which means SCB_NOSCOPE will also be set to 1 due to nested gamescope not working in gamemode)\n")
-            file.write("# $command will contain everything steam expanded %command% into\n")
-        ensure_gamescope_line()
-        return True
-    except OSError as e:
+            #print(f"Creating config file at {scbpath} from template...")
+            shutil.copyfile(templatepath, scbpath)
+            ensure_gamescope_line()
+            return
+    except Exception as e:
         print(f"Error creating config file: {e}")
 
 ensure_file(scbpath) # makes sure the scb.conf file exists and works properly
@@ -125,15 +129,21 @@ class SharedLogic: # for logic used in multiple windows
                     if match:
                         return match.group(1)
                     else:
-                        print('WARNING: CHECK UNCOMMENTED LINES!') # config file has incorrect format
+                        print('Error with config file: Bad SCB_GAMESCOPE_ARGS line detected!') # config file has incorrect format
                         #TODO: comment out the bad line and make a new good line?
             return ''
         
     def display_gamescope_args(self,widget): #for displaying to user, not for logic
-        if self.read_gamescope_args().strip() != '':
-            widget.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
-        else:
-            widget.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
+        if hasattr(widget, "showMessage"):#TODO: This needs to display more permanently, hovering over a menu makes this text disappear
+            if self.read_gamescope_args().strip() != '':
+                widget.showMessage(f'Current Gamescope Config: {self.read_gamescope_args()}')
+            else:
+                widget.showMessage(f'No Gamescope arguments active!')
+        else: 
+            if self.read_gamescope_args().strip() != '':
+                widget.setText(f'Current Gamescope Config: {self.read_gamescope_args()}') #display the current gamescope args
+            else:
+                widget.setText(f'No Gamescope arguments active!') #display the current lack of gamescope args
     
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
@@ -198,10 +208,11 @@ class SharedLogic: # for logic used in multiple windows
         for argument in self.config_list:
             generated_config += argument
         
-        print(f'The generated config file is {generated_config}')
+        #print(f'The generated config file is {generated_config}')
         return generated_config
     
-    def apply_current_to_ui(self): #checks current config, applies it to the UI
+    def apply_current_to_ui(self,clear=False): 
+        #checks current config, applies it to the UI. Empties UI if clear=True
 
         def remove_arg(unimplemented,arg,match):
             # Remove the first instance of the value after the argument (e.g., '-s 1.5')
@@ -214,7 +225,10 @@ class SharedLogic: # for logic used in multiple windows
                 pass
             unimplemented.remove(arg) if arg in unimplemented else None
 
-        def set_lineEdit_input(lineEdit:int, arg,unimplemented):
+        def set_lineEdit_input(lineEdit:int, arg,unimplemented,clear):
+            if clear:
+                lineEdit.setText('')
+                return
             args = self.read_gamescope_args()
             match = search(rf'{arg} (\d+)', args)
             if match:
@@ -222,7 +236,10 @@ class SharedLogic: # for logic used in multiple windows
                 remove_arg(unimplemented,arg,match)
                 
             
-        def set_combobox_input(comboBox, arg,unimplemented):
+        def set_combobox_input(comboBox, arg,unimplemented,clear):
+            if clear:
+                comboBox.setCurrentIndex(0)
+                return
             args = self.read_gamescope_args()
             match = search(rf'{arg} ([^\s]+)', args)
             if match:
@@ -233,12 +250,18 @@ class SharedLogic: # for logic used in multiple windows
                         remove_arg(unimplemented,arg,match)
                 
 
-        def set_checkbox_input(checkBox, arg,unimplemented):
+        def set_checkbox_input(checkBox, arg,unimplemented,clear):
+            if clear:
+                checkBox.setChecked(False)
+                return
             checkBox.setChecked(arg in self.read_gamescope_args()) # set checkbox state based on config
             unimplemented.remove(arg) if arg in unimplemented else None
             
 
-        def set_doubleSpinBox_input(doubleSpinBox, arg,unimplemented): #preferred for float values
+        def set_doubleSpinBox_input(doubleSpinBox, arg,unimplemented,clear): #preferred for float values
+            if clear:
+                doubleSpinBox.setValue(float(1))
+                return
             args = self.read_gamescope_args()
             match = search(rf'{arg} ([\d.]+)', args)
             if match:
@@ -247,21 +270,24 @@ class SharedLogic: # for logic used in multiple windows
 
   
 
-        def set_arguments(settings):
+        def set_arguments(settings,clear):
             unimplemented = self.read_gamescope_args().split()
             for widget_type, input_widget, arg in settings:
                 if widget_type == 'checkbox':
-                    set_checkbox_input(input_widget, arg,unimplemented)
+                    set_checkbox_input(input_widget, arg,unimplemented,clear)
                     unimplemented.remove(arg) if arg in unimplemented else None # remove the argument from the unimplemented list
                 elif widget_type == 'lineEdit':
-                    set_lineEdit_input(input_widget, arg,unimplemented)
+                    set_lineEdit_input(input_widget, arg,unimplemented,clear)
                 elif widget_type == 'comboBox':
-                    set_combobox_input(input_widget, arg,unimplemented)
+                    set_combobox_input(input_widget, arg,unimplemented,clear)
                 elif widget_type == 'doubleSpinBox':
-                    set_doubleSpinBox_input(input_widget, arg,unimplemented)
+                    set_doubleSpinBox_input(input_widget, arg,unimplemented,clear)
                 else:
                     raise NotImplementedError(f"Widget type '{widget_type}' is not implemented.")
-                self.unimplemented.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
+                if clear:
+                    self.unimplemented.setText('')
+                else:
+                    self.unimplemented.setText(' '.join(unimplemented)) # set the unimplemented arguments to the line edit
             
         # IMPLEMENTED ARGUMENTS
         self.settings = [
@@ -285,7 +311,8 @@ class SharedLogic: # for logic used in multiple windows
             ('checkbox', self.fgCursor, '--force-grab-cursor'),
             ]
         
-        set_arguments(self.settings) # apply the current config to the UI elements
+
+        set_arguments(self.settings,clear) # apply the current config to the UI elements
 
     def apply_global_config(self):
         # set the config
@@ -344,28 +371,113 @@ class MainWindowLogic(SharedLogic):
         self.unimplemented = self.window.findChild(QLineEdit,"lineEdit_unimplementedSettings")
         self.exitApp = self.window.findChild(QPushButton,"pushButton_exit")
         self.proceed = self.window.findChild(QPushButton,"pushButton_continue")
-        self.displayGamescope = self.window.findChild(QLabel,"variable_displayGamescope")
-        
-        self.display_gamescope_args(self.displayGamescope)
-        self.apply_current_to_ui()
-        
+        self.statusBar = self.window.findChild(QStatusBar,"statusBar")
+        self.buttonBox = self.window.findChild(QDialogButtonBox,"buttonBox")
+        self.apply_button = self.buttonBox.button(QDialogButtonBox.Apply)
+        self.help_button = self.buttonBox.button(QDialogButtonBox.Help)
+        self.reset_button = self.buttonBox.button(QDialogButtonBox.Reset)
+        self.defaults_button = self.buttonBox.button(QDialogButtonBox.RestoreDefaults)
+        self.toolButton_renderedResolution = self.window.findChild(QToolButton,"toolButton_renderedResolution")
+        self.toolButton_outputResolution = self.window.findChild(QToolButton,"toolButton_outputResolution")
+        self.toolButton_fps = self.window.findChild(QToolButton,"toolButton_fps")
+        # Create a QLabel in the statusBar, aligned to the left and vertically centered
+        self.status_label = QLabel()
+        self.status_label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
+        self.statusBar.addWidget(self.status_label, 1)
 
-        # On click actions
-        self.exitApp.clicked.connect(self.handle_exit)
-        self.proceed.clicked.connect(self.handle_proceed)
-    
-    def handle_exit(self):
-        print("Exiting application...")
-        QApplication.quit()
+        # Setup UI elements
+
+        self.defaults_button.setText("Clear")
+        self.reset_button.setText("Set to saved")
+        self.display_gamescope_args(self.status_label)
+        self.apply_current_to_ui()
+
+        # Setup menus
+        self.menu_rendered = QMenu()
+        self.action_1080p_r = QAction("Render at 1920x1080 (Best for compatibility)", self.menu_rendered)
+        self.action_1440p_r = QAction("Render at 2560x1440", self.menu_rendered)
+        self.action_4k_r = QAction("Render at 3840x2160 (4K UHD)", self.menu_rendered)
+        self.menu_rendered.addActions([self.action_1080p_r,self.action_1440p_r,self.action_4k_r])
+        
+        self.menu_output = QMenu()
+        self.action_1080p_o = QAction("Output to 1920x1080", self.menu_output)
+        self.action_1440p_o = QAction("Output to 2560x1440", self.menu_output)
+        self.action_4k_o = QAction("Output to 3840x2160 (4K UHD)", self.menu_output)
+        self.menu_output.addActions([self.action_1080p_o,self.action_1440p_o,self.action_4k_o])
+
+        self.menu_fps = QMenu()
+        self.action_0 = QAction("No fps cap (default)", self.menu_fps)
+        self.action_30 = QAction("Set 30fps cap (Low)", self.menu_fps)
+        self.action_60 = QAction("Set 60fps cap (Medium)", self.menu_fps)
+        self.action_120 = QAction("Set 120fps cap (High)", self.menu_fps)
+        self.menu_fps.addActions([self.action_0,self.action_30,self.action_60,self.action_120])
+
+
+
+        self.toolButton_renderedResolution.setMenu(self.menu_rendered)
+        self.toolButton_renderedResolution.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_renderedResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }")
+
+        self.toolButton_outputResolution.setMenu(self.menu_output)
+        self.toolButton_outputResolution.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_outputResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }")
+
+        self.toolButton_fps.setMenu(self.menu_fps)
+        self.toolButton_fps.setPopupMode(QToolButton.InstantPopup)
+        self.toolButton_fps.setStyleSheet("QToolButton::menu-indicator { image: none; }")
+
+
+        # Connect actions to slots or functions
+
+        self.action_1080p_r.triggered.connect(self.handle_menu_renderedResolution_1)
+        self.action_1440p_r.triggered.connect(self.handle_menu_renderedResolution_2)
+        self.action_4k_r.triggered.connect(self.handle_menu_renderedResolution_3)
+
+        self.action_1080p_o.triggered.connect(self.handle_menu_outputResolution_1)
+        self.action_1440p_o.triggered.connect(self.handle_menu_outputResolution_2)
+        self.action_4k_o.triggered.connect(self.handle_menu_outputResolution_3)
+
+        self.action_0.triggered.connect(lambda: self.fps.setText(''))
+        self.action_30.triggered.connect(lambda: self.fps.setText('30'))
+        self.action_60.triggered.connect(lambda: self.fps.setText('60'))
+        self.action_120.triggered.connect(lambda: self.fps.setText('120'))
+
+
+        # Connect the buttonBox buttons to actions
+        
+        self.apply_button.clicked.connect(self.handle_proceed)
+        self.help_button.clicked.connect(lambda: os.system('xdg-open "https://rfrench3.github.io/scopebuddy-gui/"'))
+        self.reset_button.clicked.connect(self.handle_reset)
+        self.defaults_button.clicked.connect(self.handle_defaults)
 
     def handle_proceed(self):
-        print("Apply button clicked...")
+        #print("Apply button clicked...")
+
         if not self.ensure_valid_args()[0]:
-            dialog = ApplyErrorWindowLogic(self.window)
-            dialog.exec()
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText(
+                "Your set of arguments will not function!\n"
+                "You must not:\n"
+                "- Set Rendered Width without setting Rendered Height\n"
+                "- Set Output Width without setting Output Height"
+            )
+            msg.setWindowTitle("Error!")
+            msg.exec()
         else:
             dialog = ApplyWindowLogic(self.window)
             dialog.exec()
+
+    def handle_reset(self):
+        #print('Reset button clicked...')
+        self.apply_current_to_ui(clear=True)#cleans out all input fields
+        self.apply_current_to_ui()
+        pass
+
+    def handle_defaults(self):
+        #print('Defaults button clicked...')
+        self.apply_current_to_ui(clear=True)
+        pass
 
     def ensure_valid_args(self) -> tuple:
         #TODO: Before adding more checks, make a general function for checking
@@ -379,51 +491,83 @@ class MainWindowLogic(SharedLogic):
         
         return (True,) #nothing went wrong        
 
-        
+    # Menu handling section
+
+    def handle_menu_renderedResolution_1(self):
+        #print("Set rendered resolution to 1920x1080")
+        self.rWidth.setText('1920')
+        self.rHeight.setText('1080')
+    def handle_menu_renderedResolution_2(self):
+        #print("Set rendered resolution to 2560x1440")
+        self.rWidth.setText('2560')
+        self.rHeight.setText('1440')
+    def handle_menu_renderedResolution_3(self):
+        #print("Set rendered resolution to 4K UHD")
+        self.rWidth.setText('3840')
+        self.rHeight.setText('2160')
+
+    def handle_menu_outputResolution_1(self):
+        #print("Set output resolution to 1920x1080")
+        self.oWidth.setText('1920')
+        self.oHeight.setText('1080')
+    def handle_menu_outputResolution_2(self):
+        #print("Set output resolution to 2560x1440")
+        self.oWidth.setText('2560')
+        self.oHeight.setText('1440')
+    def handle_menu_outputResolution_3(self):
+        #print("Set output resolution to 4K UHD")
+        self.oWidth.setText('3840')
+        self.oHeight.setText('2160')
 
 class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Establish UI of apply window
         ui_apply = launch_window(uipath_confirm,"Apply Changes?",iconpath_svg)
-        if ui_apply.layout():#TODO: could this be moved into launch_window?
+        if ui_apply.layout():
             self.setLayout(ui_apply.layout())
-        #self.setWindowTitle("Apply Changes?")
 
         # connect ui elements to code
         self.currentConfig = self.findChild(QLabel,"var_currentConfig")
         self.newConfig = self.findChild(QLabel,"var_newConfig")
+        self.buttonBox = self.findChild(QDialogButtonBox,"buttonBox")
+        self.save_button = self.buttonBox.button(QDialogButtonBox.Save)
+        self.abort_button = self.buttonBox.button(QDialogButtonBox.Abort)
+        # Add a custom "Edit Config" button to the buttonBox
+        self.edit_button = QPushButton("Edit Directly")
+        self.buttonBox.addButton(self.edit_button, QDialogButtonBox.ActionRole)
+        
+
 
         # display changes vs original
         self.currentConfig.setText(self.read_gamescope_args())
         self.newConfig.setText(self.generate_new_config())
 
         # On-click actions
-        self.cancel = self.findChild(QPushButton, "pushButton_Cancel")
-        if self.cancel:
-            self.cancel.clicked.connect(self.close)
-        self.apply = self.findChild(QPushButton, "pushButton_Apply")
-        if self.apply:
-            self.apply.clicked.connect(self.apply_clicked)
+        self.save_button.clicked.connect(self.apply_clicked)
+        self.abort_button.clicked.connect(self.close)
+        self.edit_button.clicked.connect(self.open_with_text_editor)
+
+
             
     def apply_clicked(self):
         self.apply_global_config()
-        self.display_gamescope_args(logic.displayGamescope)
+        self.display_gamescope_args(logic.statusBar)
         self.close()
 
-class ApplyErrorWindowLogic(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        # Establish UI of apply window
-
-        ui_error = launch_window(uipath_error,"Configuration Error!",iconpath_svg)
-        #self.setWindowTitle("Configuration Error!")
-        if ui_error.layout():
-            self.setLayout(ui_error.layout())
-        # On-click actions
-        self.ok = self.findChild(QPushButton, "pushButton_ok")
-        if self.ok:
-            self.ok.clicked.connect(self.close)
+    def open_with_text_editor(self):
+        #TODO: neither xdg-open or the Qt version of it work, or give any sort of error logs...
+        # Figure out the issue later and just guide the user there for now.
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText(
+            "To reach and edit the config file, you must either:\n"
+            "- Navigate using the files app into the hidden .config folder, and then into the scopebuddy folder\n"
+            "- Enter the following line into a terminal:\n"
+            "xdg-open ~/.config/scopebuddy/scb.conf"
+        )
+        msg.setWindowTitle("Not fully implemented!")
+        msg.exec()
 
 
 # Logic that loads the main window
