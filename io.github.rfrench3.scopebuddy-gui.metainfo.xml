@@ -49,9 +49,9 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="1.1.0" date="2025-06-22">
+    <release version="1.1.1" date="2025-06-22">
       <description>
-        Overhauls the UI, adds some new buttons.
+        Update backend code to be easier to work with.
       </description>
     </release>
   </releases>
