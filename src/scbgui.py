@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 import os
 from re import search # for searching for gamescope args in the config file
-import subprocess # for xdg-open
+import shutil
 
 #PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
@@ -12,9 +12,7 @@ from PySide6.QtGui import QIntValidator, QIcon, QAction
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 
-#TROUBLESHOOTING
-from PySide6.QtGui import QDesktopServices
-from PySide6.QtCore import QUrl
+
 
 # used to update paths based on environment. returns True/False result of os.path.exists
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
@@ -41,12 +39,14 @@ if in_flatpak():
     uipath_confirm = "/app/share/scopebuddygui/apply_confirmation.ui"
     iconpath_svg = "/app/share/icons/hicolor/scalable/apps/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "/app/share/icons/hicolor/128x128/apps/io.github.rfrench3.scopebuddy-gui.png"
+    templatepath = "/app/share/default_scb.conf"
 else:
     print('NOT IN FLATPAK!')
     uipath_main = "./src/mainwindow.ui"
     uipath_confirm = "./src/apply_confirmation.ui"
     iconpath_svg = "./src/img/io.github.rfrench3.scopebuddy-gui.svg"
     iconpath_png = "./src/img/io.github.rfrench3.scopebuddy-gui.png"
+    templatepath = "./src/default_scb.conf"
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
@@ -55,65 +55,65 @@ os.makedirs(config_dir, exist_ok=True)
 scbpath = os.path.join(config_dir, "scb.conf")
 print(f'scbpath: {scbpath}') 
 
+print(f"Template exists: {os.path.exists(templatepath)}")
+print(f"Template path: {templatepath}")
+print(f"Target directory writable: {os.access(config_dir, os.W_OK)}")
+
 def ensure_file(scbpath) -> bool | None: #create scb.conf if it doesn't exist, return True if successful
-    def ensure_gamescope_line() -> bool: #if config file doesn't have the gamescope args line, create one
-        with open(scbpath, 'r+') as file:
+    def ensure_gamescope_line(): 
+        # if config file doesn't have the gamescope args line, create one in the best place.
+        # this will be where a commented out line is if one is found, or at the end.
+
+        # will be used if the correct line isn't already present
+        new_line = f'SCB_GAMESCOPE_ARGS=""\n'
+
+        with open(scbpath, 'r') as file:
             lines = file.readlines()
-            for line in lines:
-                if line.startswith('SCB_GAMESCOPE_ARGS='):
-                    match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
-                    if match:
-                        return True
-            # no match was found, so create the necessary line
-            file.seek(0, os.SEEK_END) # ensure we are at the end of the file
+
+        for i, line in enumerate(lines):
+            if line.startswith('SCB_GAMESCOPE_ARGS='):
+                match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
+                if match:
+                    #the line is exists and is good
+                    return 
+                else:
+                    #the line will be commented out because it will probably cause errors.
+                    #a proper line will be placed after it
+                    lines[i:i+1] = [f'#{line}', new_line]
+                    with open(scbpath, 'w') as file: 
+                        file.writelines(lines)
+                    return
+
+        # Assume the gamescope_args line has no breaking issues at this point
+
+        # check for the default commented out line in the config file.
+        # if found, place the new gamescope line right after it
+        for i, line in enumerate(lines):
+            if line.startswith('#SCB_GAMESCOPE_ARGS'):
+                lines[i:i+1] = [line, new_line]
+                # Write the modified lines back to the file
+                with open(scbpath, 'w') as file:
+                    file.writelines(lines)
+                return
+    
+        # no match was found, so create the necessary line at the end of the file
+        with open(scbpath, 'a') as file:
             if lines and not lines[-1].endswith('\n'):
                 file.write('\n')
             file.write('SCB_GAMESCOPE_ARGS=""\n')
-            return True
-
-
-    try: #generates new config file with default values if necessary
+        return
+            
+    try:
         if os.path.exists(scbpath):
             print(f"Config file already exists at {scbpath}, ensuring the proper format...")
             ensure_gamescope_line()
-            return True
+            return
         else:
-            print(f"Creating config file at {scbpath}...")
-        with open(scbpath,'w') as file:
-            # Create scopebuddy's default file (TODO: must be manually updated if ScopeBuddy changes)
-            file.write("# This is the config file that let's you assign defaults for gamescope when using the scopebuddy script\n")
-            file.write("# lines starting with # are ignored\n")
-            file.write("# Conf files matching the games Steam AppID stored in ~/.conf/scopebuddy/AppID/ will be sourced after\n")
-            file.write("# ~/.config/scopebuddy/scb.conf or whichever file you specify with SCB_CONF=someotherfile.conf env var in the launch options.\n")
-            file.write("# \n")
-            file.write("# Example for always exporting specific environment variables for gamescope\n")
-            file.write("#export XKB_DEFAULT_LAYOUT=no\n")
-            file.write("#export MANGOHUD_CONFIG=preset=2\n")
-            file.write("#\n")
-            file.write("# Example for providing default gamescope arguments through scopebuddy if no arguments are given to the scopebuddy script, this does not need to be exported.\n")
-            file.write("# To not use this default set of arguments, just launch scb with SCB_NOSCOPE=1 or just add any gamescope argument before the '-- %command%' then this variable will be ignored\n")
-            file.write("#SCB_GAMESCOPE_ARGS=\"--mangoapp -f -w 2560 -h 1440 -W 2560 -H 1440 -r 180 --force-grab-cursor --hdr-enabled -e\"\n")
-            file.write("#\n")
-            file.write("# To auto-detect KDE display width, height, refresh, VRR and HDR states, you can use SCB_AUTO_* {RES|HDR|VRR}\n")
-            file.write("# These vars will override any previously set values for -W and -H or append --hdr-enabled and --adaptive-sync\n")
-            file.write("# automatically depending on the current settings for your active display, or the display chosen with -O /\n")
-            file.write("# --prefer-output flags in gamescsope.\n")
-            file.write("#SCB_AUTO_RES=1\n")
-            file.write("#SCB_AUTO_HDR=1\n")
-            file.write("#SCB_AUTO_VRR=1\n")
-            file.write("# To debug scopebuddy output, uncomment the following line. After launching games, the executed cmd will be output to ~/.config/scopebuddy/scopebuddy.log\n")
-            file.write("#SCB_DEBUG=1\n")
-            file.write("###\n")
-            file.write("## FOR ADVANCED USE INSIDE AN APPID CONFIG\n")
-            file.write("###\n")
-            file.write("# The config files are treated as a bash script by scopebuddy, this means you can use bash to do simple tasks before the game runs\n")
-            file.write("# or you can check which mode scopebuddy is running in and apply settings accordingly, below are some handy variables for scripting.\n")
-            file.write("# $SCB_NOSCOPE will be set to 1 if we are running in no gamescope mode\n")
-            file.write("# $SCB_GAMEMODE will be set to 1 if we are running inside steam gamemode (which means SCB_NOSCOPE will also be set to 1 due to nested gamescope not working in gamemode)\n")
-            file.write("# $command will contain everything steam expanded %command% into\n")
-        ensure_gamescope_line()
-        return True
-    except OSError as e:
+            print(f"Creating config file at {scbpath} from template...")
+            shutil.copyfile(templatepath, scbpath)
+            ensure_gamescope_line()
+            return
+    except Exception as e:
         print(f"Error creating config file: {e}")
 
 ensure_file(scbpath) # makes sure the scb.conf file exists and works properly
@@ -133,7 +133,7 @@ class SharedLogic: # for logic used in multiple windows
             return ''
         
     def display_gamescope_args(self,widget): #for displaying to user, not for logic
-        if hasattr(widget, "showMessage"):
+        if hasattr(widget, "showMessage"):#TODO: This needs to display more permanently, hovering over a menu makes this text disappear
             if self.read_gamescope_args().strip() != '':
                 widget.showMessage(f'Current Gamescope Config: {self.read_gamescope_args()}')
             else:
