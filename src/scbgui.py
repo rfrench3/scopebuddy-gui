@@ -11,6 +11,7 @@ from PySide6.QtWidgets import QApplication, QStatusBar, QDialog, QDialogButtonBo
 from PySide6.QtGui import QIntValidator, QIcon, QAction
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
+from PySide6.QtCore import Qt
 
 
 
@@ -379,12 +380,16 @@ class MainWindowLogic(SharedLogic):
         self.toolButton_renderedResolution = self.window.findChild(QToolButton,"toolButton_renderedResolution")
         self.toolButton_outputResolution = self.window.findChild(QToolButton,"toolButton_outputResolution")
         self.toolButton_fps = self.window.findChild(QToolButton,"toolButton_fps")
-        
+        # Create a QLabel in the statusBar, aligned to the left and vertically centered
+        self.status_label = QLabel()
+        self.status_label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
+        self.statusBar.addWidget(self.status_label, 1)
+
         # Setup UI elements
 
         self.defaults_button.setText("Clear")
         self.reset_button.setText("Set to saved")
-        self.display_gamescope_args(self.statusBar)
+        self.display_gamescope_args(self.status_label)
         self.apply_current_to_ui()
 
         # Setup menus
