@@ -18,20 +18,6 @@ from PySide6.QtCore import Qt
 # used to update paths based on environment. returns True/False result of os.path.exists
 in_flatpak = lambda: os.path.exists("/app/share/scopebuddygui/mainwindow.ui")
 
-# bundle of ui-launching code
-def launch_window(ui_path:str,window_title:str="WindowTitle",icon:str=""):
-    # new_window = launch_window(pathToUI,title,pathToIcon)
-    loader = QUiLoader()
-    ui = QFile(ui_path)
-    ui.open(QFile.ReadOnly)
-    variable_name = loader.load(ui)
-    ui.close()
-
-    #set window attributes
-    variable_name.setWindowTitle(window_title)
-    variable_name.setWindowIcon(QIcon(path_svg))
-    return variable_name
-
 # set directories for testing and compiled into a flatpak
 if in_flatpak():
     path_elements = "/app/share/scopebuddygui/"
@@ -45,6 +31,29 @@ else:
 ui_main = path_elements + "mainwindow.ui"
 ui_confirm = path_elements + "apply_confirmation.ui"
 template = path_elements + "default_scb.conf"
+
+def icon_path(path_svg,path_png) -> str:
+    # tries to load the svg icon, app falls back to png if it fails
+    icon = QIcon(path_svg)
+    if icon.isNull():
+        path_icon = path_png
+    else:
+        path_icon = path_svg
+    return path_icon
+
+# bundle of ui-launching code
+def launch_window(ui_path:str,window_title:str="WindowTitle"):
+    # new_window = launch_window(pathToUI,title)
+    loader = QUiLoader()
+    ui = QFile(ui_path)
+    ui.open(QFile.ReadOnly)
+    variable_name = loader.load(ui)
+    ui.close()
+
+    #set window attributes
+    variable_name.setWindowTitle(window_title)
+    variable_name.setWindowIcon(QIcon(icon_path(path_svg,path_png)))
+    return variable_name
 
 # Create the directory for /scopebuddy/scb.conf
 config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
@@ -520,7 +529,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Establish UI of apply window
-        ui_apply = launch_window(ui_confirm,"Apply Changes?",path_svg)
+        ui_apply = launch_window(ui_confirm,"Apply Changes?")
         if ui_apply.layout():
             self.setLayout(ui_apply.layout())
 
@@ -570,7 +579,7 @@ class ApplyWindowLogic(QDialog, SharedLogic):
 # Logic that loads the main window
 app = QApplication([])
 
-window_main = launch_window(ui_main,"Scopebuddy GUI",path_svg)
+window_main = launch_window(ui_main,"Scopebuddy GUI")
 logic = MainWindowLogic(window_main)
 
 window_main.show()
