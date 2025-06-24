@@ -1,3 +1,4 @@
+/* Same header styling as main page */
 body {
   background: #1a1a1a;
   color: #e4e4e7;
@@ -20,6 +21,7 @@ header .fs-4:hover {
   color: #60a5fa;
   text-decoration: none;
 }
+/* ---------- */
 
 
 
@@ -44,13 +46,25 @@ header .fs-4:hover {
   font-size: 0.9em;
 }
 
+#rendered_width,
+#rendered_height,
+#output_width,
+#output_height,
+#fps {
+  max-width: 10em;
+}
+
 #mouse_sensitivity {
   max-width: 5em;
 }
 
-#upscaler_type, #upscaler_filter {
+#upscaler_type, 
+#upscaler_filter {
   max-width: 16em;
 }
+/* ---------- */
+
+
 
 /* Navigation button styling */
 .btn-outline-light {
@@ -73,3 +87,4 @@ header .fs-4:hover {
   border-color: #3b82f6;
   color: #ffffff;
 }
+/* ---------- */
