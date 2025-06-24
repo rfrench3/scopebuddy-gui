@@ -3,6 +3,23 @@ body {
   color: #e4e4e7;
 }
 
+/* Link color styling */
+a {
+  color: #60a5fa;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+body a:visited:not(header a):not(header .btn):not(footer a) {
+  color: #a78bfa; /* purple shade */
+}
+
+a:hover,
+a:focus {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
 header {
   background: #2d2d30;
   width: 100%;
@@ -46,7 +63,7 @@ div.content-area {
 }
 
 .images {
-  max-width:50%;
+  max-width:75%;
   border:1px solid #ccc;
   margin-top:1em;
 }

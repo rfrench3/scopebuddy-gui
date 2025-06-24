@@ -106,6 +106,7 @@
             <img src="images/Desktop2.png" alt="Steam Launch Options Example" class="images">
             <br>
             <br>
+            <hr>
             <h2>Big Picture Mode</h2>
             
                 <li style="color: rgb(255, 88, 88);">On the SteamDeck interface (gamescope session), using scopebuddy results in gamescope launch arguments being ignored as they would otherwise prevent the game from starting; gamescope cannot be run within itself.</li>
@@ -139,10 +140,9 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <h2 class="card-title h5">Example Card</h2>
-            <p class="card-text">
-              paragraph text here. Copy this set of divs to add more cards.
-            </p>
+            <p>There is currently not an easy way to use scopebuddy with Lutris. I recommend you instead use the built-in gamescope configuration provided by Lutris.</p>
+            <p>For playing games on the Epic Game Store, Bazzite recommends using the Heroic Games Launcher.</p>
+            <p>guide for lutris not yet created</p>
           </div>
         </div>
       </div>
@@ -155,10 +155,7 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <h2 class="card-title h5">Example Card</h2>
-            <p class="card-text">
-              paragraph text here. Copy this set of divs to add more cards.
-            </p>
+            <p>guide for heroic not yet created</p>
           </div>
         </div>
       </div>
@@ -171,10 +168,13 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <h2 class="card-title h5">Example Card</h2>
-            <p class="card-text">
-              paragraph text here. Copy this set of divs to add more cards.
-            </p>
+            <h2>Low resolution, poor visual quality</h2>
+            <p>Make sure the resolution you chose the game to render at is a "regular, nice" value. Some examples are the ones in the dropdown menu, half of the resolution of your screen, exactly the resolution of your screen, etc.</p>
+            <p style="color: rgb(255, 88, 88);">Leaving the rendered resolution fields blank will lead to their default 720p resolution, which will look very low-quality on many screens! Setting the rendered resolution too high will cause poor performance.</p>
+            <p>If setting the rendered width and height to match your screen fails, you can also check the in-game settings to see if they can solve the problem! For example, I have noticed that Overwatch 2 works best with Gamescope when it is run in borderless window mode.</p>
+            <h2></h2>
+            <p></p>
+            <p>Over time, this section will be filled with issues that are commonly reported. If you have an issue, especially one that is easy to encounter, post it in the GitHub!</p>
           </div>
         </div>
       </div>
@@ -187,27 +187,19 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <h2 class="card-title h5">Example Card</h2>
-            <p class="card-text">
-              paragraph text here. Copy this set of divs to add more cards.
-            </p>
+            <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. The web-based version uses JavaScript. The app itself is built from source with the following commands (run inside of the app's main folder):</p>
+            <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
+            <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
+            <br>
+            <p>If you are interested in making a flatpak app with Qt and Python, or a website with bootstrap similar to this one, my GitHub has templates of both you can use!</p>
           </div>
         </div>
       </div>
     </section>
   </div>  
   <!-- Footer -->
-  <footer class="bg-light border-top py-4 mt-5">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-      <div class="mb-2 mb-md-0 text-muted small">
-        <a href="#" class="text-decoration-none text-muted mx-2">Left Footer Link</a>
-      </div>
-      <nav>
-        <a href="#" class="text-decoration-none text-muted mx-2">Right Footer Link 1</a>
-        <a href="#" class="text-decoration-none text-muted mx-2">Right Footer Link 2</a>
-        <a href="#" class="text-decoration-none text-muted mx-2" data-bs-toggle="modal" data-bs-target="#infoModal">Right Footer Modal</a>
-      </nav>
-    </div>
+  <footer class="bg-dark border-top py-4 mt-5 text-center">
+    <a href="#" class="btn btn-outline-light btn-sm">Return to top</a>
   </footer>
 
   <!-- bootstrap Modal window -->
