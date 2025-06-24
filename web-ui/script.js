@@ -53,7 +53,11 @@ function generateGamescopeConfig() {
     // end of entries
     editableList.push("-- %command%");
     let gamescope_line = editableList.join(' ');
+    const left_of_output = document.getElementById('left_of_output_config');
     const output = document.getElementById('output_config'); // send generated line to this element
+    if (left_of_output) {
+        left_of_output.textContent = 'Generated Config:';
+    }
     if (output) {
         output.textContent = gamescope_line;
     }
