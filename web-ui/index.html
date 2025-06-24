@@ -24,9 +24,9 @@
                     <label class="form-label mb-0" data-tooltip="DATA-TOOLTIP!.">Rendered Width, Rendered Height</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <input type="text" class="form-control w-auto me-2" id="rendered_width" placeholder="output width">
+                    <input type="number" class="form-control w-auto me-2" id="rendered_width" placeholder="output width" min="0" max="9999" step="1">
                     <span class="mx-1">x</span>
-                    <input type="text" class="form-control w-auto ms-2" id="rendered_height" placeholder="output height">
+                    <input type="number" class="form-control w-auto ms-2" id="rendered_height" placeholder="output height" min="0" max="9999" step="1">
                 </div>
             </div>
             <hr>
@@ -35,9 +35,9 @@
                     <label class="form-label mb-0" data-tooltip="This sets the output resolution.">Output Width, Output Height</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <input type="text" class="form-control w-auto me-2" id="output_width" placeholder="1280px">
+                    <input type="number" class="form-control w-auto me-2" id="output_width" placeholder="1280px" min="0" max="9999" step="1">
                     <span class="mx-1">x</span>
-                    <input type="text" class="form-control w-auto ms-2" id="output_height" placeholder="720px">
+                    <input type="number" class="form-control w-auto ms-2" id="output_height" placeholder="720px" min="0" max="9999" step="1">
                 </div>
             </div>
             <hr>
@@ -46,7 +46,7 @@
                     <label class="form-label mb-0" for="fps" data-tooltip="DATA-TOOLTIP!.">Refresh Rate (FPS)</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <input type="text" class="form-control w-auto ms-2" id="fps" placeholder="unlimited">
+                    <input type="number" class="form-control w-auto ms-2" id="fps" placeholder="unlimited" min="0" max="9999" step="1">
                 </div>
             </div>
             <hr>
@@ -132,7 +132,7 @@
                     <label class="form-label mb-0" for="mouse_sensitivity" data-tooltip="DATA-TOOLTIP!.">Mouse Sensitivity Factor</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <input type="number" step="0.01" min="0" value="1.00" class="form-control" id="mouse_sensitivity" />
+                    <input type="number" step="0.01" min="0" max="9999" value="1.00" class="form-control" id="mouse_sensitivity" />
                 </div>
             </div>
             <hr>
@@ -155,7 +155,7 @@
                     <label class="form-label mb-0" for="max_scale_factor" data-tooltip="DATA-TOOLTIP!.">Maximum Scale Factor</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <input type="text" class="form-control w-auto ms-2" id="max_scale_factor" placeholder="unlimited">
+                    <input type="number" class="form-control w-auto ms-2" id="max_scale_factor" placeholder="unlimited" min="0" max="9999" step="1">
                 </div>
             </div>
             <hr>
@@ -194,7 +194,7 @@
                     <label class="form-label mb-0" for="upscaler_sharpness" data-tooltip="DATA-TOOLTIP!.">Upscaler Sharpness</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <input type="text" class="form-control w-auto ms-2" id="upscaler_sharpness">
+                    <input type="number" class="form-control w-auto ms-2" id="upscaler_sharpness" min="0" max="20" step="1">
                 </div>
             </div>
             <hr>
@@ -203,7 +203,7 @@
             <hr>
             <div class="mb-3 row g-2 align-items-center">
 
-                <input type="text" class="form-control ms-2" id="max_scale_factor" placeholder="Place additional Gamescope launch arguments here. Example: -g --nested-unfocused-refresh 10">
+                <input type="text" class="form-control ms-2" id="additional_args" placeholder="Place additional Gamescope launch arguments here. Example: -g --nested-unfocused-refresh 10">
 
             </div>
         </form>
