@@ -17,14 +17,24 @@ def in_flatpak() -> bool:
     """Return True if running inside a Flatpak sandbox."""
     return os.path.exists("/.flatpak-info")
 
-# set directories for testing and compiled into a flatpak
+def get_data_path():
+    if os.path.basename(os.path.dirname(__file__)) == "src":
+        return os.path.abspath(os.path.dirname(__file__))
+    else:
+        return os.path.abspath(os.path.join(os.path.dirname(__file__), "../share/scopebuddygui"))
 
+DATA_DIR = get_data_path()
+
+ui_main = os.path.join(DATA_DIR, "mainwindow.ui")
+ui_confirm = os.path.join(DATA_DIR, "apply_confirmation.ui")
+template = os.path.join(DATA_DIR, "default_scb.conf")
+'''
 path = "/app/share/scopebuddygui/" if in_flatpak() else "./src/"
 
 ui_main = path + "mainwindow.ui"
 ui_confirm = path + "apply_confirmation.ui"
 template = path + "default_scb.conf"
-
+'''
 
 # bundle of ui-launching code
 def launch_window(ui_file:str,window_title:str="WindowTitle"):
