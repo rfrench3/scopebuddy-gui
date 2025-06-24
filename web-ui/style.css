@@ -3,6 +3,27 @@ body {
   color: #e4e4e7;
 }
 
+header {
+  background: #2d2d30;
+  width: 100%;
+  color: #ffffff;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #3f3f46;
+}
+
+header .fs-4 {
+  color: #f4f4f5;
+  transition: all 0.3s ease;
+}
+
+header .fs-4:hover {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+
+
+/* WebUI-specific CSS */
 [data-tooltip] {
   position: relative;
   cursor: pointer;
@@ -29,4 +50,26 @@ body {
 
 #upscaler_type, #upscaler_filter {
   max-width: 16em;
+}
+
+/* Navigation button styling */
+.btn-outline-light {
+  border-color: #60a5fa;
+  color: #60a5fa;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background-color: #60a5fa;
+  border-color: #60a5fa;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(96, 165, 250, 0.2);
+}
+
+.btn-outline-light:focus,
+.btn-outline-light:active {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
 }
