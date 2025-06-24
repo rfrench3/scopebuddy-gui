@@ -54,9 +54,10 @@ form {
   color: #fff;
   padding: 4px 8px;
   border-radius: 4px;
-  white-space: nowrap;
+  white-space: wrap;
   z-index: 10;
   font-size: 0.9em;
+  min-width: 320px;
 }
 
 #rendered_width,
