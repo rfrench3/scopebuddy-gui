@@ -1,14 +1,24 @@
-header {
-  background: #6a6a6a;
-  width: 100%;
-  padding: 3rem 0 2rem 0;
-  color: #fff;
-  margin-bottom: 0rem;
+body {
+  background: #1a1a1a;
+  color: #e4e4e7;
 }
 
-header img {
-  max-width: 12rem;
-  height: auto;
+header {
+  background: #2d2d30;
+  width: 100%;
+  color: #ffffff;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #3f3f46;
+}
+
+/* Header title styling */
+header .fs-4 {
+  color: #f4f4f5;
+}
+
+header .fs-4:hover {
+  color: #60a5fa;
+  text-decoration: none;
 }
 
 header p {
@@ -16,13 +26,30 @@ header p {
 }
 
 .navigator {
-  color: rgb(255, 255, 255);
+  color: #f4f4f5;
 }
+
+.navigator:hover {
+  color: #60a5fa;
+}
+
+div.content-area {
+  padding-left: 12.5%;
+  padding-right: 12.5%;
+}
+
 
 .card {
-  background: whitesmoke;
+  background: #27272a;
+  border: 1px solid #3f3f46;
+  color: #e4e4e7;
 }
 
+.images {
+  max-width:50%;
+  border:1px solid #ccc;
+  margin-top:1em;
+}
 
 /* RTL support for text alignment */
 html[dir="rtl"] .text-center {
@@ -39,3 +66,26 @@ html[dir="rtl"] .text-start {
 html[dir="rtl"] body {
   text-align: right;
 }
+
+/* Navigation button styling */
+.btn-outline-light {
+  border-color: #60a5fa;
+  color: #60a5fa;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background-color: #60a5fa;
+  border-color: #60a5fa;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(96, 165, 250, 0.2);
+}
+
+.btn-outline-light:focus,
+.btn-outline-light:active {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
