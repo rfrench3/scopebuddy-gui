@@ -137,6 +137,58 @@
                     <label class="form-check-label">Enable?</label>
                 </div>
             </div>
+            <hr>
+            <br>
+            <h1 class="text-center fw-bold">Advanced Settings</h1>
+            <hr>
+            <div class="mb-3 row g-2 align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0" for="max_scale_factor" data-tooltip="DATA-TOOLTIP!.">Maximum Scale Factor</label>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <input type="text" class="form-control w-auto ms-2" id="max_scale_factor" placeholder="unlimited">
+                </div>
+            </div>
+            <hr>
+            <div class="mb-3 row g-2 align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0" for="upscaler_type" data-tooltip="DATA-TOOLTIP!.">Upscaler Type</label>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <select class="form-select" id="upscaler_type">
+                        <option value="">Automatic (Default)</option>
+                        <option value="integer">Integer</option>
+                        <option value="fit">Fit</option>
+                        <option value="fill">Fill</option>
+                        <option value="stretch">Stretch</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="mb-3 row g-2 align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0" for="upscaler_filter" data-tooltip="DATA-TOOLTIP!.">Upscaler Filter</label>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <select class="form-select" id="upscaler_filter">
+                        <option value="">Linear (Default)</option>
+                        <option value="nearest">Nearest</option>
+                        <option value="pixel">Pixel</option>
+                        <option value="fsr">FSR</option>
+                        <option value="nis">NIS</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="mb-3 row g-2 align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0" for="upscaler_sharpness" data-tooltip="DATA-TOOLTIP!.">Upscaler Sharpness</label>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <input type="text" class="form-control w-auto ms-2" id="upscaler_sharpness">
+                </div>
+            </div>
+            <hr>
         </form>
     </div>
     <script src="script.js"></script>

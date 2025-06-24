@@ -26,3 +26,7 @@ body {
 #mouse_sensitivity {
   max-width: 5em;
 }
+
+#upscaler_type, #upscaler_filter {
+  max-width: 16em;
+}
