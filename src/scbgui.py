@@ -144,7 +144,7 @@ class SharedLogic: # for logic used in multiple windows
     def generate_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
 
-        def apply_lineEdit_input(lineEdit:int, arg):
+        def apply_lineEdit_input(lineEdit, arg):
             if lineEdit.text().isdigit():
                 self.config_list.append(f'{arg} {lineEdit.text()} ')                
             
@@ -221,7 +221,7 @@ class SharedLogic: # for logic used in multiple windows
                 pass
             unimplemented.remove(arg) if arg in unimplemented else None
 
-        def set_lineEdit_input(lineEdit:int, arg,unimplemented,clear):
+        def set_lineEdit_input(lineEdit, arg,unimplemented,clear):
             if clear:
                 lineEdit.setText('')
                 return
