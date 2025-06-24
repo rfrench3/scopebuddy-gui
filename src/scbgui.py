@@ -13,10 +13,6 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6.QtCore import Qt
 
-def in_flatpak() -> bool:
-    """Return True if running inside a Flatpak sandbox."""
-    return os.path.exists("/.flatpak-info")
-
 def get_data_path():
     if os.path.basename(os.path.dirname(__file__)) == "src":
         return os.path.abspath(os.path.dirname(__file__))
@@ -28,13 +24,6 @@ DATA_DIR = get_data_path()
 ui_main = os.path.join(DATA_DIR, "mainwindow.ui")
 ui_confirm = os.path.join(DATA_DIR, "apply_confirmation.ui")
 template = os.path.join(DATA_DIR, "default_scb.conf")
-'''
-path = "/app/share/scopebuddygui/" if in_flatpak() else "./src/"
-
-ui_main = path + "mainwindow.ui"
-ui_confirm = path + "apply_confirmation.ui"
-template = path + "default_scb.conf"
-'''
 
 # bundle of ui-launching code
 def launch_window(ui_file:str,window_title:str="WindowTitle"):
@@ -51,11 +40,11 @@ def launch_window(ui_file:str,window_title:str="WindowTitle"):
     return variable_name
 
 # Create the directory for /scopebuddy/scb.conf
-config_dir = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
-os.makedirs(config_dir, exist_ok=True)
-scbpath = os.path.join(config_dir, "scb.conf")
+CONFIG_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
+os.makedirs(CONFIG_DIR, exist_ok=True)
+scb_config_path = os.path.join(CONFIG_DIR, "scb.conf")
 
-def ensure_file(scbpath) -> None: 
+def ensure_file(scb_config_path) -> None: 
     """creates scb.conf if it doesn't exist, and calls on ensure_gamescope_line afterwards."""
     def ensure_gamescope_line(): 
         """ if config file doesn't have the gamescope args line, create one in the best place.
@@ -64,7 +53,7 @@ def ensure_file(scbpath) -> None:
         # will be used if the correct line isn't already present
         new_line = f'SCB_GAMESCOPE_ARGS=""\n'
 
-        with open(scbpath, 'r') as file:
+        with open(scb_config_path, 'r') as file:
             lines = file.readlines()
 
         for i, line in enumerate(lines):
@@ -77,7 +66,7 @@ def ensure_file(scbpath) -> None:
                     #the line will be commented out because it will probably cause errors.
                     #a proper line will be placed after it
                     lines[i:i+1] = [f'#SCBGUI_ERROR_PREVENTATION!#{line}', new_line]
-                    with open(scbpath, 'w') as file: 
+                    with open(scb_config_path, 'w') as file: 
                         file.writelines(lines)
                     return
 
@@ -89,35 +78,35 @@ def ensure_file(scbpath) -> None:
             if line.startswith('#SCB_GAMESCOPE_ARGS'):
                 lines[i:i+1] = [line, new_line]
                 # Write the modified lines back to the file
-                with open(scbpath, 'w') as file:
+                with open(scb_config_path, 'w') as file:
                     file.writelines(lines)
                 return
     
         # no match was found, so create the necessary line at the end of the file
-        with open(scbpath, 'a') as file:
+        with open(scb_config_path, 'a') as file:
             if lines and not lines[-1].endswith('\n'):
                 file.write('\n')
             file.write('SCB_GAMESCOPE_ARGS=""\n')
         return
             
     try:
-        if os.path.exists(scbpath):
-            #print(f"Config file already exists at {scbpath}, ensuring the proper format...")
+        if os.path.exists(scb_config_path):
+            #print(f"Config file already exists at {scb_config_path}, ensuring the proper format...")
             ensure_gamescope_line()
             return
         else:
-            #print(f"Creating config file at {scbpath} from template...")
-            shutil.copyfile(template, scbpath)
+            #print(f"Creating config file at {scb_config_path} from template...")
+            shutil.copyfile(template, scb_config_path)
             ensure_gamescope_line()
             return
     except Exception as e:
         print(f"Error creating config file: {e}")
 
-ensure_file(scbpath) # makes sure the scb.conf file exists and works properly
+ensure_file(scb_config_path) # makes sure the scb.conf file exists and works properly
 
 class SharedLogic: # for logic used in multiple windows
     def read_gamescope_args(self) -> str: #output gamescope args as string
-        with open(scbpath, 'r') as file:
+        with open(scb_config_path, 'r') as file:
             lines = file.readlines()
             for line in lines:
                 if line.startswith('SCB_GAMESCOPE_ARGS='):
@@ -315,7 +304,7 @@ class SharedLogic: # for logic used in multiple windows
         the_config = self.generate_new_config().strip()
 
         # Open the config file
-        with open(scbpath, 'r') as file:
+        with open(scb_config_path, 'r') as file:
             lines = file.readlines()
 
             # Find the line that starts with SCB_GAMESCOPE_ARGS
@@ -327,7 +316,7 @@ class SharedLogic: # for logic used in multiple windows
                     break
 
             # Write the modified lines back to the file
-            with open(scbpath, 'w') as file:
+            with open(scb_config_path, 'w') as file:
                 file.writelines(lines)
 
 class MainWindowLogic(SharedLogic):
