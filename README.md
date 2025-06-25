@@ -41,7 +41,7 @@ You can get it on Flathub,
 </a>
 
 
-you can use the [web-based version](https://rfrench3.github.io/scopebuddy-gui) (that outputs for gamescope directly),
+you can use the [web-based version](https://rfrench3.github.io/scopebuddy-gui/web-ui/index.html) (that outputs for gamescope directly),
 
 
 or, you can install it directly from this github.
