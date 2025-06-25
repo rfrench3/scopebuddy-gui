@@ -9,7 +9,7 @@
 
 <h1 align="center">Features</h1>
 
-<p>This is a convenient, easy-to-use interface for configuring Gamescope through Scopebuddy. Gamescope, which plays a large role in the interface of the SteamDeck, has many features that allow for precise control of many aspects of rendering games and other programs. This is **especially** useful with screens such as ultrawide monitors and others that have an unusual aspect ratio. These features, which may have previously been too complicated for many to use, include:</p>
+<p>This is a convenient, easy-to-use interface for configuring Gamescope through Scopebuddy. Gamescope, which plays a large role in the interface of the SteamDeck, has many features that allow for precise control of many aspects of rendering games and other programs. This is especially useful with screens such as ultrawide monitors and others that have an unusual aspect ratio. These features, which may have previously been too complicated for many to use, include:</p>
 
 - Setting a normal screen resolution and aspect ratio for games to run through.
 - Support for features like High Dynamic Range (HDR) and Adaptive Sync.
@@ -31,6 +31,20 @@ Gamescope is likely available for easy installation through your Linux Distro's 
 <br>
 
 <h1 align="center">Where to Install the Latest Release</h1>
+
+There are a few different ways to use this application:
+
+You can get it on Flathub,
+
+<a href='https://flathub.org/apps/io.github.rfrench3.scopebuddy-gui'>
+  <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
+</a>
+
+
+you can use the [web-based version](https://rfrench3.github.io/scopebuddy-gui) (that outputs for gamescope directly),
+
+
+or, you can install it directly from this github.
 
 [![GitHub Releases Section](github.png)](https://github.com/rfrench3/scopebuddy-gui/releases)
 <sub>Clicking the image also brings you to the releases.</sub>
