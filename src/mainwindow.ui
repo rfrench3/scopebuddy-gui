@@ -414,7 +414,7 @@
                     <number>4</number>
                    </property>
                    <property name="placeholderText">
-                    <string>unlimited</string>
+                    <string>60</string>
                    </property>
                   </widget>
                  </item>
