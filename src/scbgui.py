@@ -391,7 +391,7 @@ class MainWindowLogic(SharedLogic):
         self.menu_output.addActions([self.action_1080p_o,self.action_1440p_o,self.action_4k_o])
 
         self.menu_fps = QMenu()
-        self.action_0 = QAction("No fps cap (default)", self.menu_fps)
+        self.action_0 = QAction("Monitor refresh rate (default)", self.menu_fps)
         self.action_30 = QAction("Set 30fps cap (Low)", self.menu_fps)
         self.action_60 = QAction("Set 60fps cap (Medium)", self.menu_fps)
         self.action_120 = QAction("Set 120fps cap (High)", self.menu_fps)

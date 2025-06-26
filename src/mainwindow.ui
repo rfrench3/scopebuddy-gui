@@ -72,7 +72,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-312</y>
+            <y>0</y>
             <width>779</width>
             <height>1054</height>
            </rect>
@@ -414,7 +414,7 @@
                     <number>4</number>
                    </property>
                    <property name="placeholderText">
-                    <string>60</string>
+                    <string>Monitor's FPS</string>
                    </property>
                   </widget>
                  </item>
