@@ -47,18 +47,44 @@ class ApplicationLogic():
     def __init__(self, window): # for reference in other classes, self.widget becomes logic.widget
         self.window = window # logical to use because it is not a subclass of any Qt class
         self.mainWidget = self.window.findChild(QTabWidget,"tabWidget")
-        # Load ui_welcome into index 0 of self.mainWidget
+        # Load ui pages into main window, one tab for each widget
         welcome_widget = load_widget(ui_welcome)
         env_vars_widget = load_widget(ui_env_vars)
         gamescope_widget = load_widget(ui_gamescope)
         self.mainWidget.addTab(welcome_widget, "Welcome")
         self.mainWidget.addTab(env_vars_widget, "Environment Variables")
         self.mainWidget.addTab(gamescope_widget, "Gamescope")
+
+        # dictionary of interactable widgets
+        self.userinputs = {
+            'welcome': {
+                'pushButton_welcome': [QPushButton,self.welcome_pressed],
+            },
+            'env_vars': {
+                '': [],
+            },
+            'gamescope': {
+                '': [],
+            },
+            
+        }
+
         self.mainWidget.setCurrentIndex(0)
         
         # Welcome Window
         self.welcome_button = self.window.findChild(QPushButton,"pushButton_welcome")
-        self.welcome_button.clicked.connect(lambda: (print("PRINT_1"), self.mainWidget.setCurrentIndex(1)))
+        self.welcome_button.clicked.connect(self.welcome_pressed)
+
+    def define_userinputs(self):
+        for key, element in enumerate(self.userinputs):
+            pass
+        pass
+
+
+
+    def welcome_pressed(self):
+        print("welcome button has been pressed.")
+        self.mainWidget.setCurrentIndex(1)
 
 
 
