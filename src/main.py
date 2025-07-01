@@ -4,9 +4,12 @@ import sys
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 import os
 import file_manager as fman
+from welcome import WelcomeLogic
+from env_var import EnvVarLogic
+from gamescope import GamescopeLogic
 
 #PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStackedWidget, QTabWidget, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
+from PySide6.QtWidgets import QApplication, QStackedWidget, QListWidget, QTabWidget, QStatusBar, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
 from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
@@ -43,48 +46,38 @@ fman.create_directory()
 fman.ensure_file(active_config) # makes sure the scb.conf file exists and works properly
 
 
-class ApplicationLogic():
+class ApplicationLogic(WelcomeLogic,EnvVarLogic,GamescopeLogic):
     def __init__(self, window): # for reference in other classes, self.widget becomes logic.widget
+        
+
         self.window = window # logical to use because it is not a subclass of any Qt class
         self.mainWidget = self.window.findChild(QTabWidget,"tabWidget")
+
         # Load ui pages into main window, one tab for each widget
         welcome_widget = load_widget(ui_welcome)
         env_vars_widget = load_widget(ui_env_vars)
         gamescope_widget = load_widget(ui_gamescope)
+
+        # Initialize the logic for the ui pages
+        super().__init__(welcome_widget)
+        #super().__init__(env_vars_widget)
+        #super().__init__(gamescope_widget)
+
+
         self.mainWidget.addTab(welcome_widget, "Welcome")
         self.mainWidget.addTab(env_vars_widget, "Environment Variables")
         self.mainWidget.addTab(gamescope_widget, "Gamescope")
 
-        # dictionary of interactable widgets
-        self.userinputs = {
-            'welcome': {
-                'pushButton_welcome': [QPushButton,self.welcome_pressed],
-            },
-            'env_vars': {
-                '': [],
-            },
-            'gamescope': {
-                '': [],
-            },
-            
-        }
-
         self.mainWidget.setCurrentIndex(0)
         
         # Welcome Window
-        self.welcome_button = self.window.findChild(QPushButton,"pushButton_welcome")
-        self.welcome_button.clicked.connect(self.welcome_pressed)
 
-    def define_userinputs(self):
-        for key, element in enumerate(self.userinputs):
-            pass
-        pass
+        # Environment Variables Window
 
+        # Gamescope Window
 
+        # Apply Window
 
-    def welcome_pressed(self):
-        print("welcome button has been pressed.")
-        self.mainWidget.setCurrentIndex(1)
 
 
 
