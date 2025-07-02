@@ -1,8 +1,3 @@
-"""
-This is split into two different sections: Managing Qt UI files, and config files within xdg-config/scopebuddy.
-It ends with loading constant directories for the app itself and for the scopebuddy config files.
-"""
-
 import os, shutil
 from re import search
 
@@ -10,8 +5,9 @@ from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 
-
-# Managing Qt UI files
+########################
+# Managing Qt UI files #
+########################
 
 icon = QIcon.fromTheme("io.github.rfrench3.scopebuddy-gui")
 
@@ -28,10 +24,9 @@ def load_widget(ui_file: str, window_title:str='Scopebuddy GUI', icon:QIcon=icon
         widget.setWindowIcon(icon)
     return widget
 
-
-
-
-# Managing scopebuddy config files
+####################################
+# Managing scopebuddy config files #
+####################################
 
 def get_data_path():
     """Returns the path to data of the program. This means files such as """
@@ -188,6 +183,10 @@ class ConfigFile:
         """Changes the gamescope args in the file to the newly listed ones."""
         pass
 
+
+#################################################
+# data directories for program and config files #
+#################################################
 
 DATA_DIR = os.path.abspath(os.path.dirname(__file__))
 TEMPLATE = os.path.join(DATA_DIR, "default_scb.conf")
