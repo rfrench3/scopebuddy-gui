@@ -13,17 +13,6 @@ class GamescopeLogic:
             #self. = parent_widget.findChild(Q, '')  # type: ignore
 
 
-            
-
-    # Contained to this window
-
-    def func(self) -> None:
-        """."""
-        print('pressed')
-        pass
-
-    # Calls the main window
-    
-    def func2(self) -> None:
-        """."""
+    def load_data(self, data:str) -> None:
+        """Loads the data from the file into the UI elements."""
         pass

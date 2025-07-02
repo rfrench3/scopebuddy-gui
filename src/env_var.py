@@ -72,3 +72,7 @@ class EnvVarLogic:
                 vars_list.append(variable_line.text().strip())
 
         return vars_list
+    
+    def load_data(self, data:str) -> None:
+        """Loads the data from the file into the UI elements."""
+        pass

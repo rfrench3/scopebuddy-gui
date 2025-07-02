@@ -52,8 +52,6 @@ ui_gamescope = fman.ui_gamescope
 ui_apply_changes = fman.ui_apply_changes
 
 
-
-
 fman.create_directory()
 fman.ensure_file(GLOBAL_CONFIG) # makes sure the scb.conf file exists and works properly
 
@@ -80,6 +78,7 @@ class ApplicationLogic:
         self.gamescope_logic = GamescopeLogic(gamescope_widget)
         self.apply_logic = ApplyChangesLogic(apply_widget)
 
+        #TODO: heavily consider simply merging welcome.py/ui into  main.py/ui
         # Gives a path for main window functions to be called from each page 
         # Call main window functions using self.parent_logic.function
         self.welcome_logic.parent_logic = self # type: ignore
@@ -111,8 +110,9 @@ class ApplicationLogic:
         """Loads the file selected by the user. Then, sets the StackedWidget index to 1 (File Editing mode)."""
         global selected_config
         selected_config = selected_file
-        #self.env_vars_logic.load_data(selected_config)
-        #self.gamescope_logic.load_data(selected_config)
+        self.env_vars_logic.load_data(selected_config)
+        self.gamescope_logic.load_data(selected_config)
+        self.apply_logic.load_data(selected_config)
         self.mainFileSelect.setCurrentIndex(1)
         self.statusBar.show()
         

@@ -31,14 +31,12 @@ def load_widget(ui_file: str, window_title:str='Scopebuddy GUI', icon:QIcon=icon
 
 
 
-# Managing scopebuddy files
+# Managing scopebuddy config files
 
 def get_data_path():
     """Returns the path to data of the program. This means files such as """
-    if os.path.basename(os.path.dirname(__file__)) == "src":
-        return os.path.abspath(os.path.dirname(__file__))
-    else:
-        return os.path.abspath(os.path.join(os.path.dirname(__file__), "../share/scopebuddygui"))
+    return os.path.abspath(os.path.dirname(__file__))
+
     
 def create_directory():
     """Create the directory for /scopebuddy/scb.conf, returns full path to scb.conf"""
@@ -104,11 +102,18 @@ def ensure_file(selected_config_file) -> None:
     except Exception as e:
         print(f"Error creating config file: {e}")
 
+class display_name:
+    def __str__(self) -> str:
+        """Read the display name (the commented out line 1) from the active file."""
+        return ''
+    
+    def change_name(self, new_name:str) -> None:
+        """Changes the display name (the commented out line 1) inside the file."""
+        pass
 
 
 
-
-DATA_DIR = get_data_path()
+DATA_DIR = os.path.abspath(os.path.dirname(__file__))
 TEMPLATE = os.path.join(DATA_DIR, "default_scb.conf")
 
 APPID_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID") #folder
