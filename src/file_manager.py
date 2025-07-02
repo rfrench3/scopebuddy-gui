@@ -153,7 +153,15 @@ class ConfigFile:
 
     def print_gamescope_line(self) -> str:
         """Returns the stored gamescope launch arguments as a string."""
-        return ''
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        for line in lines:
+            if line.startswith('SCB_GAMESCOPE_ARGS='):
+                match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
+                if match:
+                    return match.group(1)
+        return 'No gamescope line'
 
     
     
