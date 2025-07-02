@@ -8,13 +8,13 @@ import file_manager as fman
 entry:str = fman.ui_env_vars_entry
 
 class EnvVarLogic:
-    def __init__(self, parent_widget=None, file=None) -> None:
+    def __init__(self, file:fman.ConfigFile, parent_widget=None) -> None:
             self.parent_logic = None  # Will be set by main.py
             self.entries = []  # Store references to all entry widgets
             self.file = file
             self.env_vars_list = parent_widget.findChild(QWidget, 'additional_entries')  # type: ignore
 
-            print(f"ENV VAR FILE RECIEVED: {file}")
+            print(f"---ENV VAR FILE RECIEVED---\n{file}")
 
             # Initialize and connect inputs
             self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore

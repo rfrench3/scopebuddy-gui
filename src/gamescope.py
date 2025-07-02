@@ -6,11 +6,11 @@ from PySide6.QtWidgets import QLineEdit
 import file_manager as fman
 
 class GamescopeLogic:
-    def __init__(self, parent_widget=None, file=None) -> None:
+    def __init__(self, file:fman.ConfigFile, parent_widget=None) -> None:
             self.parent_logic = None  # Will be set by main.py
             self.file = file  # Store the file path
 
-            print(f"GAMESCOPE FILE RECIEVED: {file}")
+            print(f"---GAMESCOPE FILE RECIEVED---\n{file}")
 
             # Initialize and connect inputs  (type: ignore comments prevent pyLance false positives)
             #self. = parent_widget.findChild(Q, '')  # type: ignore

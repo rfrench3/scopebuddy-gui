@@ -102,15 +102,74 @@ def ensure_file(selected_config_file) -> None:
     except Exception as e:
         print(f"Error creating config file: {e}")
 
-class display_name:
+
+'''
+The ConfigFile class:
+PURPOSE: store data about the scopebuddy config file given to it and have simple methods for reading/editing that data.
+OUTPUT: name of file, first line of file (display name), all export lines in file (env vars), gamescope line.
+ALTER: first line of file, all export lines, gamescope line
+'''
+class ConfigFile:
+    def __init__(self,path_to_file:str) -> None:
+        self.path_to_file:str = path_to_file
+        self.filename: str = os.path.basename(self.path_to_file)
+        self.displayname: str = self.print_displayname()
+        self.export_lines: list[str] = self.print_export_lines()
+        self.gamescope_line: str = self.print_gamescope_line()
+
+    # DATA OUTPUT
+
     def __str__(self) -> str:
-        """Read the display name (the commented out line 1) from the active file."""
-        return ''
+        """Returns all relevant information in the active file."""
+        output: str = (
+            f"Path to File: {self.path_to_file}\n"
+            f"Filename: {self.print_filename()}\n"
+            f"Display Name: {self.print_displayname()}\n"
+            f"Export Lines: {self.print_export_lines()}\n"
+            f"Gamescope Line: {self.print_gamescope_line()}"
+        )
+        return output
     
-    def change_name(self, new_name:str) -> None:
+    def print_path(self) -> str:
+        """Returns the path of the file"""
+        return self.path_to_file
+    
+    def print_filename(self) -> str:
+        """Returns the name of the file"""
+        return os.path.basename(self.path_to_file)
+    
+    def print_displayname(self) -> str:
+        """Read the display name (the commented out line 1) from the active file."""
+        with open(self.path_to_file, 'r') as file:
+            first_line = file.readline().strip()
+            if first_line.startswith("# "):
+                return first_line[2:]
+            else:
+                return "No display name"
+    
+    def print_export_lines(self) -> list[str]:
+        """Returns a list of export lines (Environment Variables)."""
+        return []
+
+    def print_gamescope_line(self) -> str:
+        """Returns the stored gamescope launch arguments as a string."""
+        return ''
+
+    
+    
+    # DATA EDITING
+    
+    def edit_displayname(self, new_name:str) -> None:
         """Changes the display name (the commented out line 1) inside the file."""
         pass
 
+    def edit_export_lines(self, new_lines:list[str]) -> None:
+        """Changes the export lines in the file to the newly listed ones."""
+        pass
+
+    def edit_gamescope_line(self, new_line:str) -> None:
+        """Changes the gamescope args in the file to the newly listed ones."""
+        pass
 
 
 DATA_DIR = os.path.abspath(os.path.dirname(__file__))
