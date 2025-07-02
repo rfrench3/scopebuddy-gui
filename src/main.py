@@ -180,7 +180,7 @@ class ApplicationLogic:
 
 # Logic that loads the app
 app = QApplication([])
-icon = QIcon.fromTheme("io.github.rfrench3.scopebuddy-gui")
+icon = fman.icon
 
 window_main = fman.load_widget(ui_main,"Scopebuddy GUI")
 logic = ApplicationLogic(window_main)
