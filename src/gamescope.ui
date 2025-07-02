@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>825</width>
-    <height>757</height>
+    <width>821</width>
+    <height>1263</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,42 +30,33 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>0</number>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
      </property>
-     <item>
-      <widget class="QWidget" name="widget" native="true">
-       <property name="maximumSize">
-        <size>
-         <width>700</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QScrollArea" name="scrollArea_settings">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>667</width>
-             <height>1054</height>
-            </rect>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>821</width>
+        <height>1214</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QWidget" name="widget" native="true">
+           <property name="maximumSize">
+            <size>
+             <width>700</width>
+             <height>16777215</height>
+            </size>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+           <layout class="QVBoxLayout" name="verticalLayout_24">
             <item>
-             <widget class="QWidget" name="widget1_rW" native="true">
+             <widget class="QWidget" name="widget1_rW_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -75,16 +66,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resolution (measured in pixels) that the game will render at.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
+              <layout class="QVBoxLayout" name="verticalLayout_9">
                <item>
-                <widget class="QWidget" name="widget_10" native="true">
+                <widget class="QWidget" name="widget_11" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,0,0,0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -101,14 +92,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_2">
+                   <widget class="QLabel" name="label_4">
                     <property name="text">
                      <string>Rendered Width, Rendered Height</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_3">
+                   <spacer name="horizontalSpacer_7">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -121,7 +112,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_rWidth">
+                   <widget class="QLineEdit" name="lineEdit_rWidth_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -137,14 +128,14 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="label_6">
+                   <widget class="QLabel" name="label_7">
                     <property name="text">
                      <string> , </string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_rHeight">
+                   <widget class="QLineEdit" name="lineEdit_rHeight_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -160,7 +151,7 @@
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer">
+                   <spacer name="horizontalSpacer_8">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -176,7 +167,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="toolButton_renderedResolution">
+                   <widget class="QToolButton" name="toolButton_renderedResolution_2">
                     <property name="text">
                      <string>...</string>
                     </property>
@@ -189,7 +180,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_3">
+                <widget class="Line" name="line_12">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -199,7 +190,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget4_oW" native="true">
+             <widget class="QWidget" name="widget4_oW_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -209,16 +200,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resolution (in pixels) of the window you will see. Entering fullscreen, in a way, sets this to your monitor's resolution.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_7">
+              <layout class="QVBoxLayout" name="verticalLayout_25">
                <item>
-                <widget class="QWidget" name="widget_15" native="true">
+                <widget class="QWidget" name="widget_16" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,0,0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,0,0,0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -235,14 +226,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_5">
+                   <widget class="QLabel" name="label_14">
                     <property name="text">
                      <string>Output Width, Output Height</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_6">
+                   <spacer name="horizontalSpacer_22">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -255,7 +246,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_oWidth">
+                   <widget class="QLineEdit" name="lineEdit_oWidth_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -271,14 +262,14 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="label_3">
+                   <widget class="QLabel" name="label_22">
                     <property name="text">
                      <string> , </string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_oHeight">
+                   <widget class="QLineEdit" name="lineEdit_oHeight_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -294,7 +285,7 @@
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_4">
+                   <spacer name="horizontalSpacer_23">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -310,7 +301,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="toolButton_outputResolution">
+                   <widget class="QToolButton" name="toolButton_outputResolution_2">
                     <property name="text">
                      <string>...</string>
                     </property>
@@ -323,7 +314,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_6">
+                <widget class="Line" name="line_20">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -333,7 +324,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget3_fps" native="true">
+             <widget class="QWidget" name="widget3_fps_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -343,16 +334,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of frames per second (FPS) the game will attempt to render. Lowering this will save power and can help reduce stutters, but lowering it below your monitor's refresh rate will result in a visibly less smooth experience.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_4">
+              <layout class="QVBoxLayout" name="verticalLayout_26">
                <item>
-                <widget class="QWidget" name="widget_9" native="true">
+                <widget class="QWidget" name="widget_12" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -369,14 +360,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label">
+                   <widget class="QLabel" name="label_23">
                     <property name="text">
                      <string>Refresh Rate (FPS)</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_2">
+                   <spacer name="horizontalSpacer_24">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -389,7 +380,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_fps">
+                   <widget class="QLineEdit" name="lineEdit_fps_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -405,7 +396,7 @@
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_5">
+                   <spacer name="horizontalSpacer_25">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -421,7 +412,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="toolButton_fps">
+                   <widget class="QToolButton" name="toolButton_fps_2">
                     <property name="text">
                      <string>...</string>
                     </property>
@@ -434,7 +425,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_2">
+                <widget class="Line" name="line_23">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -444,7 +435,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget6_fullscreen" native="true">
+             <widget class="QWidget" name="widget6_fullscreen_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -454,16 +445,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should the game launch in fullscreen? (Toggle with Windows key + F)</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_10">
+              <layout class="QVBoxLayout" name="verticalLayout_29">
                <item>
-                <widget class="QWidget" name="widget_21" native="true">
+                <widget class="QWidget" name="widget_35" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -480,14 +471,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_8">
+                   <widget class="QLabel" name="label_24">
                     <property name="text">
                      <string>Fullscreen</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_9">
+                   <spacer name="horizontalSpacer_26">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -500,7 +491,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_fullscreen">
+                   <widget class="QCheckBox" name="checkBox_fullscreen_2">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -516,7 +507,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_9">
+                <widget class="Line" name="line_24">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -526,7 +517,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget_29" native="true">
+             <widget class="QWidget" name="widget_37" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -536,16 +527,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should the game window have borders when not in fullscreen?</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_23">
+              <layout class="QVBoxLayout" name="verticalLayout_30">
                <item>
-                <widget class="QWidget" name="widget_31" native="true">
+                <widget class="QWidget" name="widget_38" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_23" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_25" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -562,14 +553,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_21">
+                   <widget class="QLabel" name="label_25">
                     <property name="text">
                      <string>Borderless Window</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_21">
+                   <spacer name="horizontalSpacer_27">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -582,7 +573,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_borderless">
+                   <widget class="QCheckBox" name="checkBox_borderless_2">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -595,7 +586,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_22">
+                <widget class="Line" name="line_25">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -605,7 +596,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget7_hdr" native="true">
+             <widget class="QWidget" name="widget7_hdr_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -615,16 +606,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables support for HDR features supported by some monitors. May cause unwanted changes on non-HDR monitors.</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_18">
+              <layout class="QVBoxLayout" name="verticalLayout_31">
                <item>
-                <widget class="QWidget" name="widget_34" native="true">
+                <widget class="QWidget" name="widget_43" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -641,14 +632,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_16">
+                   <widget class="QLabel" name="label_26">
                     <property name="text">
                      <string>High Dynamic Range (HDR) Support</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_15">
+                   <spacer name="horizontalSpacer_28">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -661,7 +652,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_hdr">
+                   <widget class="QCheckBox" name="checkBox_hdr_2">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -674,7 +665,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_17">
+                <widget class="Line" name="line_27">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -684,7 +675,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget9_steam" native="true">
+             <widget class="QWidget" name="widget9_steam_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -694,16 +685,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables the Steam Overlay when in-game (by default, opened with Shift + Tab or &quot;The controller button with the company's logo on it&quot;)</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_11">
+              <layout class="QVBoxLayout" name="verticalLayout_32">
                <item>
-                <widget class="QWidget" name="widget_23" native="true">
+                <widget class="QWidget" name="widget_44" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -720,14 +711,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_9">
+                   <widget class="QLabel" name="label_27">
                     <property name="text">
                      <string>Steam Overlay</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_10">
+                   <spacer name="horizontalSpacer_29">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -740,7 +731,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_steam">
+                   <widget class="QCheckBox" name="checkBox_steam_2">
                     <property name="enabled">
                      <bool>true</bool>
                     </property>
@@ -759,7 +750,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_10">
+                <widget class="Line" name="line_28">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -769,7 +760,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget__10mangohud" native="true">
+             <widget class="QWidget" name="widget__10mangohud_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -779,16 +770,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables the MangoHUD performance overlay (Right-Shift  + F12 to toggle by default)</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_12">
+              <layout class="QVBoxLayout" name="verticalLayout_33">
                <item>
-                <widget class="QWidget" name="widget_25" native="true">
+                <widget class="QWidget" name="widget_45" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_30" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -805,14 +796,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_10">
+                   <widget class="QLabel" name="label_28">
                     <property name="text">
                      <string>MangoHUD Overlay</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_11">
+                   <spacer name="horizontalSpacer_30">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -825,7 +816,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_mango">
+                   <widget class="QCheckBox" name="checkBox_mango_2">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -838,7 +829,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_11">
+                <widget class="Line" name="line_29">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -848,7 +839,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget_24" native="true">
+             <widget class="QWidget" name="widget_46" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -858,16 +849,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should every window launched be forced into fullscreen? (Primarily relevant for games with dedicated launchers)</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_20">
+              <layout class="QVBoxLayout" name="verticalLayout_34">
                <item>
-                <widget class="QWidget" name="widget_27" native="true">
+                <widget class="QWidget" name="widget_47" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_31" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -884,14 +875,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_18">
+                   <widget class="QLabel" name="label_29">
                     <property name="text">
                      <string>Force Fullscreen within Gamescope Window</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_18">
+                   <spacer name="horizontalSpacer_31">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -904,7 +895,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_forceInternalFullscreen">
+                   <widget class="QCheckBox" name="checkBox_forceInternalFullscreen_2">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -917,7 +908,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_19">
+                <widget class="Line" name="line_30">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -927,7 +918,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget__17_" native="true">
+             <widget class="QWidget" name="widget__17_1" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -937,16 +928,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables support for Variable Refresh Rate features like Gsync and Freesync</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_22">
+              <layout class="QVBoxLayout" name="verticalLayout_35">
                <item>
-                <widget class="QWidget" name="widget_41" native="true">
+                <widget class="QWidget" name="widget_48" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_32" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -963,14 +954,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_20">
+                   <widget class="QLabel" name="label_30">
                     <property name="text">
                      <string>Variable Refresh Rate (Adaptive Sync)</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_20">
+                   <spacer name="horizontalSpacer_32">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -983,7 +974,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_adaptiveSync">
+                   <widget class="QCheckBox" name="checkBox_adaptiveSync_2">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -996,7 +987,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_21">
+                <widget class="Line" name="line_31">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -1006,7 +997,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget11_forcegrabcursor" native="true">
+             <widget class="QWidget" name="widget11_forcegrabcursor_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -1016,16 +1007,16 @@
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Instead of relying on the host's mouse position, gamescope will render and handle its own separate mouse cursor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_13">
+              <layout class="QVBoxLayout" name="verticalLayout_36">
                <item>
-                <widget class="QWidget" name="widget_33" native="true">
+                <widget class="QWidget" name="widget_49" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1042,14 +1033,14 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_11">
+                   <widget class="QLabel" name="label_31">
                     <property name="text">
                      <string>Force Grab Cursor</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_12">
+                   <spacer name="horizontalSpacer_33">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -1062,7 +1053,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_forceGrabCursor">
+                   <widget class="QCheckBox" name="checkBox_forceGrabCursor_2">
                     <property name="enabled">
                      <bool>true</bool>
                     </property>
@@ -1081,7 +1072,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QFrame" name="frame_mouseSensitivity">
+                <widget class="QFrame" name="frame_mouseSensitivity_2">
                  <property name="enabled">
                   <bool>true</bool>
                  </property>
@@ -1091,7 +1082,7 @@
                  <property name="frameShadow">
                   <enum>QFrame::Shadow::Plain</enum>
                  </property>
-                 <layout class="QGridLayout" name="gridLayout_2">
+                 <layout class="QGridLayout" name="gridLayout_3">
                   <property name="leftMargin">
                    <number>0</number>
                   </property>
@@ -1108,35 +1099,35 @@
                    <number>0</number>
                   </property>
                   <item row="0" column="1">
-                   <widget class="Line" name="line">
+                   <widget class="Line" name="line_32">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
                    </widget>
                   </item>
                   <item row="1" column="0">
-                   <widget class="Line" name="line_4">
+                   <widget class="Line" name="line_33">
                     <property name="orientation">
                      <enum>Qt::Orientation::Vertical</enum>
                     </property>
                    </widget>
                   </item>
                   <item row="1" column="2">
-                   <widget class="Line" name="line_5">
+                   <widget class="Line" name="line_34">
                     <property name="orientation">
                      <enum>Qt::Orientation::Vertical</enum>
                     </property>
                    </widget>
                   </item>
                   <item row="2" column="1">
-                   <widget class="Line" name="line_8">
+                   <widget class="Line" name="line_35">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
                    </widget>
                   </item>
                   <item row="1" column="1">
-                   <widget class="QFrame" name="frame_3">
+                   <widget class="QFrame" name="frame_4">
                     <property name="enabled">
                      <bool>true</bool>
                     </property>
@@ -1146,9 +1137,9 @@
                     <property name="frameShadow">
                      <enum>QFrame::Shadow::Raised</enum>
                     </property>
-                    <layout class="QGridLayout" name="gridLayout_4">
+                    <layout class="QGridLayout" name="gridLayout_5">
                      <item row="0" column="0">
-                      <widget class="QWidget" name="widget__16_mouseSensitivity" native="true">
+                      <widget class="QWidget" name="widget__16_mouseSensitivity_2" native="true">
                        <property name="enabled">
                         <bool>false</bool>
                        </property>
@@ -1161,16 +1152,16 @@
                        <property name="toolTip">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the sensitivity of the mouse within the gamescope window. A factor of 2.0 would double sensitivity, for example.</string>
                        </property>
-                       <layout class="QVBoxLayout" name="verticalLayout_21">
+                       <layout class="QVBoxLayout" name="verticalLayout_37">
                         <item>
-                         <widget class="QWidget" name="widget_39" native="true">
+                         <widget class="QWidget" name="widget_50" native="true">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
                           </property>
-                          <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="0,0,0">
+                          <layout class="QHBoxLayout" name="horizontalLayout_34" stretch="0,0,0">
                            <property name="spacing">
                             <number>0</number>
                            </property>
@@ -1187,14 +1178,14 @@
                             <number>0</number>
                            </property>
                            <item>
-                            <widget class="QLabel" name="label_19">
+                            <widget class="QLabel" name="label_32">
                              <property name="text">
                               <string>Mouse Sensitivity factor</string>
                              </property>
                             </widget>
                            </item>
                            <item>
-                            <spacer name="horizontalSpacer_19">
+                            <spacer name="horizontalSpacer_34">
                              <property name="orientation">
                               <enum>Qt::Orientation::Horizontal</enum>
                              </property>
@@ -1207,7 +1198,7 @@
                             </spacer>
                            </item>
                            <item>
-                            <widget class="QDoubleSpinBox" name="doubleSpinBox_mouseSensitivity">
+                            <widget class="QDoubleSpinBox" name="doubleSpinBox_mouseSensitivity_2">
                              <property name="decimals">
                               <number>1</number>
                              </property>
@@ -1232,7 +1223,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget__11_AdvancedSettings" native="true">
+             <widget class="QWidget" name="widget__11_AdvancedSettings_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -1243,16 +1234,16 @@
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;These are settings I believe will not be relevant to most users, so they are separated to minimize confusion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_16">
+              <layout class="QVBoxLayout" name="verticalLayout_38">
                <item>
-                <widget class="QWidget" name="widget_30" native="true">
+                <widget class="QWidget" name="widget_51" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_35" stretch="0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1269,7 +1260,7 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_advancedSettings">
+                   <widget class="QLabel" name="label_advancedSettings_2">
                     <property name="font">
                      <font>
                       <pointsize>20</pointsize>
@@ -1291,7 +1282,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_15">
+                <widget class="Line" name="line_36">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -1336,7 +1327,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget__12_maxScaleFactor" native="true">
+             <widget class="QWidget" name="widget__12_maxScaleFactor_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -1347,16 +1338,16 @@
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum factor for the scaling of the game window (the default of 0 means unlimited).
 For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_14">
+              <layout class="QVBoxLayout" name="verticalLayout_39">
                <item>
-                <widget class="QWidget" name="widget_26" native="true">
+                <widget class="QWidget" name="widget_52" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_36" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1373,14 +1364,14 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_12">
+                   <widget class="QLabel" name="label_33">
                     <property name="text">
                      <string>Maximum Scale Factor</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_13">
+                   <spacer name="horizontalSpacer_35">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -1393,7 +1384,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_maxScaleFactor">
+                   <widget class="QLineEdit" name="lineEdit_maxScaleFactor_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -1412,7 +1403,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_13">
+                <widget class="Line" name="line_37">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -1422,23 +1413,23 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget__13_upscalerType" native="true">
+             <widget class="QWidget" name="widget__13_upscalerType_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_17">
+              <layout class="QVBoxLayout" name="verticalLayout_40">
                <item>
-                <widget class="QWidget" name="widget_32" native="true">
+                <widget class="QWidget" name="widget_53" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_37" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1455,14 +1446,14 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_15">
+                   <widget class="QLabel" name="label_34">
                     <property name="text">
                      <string>Upscaler Type</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_16">
+                   <spacer name="horizontalSpacer_36">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -1475,7 +1466,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="comboBox_upscalerType">
+                   <widget class="QComboBox" name="comboBox_upscalerType_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -1513,7 +1504,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_16">
+                <widget class="Line" name="line_38">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -1523,23 +1514,23 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget__14_upscalerFilter" native="true">
+             <widget class="QWidget" name="widget__14_upscalerFilter_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_19">
+              <layout class="QVBoxLayout" name="verticalLayout_41">
                <item>
-                <widget class="QWidget" name="widget_36" native="true">
+                <widget class="QWidget" name="widget_54" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_38" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1556,14 +1547,14 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_17">
+                   <widget class="QLabel" name="label_35">
                     <property name="text">
                      <string>Upscaler Filter</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_17">
+                   <spacer name="horizontalSpacer_37">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -1576,7 +1567,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="comboBox_upscalerFilter">
+                   <widget class="QComboBox" name="comboBox_upscalerFilter_2">
                     <item>
                      <property name="text">
                       <string>Linear (Default)</string>
@@ -1608,7 +1599,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_18">
+                <widget class="Line" name="line_39">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -1618,23 +1609,23 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget__15_upscalerSharpness" native="true">
+             <widget class="QWidget" name="widget__15_upscalerSharpness_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_15">
+              <layout class="QVBoxLayout" name="verticalLayout_42">
                <item>
-                <widget class="QWidget" name="widget_28" native="true">
+                <widget class="QWidget" name="widget_55" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="0,0,0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_39" stretch="0,0,0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1651,14 +1642,14 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_13">
+                   <widget class="QLabel" name="label_36">
                     <property name="text">
                      <string>Upscaler Sharpness (minimum of 20 to max of 0)</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="horizontalSpacer_14">
+                   <spacer name="horizontalSpacer_38">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
                     </property>
@@ -1671,7 +1662,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_upscalerSharpness">
+                   <widget class="QLineEdit" name="lineEdit_upscalerSharpness_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -1693,7 +1684,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_14">
+                <widget class="Line" name="line_40">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>
                  </property>
@@ -1703,7 +1694,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget_additionalArguments" native="true">
+             <widget class="QWidget" name="widget_additionalArguments_2" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -1713,16 +1704,16 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gamescope has a lot of possible launch arguments. Any of them that I did not implement are placed here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_27">
+              <layout class="QVBoxLayout" name="verticalLayout_43">
                <item>
-                <widget class="QWidget" name="widget_40" native="true">
+                <widget class="QWidget" name="widget_56" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_27" stretch="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_40" stretch="0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1739,7 +1730,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_advancedSettings_4">
+                   <widget class="QLabel" name="label_advancedSettings_5">
                     <property name="font">
                      <font>
                       <pointsize>20</pointsize>
@@ -1761,7 +1752,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                 </widget>
                </item>
                <item>
-                <widget class="Line" name="line_26">
+                <widget class="Line" name="line_41">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -1806,23 +1797,23 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget_22" native="true">
+             <widget class="QWidget" name="widget_57" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_28">
+              <layout class="QVBoxLayout" name="verticalLayout_44">
                <item>
-                <widget class="QWidget" name="widget_42" native="true">
+                <widget class="QWidget" name="widget_58" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_28" stretch="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_41" stretch="0">
                   <property name="spacing">
                    <number>0</number>
                   </property>
@@ -1839,7 +1830,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_unimplementedSettings">
+                   <widget class="QLineEdit" name="lineEdit_unimplementedSettings_2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -1861,7 +1852,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
              </widget>
             </item>
             <item>
-             <spacer name="verticalSpacer">
+             <spacer name="verticalSpacer_2">
               <property name="orientation">
                <enum>Qt::Orientation::Vertical</enum>
               </property>
@@ -1875,12 +1866,12 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
             </item>
            </layout>
           </widget>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_7">

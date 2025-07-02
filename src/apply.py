@@ -6,8 +6,11 @@ from PySide6.QtWidgets import QLineEdit
 import file_manager as fman
 
 class ApplyChangesLogic:
-    def __init__(self, parent_widget=None) -> None:
+    def __init__(self, parent_widget=None, file=None) -> None:
             self.parent_logic = None  # Will be set by main.py
+            self.file = file  # Store the file path
+
+            print(f"APPLY FILE RECIEVED: {file}")
 
             # Initialize and connect inputs  (type: ignore comments prevent pyLance false positives)
             #self. = parent_widget.findChild(Q, '')  # type: ignore

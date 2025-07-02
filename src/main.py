@@ -85,14 +85,7 @@ class ApplicationLogic:
 
         # Load data for ui pages TODO: Add Lazy Loading: only load the rest of the pages AFTER a file has been chosen.
         #                              Then, just delete the pages again when the main screen has been returned to.
-        env_vars_widget = fman.load_widget(ui_env_vars)
-        gamescope_widget = fman.load_widget(ui_gamescope)
-        apply_widget = fman.load_widget(ui_apply_changes)
 
-        # Initialize the logic for the ui pages
-        self.env_vars_logic = EnvVarLogic(env_vars_widget)
-        self.gamescope_logic = GamescopeLogic(gamescope_widget)
-        self.apply_logic = ApplyChangesLogic(apply_widget)
 
         #TODO: delete this if it goes unused
         # Gives a path for main window functions to be called from each page 
@@ -101,10 +94,7 @@ class ApplicationLogic:
         #self.gamescope_logic.parent_logic = self
 
 
-        self.mainFileSelect.insertWidget(1, self.mainFileEdit)
-        self.mainFileEdit.addTab(env_vars_widget, "Environment Variables")
-        self.mainFileEdit.addTab(gamescope_widget, "Gamescope")
-        self.mainFileEdit.addTab(apply_widget, "Confirmation")
+
 
 
         # Add a permanent label and pushButton to the status bar
@@ -121,17 +111,15 @@ class ApplicationLogic:
         self.mainFileEdit.setCurrentIndex(0)
         self.statusBar.hide()
         
-    def load_selected_file(self,selected_file):
+    def load_selected_file(self,selected_file:str) -> None:
         """Loads the file selected by the user. Then, sets the StackedWidget index to 1 (File Editing mode)."""
         global selected_config
         selected_config = selected_file
-        self.env_vars_logic.load_data(selected_config)
-        self.gamescope_logic.load_data(selected_config)
-        self.apply_logic.load_data(selected_config)
+        self.load_interface(selected_config) # load the interface elements given the selected file
         self.mainFileSelect.setCurrentIndex(1)
         self.statusBar.show()
         
-    def unload_selected_file(self):
+    def unload_selected_file(self) -> None:
         """Unloads the chosen file and returns the user to the 'Select a File' page."""
         global selected_config
         #TODO: ensure everything closes properly. Input fields, variables, etc.
@@ -140,7 +128,25 @@ class ApplicationLogic:
         self.mainFileSelect.setCurrentIndex(0)
         self.statusBar.hide()
 
-    def reset_interface(self):
+    def load_interface(self,file:str) -> None:
+        """Loads interface elements and passes them the path to the file being edited."""
+        env_vars_widget = fman.load_widget(ui_env_vars)
+        gamescope_widget = fman.load_widget(ui_gamescope)
+        apply_widget = fman.load_widget(ui_apply_changes)
+
+        # Initialize the logic for the ui pages
+        self.env_vars_logic = EnvVarLogic(env_vars_widget, file)
+        self.gamescope_logic = GamescopeLogic(gamescope_widget, file)
+        self.apply_logic = ApplyChangesLogic(apply_widget, file)
+
+        self.mainFileSelect.insertWidget(1, self.mainFileEdit)
+        self.mainFileEdit.addTab(env_vars_widget, "Environment Variables")
+        self.mainFileEdit.addTab(gamescope_widget, "Gamescope")
+        self.mainFileEdit.addTab(apply_widget, "Confirmation")
+
+
+    def reset_interface(self) -> None:
+        """Fully unloads interface elements."""
         pass
 
     def list_clicked(self) -> None:
@@ -148,7 +154,9 @@ class ApplicationLogic:
         item = self.file_list.currentItem()
         if item:
             print("List item clicked:", item.text())
-        self.load_selected_file(item.text())
+
+        #TODO: determine the path to the file and load it, or maybe make a class in fman to handle this directly?
+        self.load_selected_file('NOT YET IMPLEMENTED')
 
     def new_config_pressed(self) -> None:
         """opens a modal that has the user create a new config with a Steam AppID."""
