@@ -140,6 +140,8 @@ class ConfigFile:
     
     def print_displayname(self) -> str:
         """Read the display name (the commented out line 1) from the active file."""
+        if self.path_to_file == GLOBAL_CONFIG:
+            return "Global Config"
         with open(self.path_to_file, 'r') as file:
             first_line = file.readline().strip()
             if first_line.startswith("# "):

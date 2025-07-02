@@ -90,12 +90,13 @@ class ApplicationLogic:
         self.file_list.itemClicked.connect(self.list_clicked)
 
         # Add a permanent label and pushButton to the status bar
-        self.status_label = QLabel("Currently loaded file: IMPLEMENT_FILE_NAME_HERE")
+        self.status_label = QLabel("File: None")
         self.status_button = QPushButton("Exit Without Saving")
         self.status_button.clicked.connect(self.unload_selected_file)
 
-        self.statusBar.addPermanentWidget(self.status_label)
-        self.statusBar.addPermanentWidget(self.status_button)
+        self.statusBar.addWidget(self.status_button)  # Left side
+        self.statusBar.addPermanentWidget(self.status_label)  # Right side
+        
 
         # ensure everything starts at its default state
         self.mainFileSelect.setCurrentIndex(0)
@@ -164,9 +165,10 @@ class ApplicationLogic:
         if item:
             print("List item clicked:", item.text())
         #TODO: Determine path to file
-        filepath = GLOBAL_CONFIG #TODO: Make this work with more than the global config
+        filepath = fman.GLOBAL_CONFIG #TODO: Make this work with more than the global config
         file = fman.ConfigFile(filepath)
         load_with_selected_file(self, file)
+        self.status_label.setText(f"File ({file.print_filename()}): {file.print_displayname()}")
 
     def new_config_pressed(self) -> None:
         """opens a modal that has the user create a new config with a Steam AppID."""
