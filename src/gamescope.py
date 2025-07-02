@@ -3,10 +3,10 @@ import os
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
 from PySide6.QtWidgets import QLineEdit
-import file_manager as fman
+from file_manager import ConfigFile
 
 class GamescopeLogic:
-    def __init__(self, file:fman.ConfigFile, parent_widget=None) -> None:
+    def __init__(self, file:ConfigFile, parent_widget=None) -> None:
             self.parent_logic = None  # Will be set by main.py
             self.file = file  # Store the file path
 
