@@ -119,8 +119,10 @@ TEMPLATE = os.path.join(DATA_DIR, "default_scb.conf")
 APPID_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID") #folder
 GLOBAL_CONFIG = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "scb.conf") #file
 
+#SVG_PATH = QIcon.themeSearchPaths()[0] + "/io.github.rfrench3.scopebuddy-gui.svg"
+
+
 ui_main = os.path.join(DATA_DIR, "main.ui")
-ui_welcome = os.path.join(DATA_DIR, "welcome.ui")
 ui_env_vars = os.path.join(DATA_DIR, "environment_variables.ui")
 ui_gamescope = os.path.join(DATA_DIR, "gamescope.ui")
 ui_apply_changes = os.path.join(DATA_DIR, "apply.ui")
