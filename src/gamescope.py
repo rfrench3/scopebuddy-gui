@@ -118,7 +118,6 @@ class GamescopeLogic:
         for argument in self.config_list:
             generated_config += argument
         
-        print(f'The generated config file is {generated_config}')
-        return generated_config
+        return generated_config.strip()
     
     
