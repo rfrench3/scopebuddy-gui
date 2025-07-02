@@ -6,7 +6,6 @@ from PySide6.QtWidgets import (
     QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton,
     QStatusBar, QDialogButtonBox, QToolButton, QMainWindow
     )
-from PySide6.QtGui import QIntValidator
 
 from file_manager import ConfigFile
 
