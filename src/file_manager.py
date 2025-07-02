@@ -149,7 +149,14 @@ class ConfigFile:
     
     def print_export_lines(self) -> list[str]:
         """Returns a list of export lines (Environment Variables)."""
-        return []
+        export_lines: list[str] = []
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        for line in lines:
+            if line.startswith('export '):
+                export_lines.append(line[7:-1])
+        return export_lines
 
     def print_gamescope_line(self) -> str:
         """Returns the stored gamescope launch arguments as a string."""

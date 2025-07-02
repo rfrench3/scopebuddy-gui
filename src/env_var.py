@@ -14,8 +14,6 @@ class EnvVarLogic:
             self.file = file
             self.env_vars_list = parent_widget.findChild(QWidget, 'additional_entries')  # type: ignore
 
-            print(f"---ENV VAR FILE RECIEVED---\n{file}")
-
             # Initialize and connect inputs
             self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
             self.noscope_checkbox = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore

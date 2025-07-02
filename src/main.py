@@ -79,7 +79,7 @@ class ApplicationLogic:
         self.env_vars_logic = None
         self.gamescope_logic = None
         self.apply_logic = None
-        self.interface_loaded = False # redundancy to ensure ui doesn't load multiple times at once
+        self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
         
         #TODO: Find a clean way to find and render the svg
         pixmap = icon.pixmap(1024, 1024)
@@ -158,6 +158,8 @@ class ApplicationLogic:
             load_interface(self, selected_config) # load the interface elements given the selected file
             self.mainFileSelect.setCurrentIndex(1)
             self.statusBar.show()
+
+            print(f"---FILE LOADED---\n{file}\n-----------------")
         item = self.file_list.currentItem()
         if item:
             print("List item clicked:", item.text())
