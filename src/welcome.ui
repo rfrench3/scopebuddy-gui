@@ -81,7 +81,7 @@
            </size>
           </property>
           <property name="text">
-           <string>app icon</string>
+           <string/>
           </property>
           <property name="pixmap">
            <pixmap>../39ecd8c9/io.github.rfrench3.scopebuddy-gui.png</pixmap>
@@ -149,6 +149,9 @@
        </property>
        <property name="margin">
         <number>0</number>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
