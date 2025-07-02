@@ -126,8 +126,8 @@ class ApplicationLogic:
 
     def list_clicked(self) -> None:
         """opens the config file the user clicked."""
-        def load_selected_file(self,selected_file:fman.ConfigFile) -> None:
-            """Loads the file selected by the user into the interface. Then, sets the StackedWidget index to 1 (File Editing mode)."""
+        def load_with_selected_file(self,selected_file:fman.ConfigFile) -> None:
+            """Loads the file selected by the user, then loads the interface with it."""
             def load_interface(self,file:fman.ConfigFile) -> None:
                 """Loads interface elements and passes them the path to the file being edited."""
                 # Only load if not already loaded
@@ -166,7 +166,7 @@ class ApplicationLogic:
         #TODO: Determine path to file
         filepath = GLOBAL_CONFIG #TODO: Make this work with more than the global config
         file = fman.ConfigFile(filepath)
-        load_selected_file(self, file)
+        load_with_selected_file(self, file)
 
     def new_config_pressed(self) -> None:
         """opens a modal that has the user create a new config with a Steam AppID."""
