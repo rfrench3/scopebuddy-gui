@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
-from PySide6.QtWidgets import QToolButton, QLineEdit, QScrollArea, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget
 import file_manager as fman
 
 entry:str = fman.ui_env_vars_entry
@@ -11,10 +11,14 @@ class EnvVarLogic:
     def __init__(self, parent_widget=None) -> None:
             self.parent_logic = None  # Will be set by main.py
             self.entries = []  # Store references to all entry widgets
-
-            # Initialize and connect inputs  (type: ignore comments prevent pyLance false positives)
-            self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
+            
             self.env_vars_list = parent_widget.findChild(QWidget, 'additional_entries')  # type: ignore
+
+
+
+            # Initialize and connect inputs
+            self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
+            self.noscope_checkbox = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore
             
             self.add_entry.clicked.connect(self.new_entry)
             # Start the field with one blank entry
@@ -51,13 +55,20 @@ class EnvVarLogic:
         layout.removeWidget(entry_data['widget'])
         
         # Delete the widget
-        entry_data['widget'].deleteLater()
+        entry_data['widget'].deleteLater() # prevent memory leak
         
         # Remove from our list
         self.entries.remove(entry_data)
 
-    # Calls the main window
-    
-    def func2(self) -> None:
-        """."""
-        pass
+    def return_env_vars_list(self) -> list:
+        vars_list = []
+        
+        if self.noscope_checkbox.isChecked:
+            vars_list.append("SCB_NOSCOPE=1")
+
+        for entry_data in self.entries:
+            variable_line = entry_data['variable_line']
+            if variable_line and variable_line.text().strip():  # Only include non-empty entries
+                vars_list.append(variable_line.text().strip())
+
+        return vars_list

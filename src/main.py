@@ -21,14 +21,14 @@ In logic terms: Any code that sets the index of main window's QStackedWidget to 
                 Any code that sets the index of main window's QStackedWidget to 0 must UNLOAD the loaded file.
 '''
 import sys
-import os
+#import os
 
 # PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStackedWidget, QListWidget, QTabWidget, QDialog, QDialogButtonBox, QMessageBox, QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton, QLabel, QToolButton, QMenu
+from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QTabWidget, QLabel, QPushButton
 from PySide6.QtGui import QIcon
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile
-from PySide6.QtCore import Qt
+#from PySide6.QtUiTools import QUiLoader
+#from PySide6.QtCore import QFile
+#from PySide6.QtCore import Qt
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
@@ -37,6 +37,7 @@ from welcome import WelcomeLogic
 from env_var import EnvVarLogic
 from gamescope import GamescopeLogic
 from apply import ApplyChangesLogic
+
 
 DATA_DIR = fman.DATA_DIR
 APPID_DIR = fman.APPID_DIR
@@ -59,9 +60,13 @@ fman.ensure_file(GLOBAL_CONFIG) # makes sure the scb.conf file exists and works 
 
 class ApplicationLogic:
     def __init__(self, window): 
+
+        # Load data for the main window
         self.window = window 
         self.mainFileSelect = self.window.findChild(QStackedWidget,"stackedWidget")
         self.mainFileEdit = self.window.findChild(QTabWidget,"tabWidget")
+        self.statusBar = self.window.findChild(QStatusBar, "statusBar")
+
 
         # Load data for ui pages
         welcome_widget = fman.load_widget(ui_welcome)
@@ -76,8 +81,8 @@ class ApplicationLogic:
         self.apply_logic = ApplyChangesLogic(apply_widget)
 
         # Gives a path for main window functions to be called from each page 
+        # Call main window functions using self.parent_logic.function
         self.welcome_logic.parent_logic = self # type: ignore
-        #self.env_vars_logic.parent_logic = self
         #self.gamescope_logic.parent_logic = self
 
 
@@ -87,9 +92,20 @@ class ApplicationLogic:
         self.mainFileEdit.addTab(gamescope_widget, "Gamescope")
         self.mainFileEdit.addTab(apply_widget, "Confirmation")
 
+
+        # Add a permanent label and pushButton to the status bar
+
+        self.status_label = QLabel("Currently loaded file: IMPLEMENT_FILE_NAME_HERE")
+        self.status_button = QPushButton("Exit Without Saving")
+        self.status_button.clicked.connect(self.unload_selected_file)
+
+        self.statusBar.addPermanentWidget(self.status_label)
+        self.statusBar.addPermanentWidget(self.status_button)
+
         # ensure everything starts at its default state
         self.mainFileSelect.setCurrentIndex(0)
         self.mainFileEdit.setCurrentIndex(0)
+        self.statusBar.hide()
         
     def load_selected_file(self,selected_file):
         """Loads the file selected by the user. Then, sets the StackedWidget index to 1 (File Editing mode)."""
@@ -98,16 +114,19 @@ class ApplicationLogic:
         #self.env_vars_logic.load_data(selected_config)
         #self.gamescope_logic.load_data(selected_config)
         self.mainFileSelect.setCurrentIndex(1)
-        
+        self.statusBar.show()
         
     def unload_selected_file(self):
         """Unloads the chosen file and returns the user to the 'Select a File' page."""
         global selected_config
-        #TODO: ensure everything closes properly
-
+        #TODO: ensure everything closes properly. Input fields, variables, etc.
+        self.reset_interface()
         selected_config = None
         self.mainFileSelect.setCurrentIndex(0)
+        self.statusBar.hide()
 
+    def reset_interface(self):
+        pass
 
 
 # Logic that loads the app

@@ -28,13 +28,10 @@ class WelcomeLogic:
     def new_config_pressed(self) -> None:
         """opens a modal that has the user create a new config with a Steam AppID."""
 
-        dialog:QDialog = fman.load_widget(dialog_new_file)
+        dialog:QDialog = fman.load_widget(dialog_new_file) # type: ignore
         dialog.show()
         dialog.exec()
-        # end of QDialog
-        
-        print('press')
-        pass
+        #TODO: use the information within the modal to create a new file
 
     # Calls the main window
     
