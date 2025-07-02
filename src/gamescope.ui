@@ -112,7 +112,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_rWidth_2">
+                   <widget class="QLineEdit" name="lineEdit_rWidth">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -135,7 +135,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_rHeight_2">
+                   <widget class="QLineEdit" name="lineEdit_rHeight">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -167,7 +167,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="toolButton_renderedResolution_2">
+                   <widget class="QToolButton" name="toolButton_renderedResolution">
                     <property name="text">
                      <string>...</string>
                     </property>
@@ -246,7 +246,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_oWidth_2">
+                   <widget class="QLineEdit" name="lineEdit_oWidth">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -269,7 +269,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_oHeight_2">
+                   <widget class="QLineEdit" name="lineEdit_oHeight">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -301,7 +301,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="toolButton_outputResolution_2">
+                   <widget class="QToolButton" name="toolButton_outputResolution">
                     <property name="text">
                      <string>...</string>
                     </property>
@@ -380,7 +380,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_fps_2">
+                   <widget class="QLineEdit" name="lineEdit_fps">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -412,7 +412,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="toolButton_fps_2">
+                   <widget class="QToolButton" name="toolButton_fps">
                     <property name="text">
                      <string>...</string>
                     </property>
@@ -491,7 +491,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_fullscreen_2">
+                   <widget class="QCheckBox" name="checkBox_fullscreen">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -573,7 +573,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_borderless_2">
+                   <widget class="QCheckBox" name="checkBox_borderless">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -652,7 +652,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_hdr_2">
+                   <widget class="QCheckBox" name="checkBox_hdr">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -731,7 +731,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_steam_2">
+                   <widget class="QCheckBox" name="checkBox_steam">
                     <property name="enabled">
                      <bool>true</bool>
                     </property>
@@ -816,7 +816,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_mango_2">
+                   <widget class="QCheckBox" name="checkBox_mango">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -895,7 +895,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_forceInternalFullscreen_2">
+                   <widget class="QCheckBox" name="checkBox_forceInternalFullscreen">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -974,7 +974,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_adaptiveSync_2">
+                   <widget class="QCheckBox" name="checkBox_adaptiveSync">
                     <property name="text">
                      <string>Enable?</string>
                     </property>
@@ -1053,7 +1053,7 @@
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="checkBox_forceGrabCursor_2">
+                   <widget class="QCheckBox" name="checkBox_forceGrabCursor">
                     <property name="enabled">
                      <bool>true</bool>
                     </property>
@@ -1198,7 +1198,7 @@
                             </spacer>
                            </item>
                            <item>
-                            <widget class="QDoubleSpinBox" name="doubleSpinBox_mouseSensitivity_2">
+                            <widget class="QDoubleSpinBox" name="doubleSpinBox_mouseSensitivity">
                              <property name="decimals">
                               <number>1</number>
                              </property>
@@ -1384,7 +1384,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_maxScaleFactor_2">
+                   <widget class="QLineEdit" name="lineEdit_maxScaleFactor">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -1466,7 +1466,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="comboBox_upscalerType_2">
+                   <widget class="QComboBox" name="comboBox_upscalerType">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -1567,7 +1567,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="comboBox_upscalerFilter_2">
+                   <widget class="QComboBox" name="comboBox_upscalerFilter">
                     <item>
                      <property name="text">
                       <string>Linear (Default)</string>
@@ -1662,7 +1662,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_upscalerSharpness_2">
+                   <widget class="QLineEdit" name="lineEdit_upscalerSharpness">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -1830,7 +1830,7 @@ For example, 1.0 would allow no scaling and 2.0 allows twice the rendered size.<
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_unimplementedSettings_2">
+                   <widget class="QLineEdit" name="lineEdit_unimplementedSettings">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                       <horstretch>0</horstretch>
