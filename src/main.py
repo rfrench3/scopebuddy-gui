@@ -29,7 +29,7 @@ import sys
 import os
 
 # PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QTabWidget, QLabel, QPushButton
+from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
@@ -58,10 +58,6 @@ dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
 fman.create_directory()
 fman.ensure_file(GLOBAL_CONFIG) # makes sure the scb.conf file exists and works properly
 
-directory = fman.ScopebuddyDirectory()
-
-print("LIST OF FILES:\n",directory.print_files_list())
-print("DICT OF FILES:\n",directory.appid_dict())
 
 class ApplicationLogic:
     def __init__(self, window): 
@@ -102,6 +98,17 @@ class ApplicationLogic:
         self.mainFileSelect.setCurrentIndex(0)
         self.mainFileEdit.setCurrentIndex(0)
         self.statusBar.hide()
+
+        # Locate game-specific configs
+        self.appid_files = fman.ScopebuddyDirectory()
+
+        # Load config files that have been found into the list widget
+        appid_dict = self.appid_files.print_appid_dict()
+        for filename, displayname in appid_dict.items():
+            item = QListWidgetItem(displayname)
+            item.setToolTip(f"File: {os.path.basename(filename)}")
+            self.file_list.addItem(item)
+        
         
     
         

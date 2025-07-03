@@ -142,7 +142,7 @@ class ConfigFile:
             if first_line.startswith("# "):
                 return first_line[2:]
             else:
-                return "No display name"
+                return self.print_filename()
     
     def print_export_lines(self) -> list[str]:
         """Returns a list of export lines (Environment Variables)."""
@@ -213,9 +213,17 @@ class ScopebuddyDirectory:
         """Returns a list of readable strings describing each config file."""
         return [f"{config.print_filename()}: {config.print_displayname()}" for config in self.config_files]
     
-    def appid_dict(self) -> dict[str, str]:
+    def print_appid_dict(self) -> dict[str, str]:
         """Returns a dictionary of filepath: displayname"""
         return {config.print_path(): config.print_displayname() for config in self.config_files}
+    
+
+
+    # DATA EDITING
+
+    def append_appid_entry(self,filename:int,displayname:str):
+        """Adds a new file to the AppID directory and gives it a displayname."""
+        pass
         
 
 
