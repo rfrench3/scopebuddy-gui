@@ -29,14 +29,14 @@ import sys
 import os
 
 # PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton
+from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog, QLineEdit
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 import file_manager as fman
 from env_var import EnvVarLogic
 from gamescope import GamescopeLogic
-from apply import ApplyChangesLogic
+from general_settings import GeneralSettingsLogic
 
 
 DATA_DIR = fman.DATA_DIR
@@ -47,9 +47,9 @@ selected_config: fman.ConfigFile | None = None
 
 
 ui_main = fman.ui_main
+ui_general_settings = fman.ui_general_settings
 ui_env_vars = fman.ui_env_vars
 ui_gamescope = fman.ui_gamescope
-ui_apply_changes = fman.ui_apply_changes
 
 # Dialog of welcome page
 dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
@@ -72,9 +72,9 @@ class ApplicationLogic:
         self.large_logo = self.window.findChild(QLabel, "appIcon")
         
         # Initialize logic references (but don't create widgets yet)
+        self.general_settings_logic = None
         self.env_vars_logic = None
         self.gamescope_logic = None
-        self.apply_logic = None
         self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
         
         #TODO: Find a clean way to find and render the svg
@@ -121,9 +121,9 @@ class ApplicationLogic:
             self.mainFileEdit.clear()
             
             # Reset logic references
+            self.general_settings_logic = None
             self.env_vars_logic = None
             self.gamescope_logic = None
-            self.apply_logic = None
             self.interface_loaded = False
 
         global selected_config
@@ -143,20 +143,20 @@ class ApplicationLogic:
                     print("PROBLEM! THE UI ATTEMPTED TO LOAD WHILE ALREADY LOADED!")
                     return
                     
+                general_settings_widget = fman.load_widget(ui_general_settings)
                 env_vars_widget = fman.load_widget(ui_env_vars)
                 gamescope_widget = fman.load_widget(ui_gamescope)
-                apply_widget = fman.load_widget(ui_apply_changes)
 
                 # Initialize the logic for the ui pages
+                self.general_settings = GeneralSettingsLogic(file, general_settings_widget)
                 self.env_vars_logic = EnvVarLogic(file, env_vars_widget)
                 self.gamescope_logic = GamescopeLogic(file, gamescope_widget)
-                self.apply_logic = ApplyChangesLogic(file, apply_widget)
                     
                 # Clear existing tabs and add new ones
                 self.mainFileEdit.clear()
+                self.mainFileEdit.addTab(general_settings_widget, "General Settings")
                 self.mainFileEdit.addTab(env_vars_widget, "Environment Variables")
                 self.mainFileEdit.addTab(gamescope_widget, "Gamescope")
-                self.mainFileEdit.addTab(apply_widget, "Confirmation")
                 
                 self.interface_loaded = True
             
@@ -169,20 +169,36 @@ class ApplicationLogic:
 
             print(f"---FILE LOADED---\n{file}\n-----------------")
         item = self.file_list.currentItem()
-        if item:
-            print("List item clicked:", item.text())
-        #TODO: Determine path to file
-        filepath = fman.GLOBAL_CONFIG #TODO: Make this work with more than the global config
+        
+        if item.text() == "Global":
+            filepath = GLOBAL_CONFIG
+        else:
+            filename:str = item.toolTip()[6:]
+            filepath:str = os.path.join(fman.APPID_DIR,filename)
+
+
+
         file = fman.ConfigFile(filepath)
         load_with_selected_file(self, file)
         self.status_label.setText(f"File ({file.print_filename()}): {file.print_displayname()}")
 
     def new_config_pressed(self) -> None:
-        """opens a modal that has the user create a new config with a Steam AppID."""
-        dialog:QDialog = fman.load_widget(dialog_new_file) # type: ignore
-        dialog.show()
-        dialog.exec()
-        #TODO: use the information within the modal to create a new file
+        """opens a modal that has the user create a new config with a Steam AppID.""" #TODO:TODO: update the link in the modal to my docs, update docs
+        dialog: QDialog = fman.load_widget(dialog_new_file) # type: ignore
+        result = dialog.exec()
+        
+        if result == QDialog.DialogCode.Accepted:  # OK button was clicked
+            # Extract data from the LineEdit widgets
+            file_name_edit = dialog.findChild(QLineEdit, "file_name")
+            display_name_edit = dialog.findChild(QLineEdit, "display_name")
+            
+            file_name = file_name_edit.text().strip() + ".conf" # type: ignore
+            display_name = display_name_edit.text().strip() # type: ignore
+                
+            print(f"File name: {file_name}")
+            print(f"Display name: {display_name}")
+                
+            # TODO: use the information within the modal to create a new file
 
 
 # Logic that loads the app

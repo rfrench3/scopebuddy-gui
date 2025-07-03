@@ -214,7 +214,7 @@
                   <item>
                    <widget class="QWidget" name="widget_3" native="true">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
@@ -242,13 +242,26 @@
                      <item>
                       <widget class="QPushButton" name="button_new_config">
                        <property name="sizePolicy">
-                        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                          <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
                        <property name="text">
                         <string>New Config</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="open_folder">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                         <horstretch>1</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="text">
+                        <string>Open Folder</string>
                        </property>
                       </widget>
                      </item>

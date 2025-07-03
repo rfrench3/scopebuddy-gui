@@ -172,15 +172,36 @@ class ConfigFile:
     # DATA EDITING
     
     def edit_displayname(self, new_name:str) -> None:
-        """Changes the display name (the commented out line 1) inside the file."""
+        """Changes the display name (the commented out line 1) inside the file.
+        Does not save the old display name when doing this."""
+        print("EDIT DISPLAYNAME!")
+        try:
+            with open(self.path_to_file, 'r') as file:
+                lines = file.readlines()
+
+            if lines and lines[0].startswith("# "):
+                lines[0] = f"# {new_name}\n"
+            else:
+                lines.insert(0,f"# {new_name}\n")
+
+            with open(self.path_to_file, 'w') as file:
+                file.writelines(lines)
+        except Exception as e:
+            print(f"Failed to edit display name: {e}")
+        
+
+    def edit_export_lines(self, new_lines:list[str]) -> None | ValueError:
+        """Changes the export lines in the file to the newly listed ones by commenting out
+        or uncommenting in lines, only adding new lines when necessary. 
+        Will return a ValueError if normal MangoHUD is combined with Gamescope."""
+        print("EDIT EXPORT LINES!")
         pass
 
-    def edit_export_lines(self, new_lines:list[str]) -> None:
-        """Changes the export lines in the file to the newly listed ones."""
-        pass
-
-    def edit_gamescope_line(self, new_line:str) -> None:
-        """Changes the gamescope args in the file to the newly listed ones."""
+    def edit_gamescope_line(self, new_line:str) -> None | ValueError:
+        """Changes the gamescope args in the file to the newly listed ones,
+        commenting out the old line and appending the new one in its place.
+        Will return a ValueError if a known invalid set of flags is sent."""
+        print("EDIT GAMESCOPE LINE!")
         pass
 
 '''
@@ -200,10 +221,6 @@ class ScopebuddyDirectory:
             for file in os.listdir(self.appid_path)
             if os.path.isfile(os.path.join(self.appid_path, file)) and file.endswith(".conf")
         ]
-        
-        
-        
-        
         
     def __str__(self) -> str:
         """Returns detected path to scopebuddy directory."""
@@ -231,11 +248,11 @@ class ScopebuddyDirectory:
 # data directories for program and config files #
 #################################################
 
-DATA_DIR = os.path.abspath(os.path.dirname(__file__))
-TEMPLATE = os.path.join(DATA_DIR, "default_scb.conf")
+DATA_DIR:str = os.path.abspath(os.path.dirname(__file__))
+TEMPLATE:str = os.path.join(DATA_DIR, "default_scb.conf")
 
-APPID_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID") #folder
-GLOBAL_CONFIG = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "scb.conf") #file
+APPID_DIR:str = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID") #folder
+GLOBAL_CONFIG:str = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "scb.conf") #file
 
 #SVG_PATH = QIcon.themeSearchPaths()[0] + "/io.github.rfrench3.scopebuddy-gui.svg"
 
@@ -244,5 +261,6 @@ ui_main = os.path.join(DATA_DIR, "main.ui")
 ui_env_vars = os.path.join(DATA_DIR, "environment_variables.ui")
 ui_gamescope = os.path.join(DATA_DIR, "gamescope.ui")
 ui_apply_changes = os.path.join(DATA_DIR, "apply.ui")
+ui_general_settings = os.path.join(DATA_DIR, "general_settings.ui")
 
 ui_env_vars_entry = os.path.join(DATA_DIR, "env_var.ui")

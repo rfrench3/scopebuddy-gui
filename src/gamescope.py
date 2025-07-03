@@ -166,12 +166,15 @@ class GamescopeLogic:
                 
 
         #TODO: input validation for lineEdits is needed
+        #TODO: figure out why an additional space is consistently inserted in the middle
         compile_arguments(self.widget_mapping.items())
 
         generated_config = ''
         for argument in self.config_list:
             generated_config += argument
         
+        print(generated_config.strip())
+
         return generated_config.strip()
     
     
