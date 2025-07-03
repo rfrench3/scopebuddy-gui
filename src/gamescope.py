@@ -69,11 +69,65 @@ class GamescopeLogic:
 
             self.load_data(file.print_gamescope_line())
 
-
-    def load_data(self, data:str) -> None:
+#TODO: this is extremely messy and should probably be redone
+    def load_data(self, data: str) -> None:
         """Loads the data from the file into the UI elements."""
+        # Split the data string into arguments
+        args = data.strip().split()
+        arg_map = {}
+        skip_next = False
+
+        # Build a map of argument flags to their values (if any)
+        for i, arg in enumerate(args):
+            if skip_next:
+                skip_next = False
+                continue
+            # If the next argument is not a flag, treat it as a value
+            if arg.startswith('-') or arg.startswith('--'):
+                if i + 1 < len(args) and not args[i + 1].startswith('-'):
+                    arg_map[arg] = args[i + 1]
+                    skip_next = True
+                else:
+                    arg_map[arg] = True  # flag only
+
+        # Set widget values based on the mapping
+        for attr_name, (object_name, widget_class, arg) in self.widget_mapping.items():
+            widget = getattr(self, attr_name, None)
+            if widget is None:
+                continue
+
+            if attr_name == "unimplemented":
+                # Set unimplemented settings as a string
+                widget.setText('')
+                continue
+
+            if not arg:
+                continue  # Skip widgets without a CLI argument
+
+            if widget_class == QCheckBox:
+                widget.setChecked(arg in arg_map)
+            elif widget_class == QLineEdit:
+                value = arg_map.get(arg, '')
+                widget.setText(str(value) if value is not True else '')
+            elif widget_class == QComboBox:
+                value = arg_map.get(arg, '')
+                if value and value is not True:
+                    idx = widget.findText(str(value))
+                    if idx != -1:
+                        widget.setCurrentIndex(idx)
+                    else:
+                        widget.setCurrentIndex(0)
+                else:
+                    widget.setCurrentIndex(0)
+            elif widget_class == QDoubleSpinBox:
+                value = arg_map.get(arg, '')
+                try:
+                    widget.setValue(float(value))
+                except (ValueError, TypeError):
+                    widget.setValue(1.0)
         
-        pass
+
+        
 
     def print_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []

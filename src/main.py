@@ -30,10 +30,6 @@ import os
 
 # PySide6, Qt Designer UI files
 from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QTabWidget, QLabel, QPushButton
-from PySide6.QtGui import QIcon
-#from PySide6.QtUiTools import QUiLoader
-#from PySide6.QtCore import QFile
-#from PySide6.QtCore import Qt
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
@@ -62,6 +58,10 @@ dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
 fman.create_directory()
 fman.ensure_file(GLOBAL_CONFIG) # makes sure the scb.conf file exists and works properly
 
+directory = fman.ScopebuddyDirectory()
+
+print("LIST OF FILES:\n",directory.print_files_list())
+print("DICT OF FILES:\n",directory.appid_dict())
 
 class ApplicationLogic:
     def __init__(self, window): 

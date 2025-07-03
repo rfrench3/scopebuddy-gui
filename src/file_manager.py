@@ -183,6 +183,41 @@ class ConfigFile:
         """Changes the gamescope args in the file to the newly listed ones."""
         pass
 
+'''
+The ScopebuddyDirectory class:
+PURPOSE: store data about the scopebuddy directory and its files and have simple methods for reading/editing that data.
+OUTPUT: list of available files, name of files, first line of files (display name)
+ALTER: add new files to directory
+'''
+class ScopebuddyDirectory:
+    def __init__(self) -> None:
+        self.directory_path = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
+        self.appid_path = os.path.join(self.directory_path,"AppID")
+
+        # This will only be needed for the AppID folder.
+        self.config_files = [
+            ConfigFile(os.path.join(self.appid_path, file))
+            for file in os.listdir(self.appid_path)
+            if os.path.isfile(os.path.join(self.appid_path, file)) and file.endswith(".conf")
+        ]
+        
+        
+        
+        
+        
+    def __str__(self) -> str:
+        """Returns detected path to scopebuddy directory."""
+        return self.directory_path
+    
+    def print_files_list(self) -> list[str]:
+        """Returns a list of readable strings describing each config file."""
+        return [f"{config.print_filename()}: {config.print_displayname()}" for config in self.config_files]
+    
+    def appid_dict(self) -> dict[str, str]:
+        """Returns a dictionary of filepath: displayname"""
+        return {config.print_path(): config.print_displayname() for config in self.config_files}
+        
+
 
 #################################################
 # data directories for program and config files #
