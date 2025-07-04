@@ -27,6 +27,7 @@ class EnvVarLogic:
             
             self.add_entry.clicked.connect(self.new_entry)
             self.apply_button.clicked.connect(self.save_data)
+            self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Environment_variables"))
 
             # Load lines from the file
             self.load_data(self.file)
