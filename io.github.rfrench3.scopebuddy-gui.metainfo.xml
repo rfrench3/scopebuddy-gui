@@ -50,10 +50,20 @@
   <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v1.1.0/src/img/mainWindow.png</image>
+      <caption>The Scopebuddy GUI welcome screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/welcomeScreen.png</image>
     </screenshot>
     <screenshot>
-      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v1.1.0/src/img/applyWindow.png</image>
+      <caption>The Scopebuddy GUI general settings screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/generalSettings.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The Scopebuddy GUI environment variables screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/environmentVariables.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The Scopebuddy GUI gamescope settings screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/gamescope.png</image>
     </screenshot>
   </screenshots>
   <releases>
