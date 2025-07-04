@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
-from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget
+from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget, QDialogButtonBox
 import file_manager as fman
 from file_manager import ConfigFile
 
@@ -18,8 +18,15 @@ class EnvVarLogic:
             # Initialize and connect inputs
             self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
             self.noscope_checkbox = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore
+            self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
+
+            self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
+            self.help_button = self.button_box.button(QDialogButtonBox.StandardButton.Help) # type: ignore
+            self.reset_button = self.button_box.button(QDialogButtonBox.StandardButton.Reset) # type: ignore
+            self.defaults_button = self.button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults) # type: ignore
             
             self.add_entry.clicked.connect(self.new_entry)
+            self.apply_button.clicked.connect(self.save_data)
 
             # Load lines from the file
             self.load_data(self.file)
@@ -33,6 +40,12 @@ class EnvVarLogic:
 
         for entry in variables_list:
             self.new_entry(entry)
+
+    def save_data(self):
+        """Load data into a list and apply it to the file."""
+        data:list[str] = self.return_env_vars_list()
+        self.file.edit_export_lines(data)
+
 
     def new_entry(self, data:str|None = None) -> None:
         """Creates a new entry in the environment variables list."""
@@ -60,7 +73,7 @@ class EnvVarLogic:
         if delete_entry:
             delete_entry.clicked.connect(lambda: self.remove_entry(entry_data))
     
-    def remove_entry(self, entry_data):
+    def remove_entry(self, entry_data) -> None:
         """Remove an entry from the list."""
 
         layout = self.env_vars_list.layout()
@@ -72,11 +85,9 @@ class EnvVarLogic:
         # Remove from our list
         self.entries.remove(entry_data)
 
-    def return_env_vars_list(self) -> list:
+    def return_env_vars_list(self) -> list[str]:
+        """Outputs a list of environment variables input by the user."""
         vars_list = []
-        
-        if self.noscope_checkbox.isChecked:
-            vars_list.append("SCB_NOSCOPE=1")
 
         for entry_data in self.entries:
             variable_line = entry_data['variable_line']

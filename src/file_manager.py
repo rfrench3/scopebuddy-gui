@@ -190,12 +190,63 @@ class ConfigFile:
             print(f"Failed to edit display name: {e}")
         
 
-    def edit_export_lines(self, new_lines:list[str]) -> None | ValueError:
+    def edit_export_lines(self, new_lines:list[str]) -> None:
         """Changes the export lines in the file to the newly listed ones by commenting out
-        or uncommenting in lines, only adding new lines when necessary. 
-        Will return a ValueError if normal MangoHUD is combined with Gamescope."""
-        print("EDIT EXPORT LINES!")
-        pass
+        or uncommenting in lines, only adding new lines when necessary."""
+
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        # disable all oldlines
+        for i, oldline in enumerate(lines):
+            if oldline.startswith("export "):
+                lines[i] = f"#{oldline}" 
+        
+        # re-enable any oldlines that match a newline
+        for i, oldline in enumerate(lines):
+            if oldline.startswith("#export "):
+                for newline in new_lines[:]:
+                    if oldline.startswith(f"#export {newline}"): # accounts for comments
+                        new_lines.remove(newline)
+                        lines[i] = oldline[1:]
+                        break
+
+
+        # append any newlines not in oldlines to the file
+        if new_lines:
+
+            
+            for i, line in enumerate(lines[:]):
+                if i == 0:
+                    continue
+                
+                
+                prev_line_is_export:bool = (lines[i-1].startswith("export ") or lines[i-1].startswith("#export "))
+                curr_line_is_not_export:bool = not (line.startswith("export ") or line.startswith("#export "))
+
+                if prev_line_is_export and curr_line_is_not_export:
+                    
+                    for export in new_lines[::-1]:
+                        lines.insert(i, f"export {export}\n")
+                        new_lines.remove(export)
+                    
+                    break
+        
+
+        # append new exports to the end of the file, because none were found within the file
+        if new_lines:
+            
+            append_lines = [
+                f"export {line}\n"
+                for line in new_lines
+            ]
+
+            lines.extend(append_lines)
+
+        with open(self.path_to_file,'w') as file:
+            file.writelines(lines)
+
+        
 
     def edit_gamescope_line(self, new_line:str) -> None | ValueError:
         """Changes the gamescope args in the file to the newly listed ones,
@@ -260,7 +311,6 @@ GLOBAL_CONFIG:str = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expan
 ui_main = os.path.join(DATA_DIR, "main.ui")
 ui_env_vars = os.path.join(DATA_DIR, "environment_variables.ui")
 ui_gamescope = os.path.join(DATA_DIR, "gamescope.ui")
-ui_apply_changes = os.path.join(DATA_DIR, "apply.ui")
 ui_general_settings = os.path.join(DATA_DIR, "general_settings.ui")
 
 ui_env_vars_entry = os.path.join(DATA_DIR, "env_var.ui")
