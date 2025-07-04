@@ -17,42 +17,42 @@ class GamescopeLogic:
             # Widget mapping for efficient initialization
             self.widget_mapping = {
                 # QLineEdit widgets
-                'rWidth': ('lineEdit_rWidth', QLineEdit, '-w'),
-                'rHeight': ('lineEdit_rHeight', QLineEdit, '-h'),
-                'oWidth': ('lineEdit_oWidth', QLineEdit, '-W'),
-                'oHeight': ('lineEdit_oHeight', QLineEdit, '-H'),
-                'fps': ('lineEdit_fps', QLineEdit, '-r'),
-                'maxScale': ('lineEdit_maxScaleFactor', QLineEdit, '-m'),
-                'upscalerSharpness': ('lineEdit_upscalerSharpness', QLineEdit, '--sharpness'),
-                'unimplemented': ('lineEdit_unimplementedSettings', QLineEdit, '--placeholder-value'),
+                'lineEdit_rWidth': (QLineEdit, '-w'),
+                'lineEdit_rHeight': (QLineEdit, '-h'),
+                'lineEdit_oWidth': (QLineEdit, '-W'),
+                'lineEdit_oHeight': (QLineEdit, '-H'),
+                'lineEdit_fps': (QLineEdit, '-r'),
+                'lineEdit_maxScaleFactor': (QLineEdit, '-m'),
+                'lineEdit_upscalerSharpness': (QLineEdit, '--sharpness'),
+                'lineEdit_unimplementedSettings': (QLineEdit, '--placeholder-value'),
                 
                 # QCheckBox widgets
-                'fullscreen': ('checkBox_fullscreen', QCheckBox, '-f'),
-                'bWindow': ('checkBox_borderless', QCheckBox, '-b'),
-                'hdr': ('checkBox_hdr', QCheckBox, '--hdr-enabled'),
-                'steam': ('checkBox_steam', QCheckBox, '-e'),
-                'mangoHUD': ('checkBox_mango', QCheckBox, '--mangoapp'),
-                'fgCursor': ('checkBox_forceGrabCursor', QCheckBox, '--force-grab-cursor'),
-                'fullscreenInGamescope': ('checkBox_forceInternalFullscreen', QCheckBox, '--force-windows-fullscreen'),
-                'vrr': ('checkBox_adaptiveSync', QCheckBox, '--adaptive-sync'),
+                'checkBox_fullscreen': (QCheckBox, '-f'),
+                'checkBox_borderless': (QCheckBox, '-b'),
+                'checkBox_hdr': (QCheckBox, '--hdr-enabled'),
+                'checkBox_steam': (QCheckBox, '-e'),
+                'checkBox_mango': (QCheckBox, '--mangoapp'),
+                'checkBox_forceGrabCursor': (QCheckBox, '--force-grab-cursor'),
+                'checkBox_forceInternalFullscreen': (QCheckBox, '--force-windows-fullscreen'),
+                'checkBox_adaptiveSync': (QCheckBox, '--adaptive-sync'),
                 
                 # Other widgets
-                'mouseSensitivity': ('doubleSpinBox_mouseSensitivity', QDoubleSpinBox, '-s'),
-                'upscalerType': ('comboBox_upscalerType', QComboBox, '-S'),
-                'upscalerFilter': ('comboBox_upscalerFilter', QComboBox, '-F'),
-                'exitApp': ('pushButton_exit', QPushButton, ''),
-                'proceed': ('pushButton_continue', QPushButton, ''),
-                'statusBar': ('statusBar', QStatusBar, ''),
-                'buttonBox': ('buttonBox', QDialogButtonBox, ''),
-                'toolButton_renderedResolution': ('toolButton_renderedResolution', QToolButton, ''),
-                'toolButton_outputResolution': ('toolButton_outputResolution', QToolButton, ''),
-                'toolButton_fps': ('toolButton_fps', QToolButton, ''),
+                'doubleSpinBox_mouseSensitivity': (QDoubleSpinBox, '-s'),
+                'comboBox_upscalerType': (QComboBox, '-S'),
+                'comboBox_upscalerFilter': (QComboBox, '-F'),
+                'pushButton_exit': (QPushButton, ''),
+                'pushButton_continue': (QPushButton, ''),
+                'statusBar': (QStatusBar, ''),
+                'buttonBox': (QDialogButtonBox, ''),
+                'toolButton_renderedResolution': (QToolButton, ''),
+                'toolButton_outputResolution': (QToolButton, ''),
+                'toolButton_fps': (QToolButton, ''),
             }
             
             # Initialize all widgets using the mapping TODO: re-implement QIntValidator
-            for attr_name, (object_name, widget_class, arg) in self.widget_mapping.items():
+            for object_name, (widget_class, arg) in self.widget_mapping.items():
                 widget = parent_widget.findChild(widget_class, object_name)
-                setattr(self, attr_name, widget)
+                setattr(self, object_name, widget)
 
             self.apply_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
             self.help_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Help) # type: ignore
@@ -69,12 +69,12 @@ class GamescopeLogic:
 
             self.load_data(file.print_gamescope_line())
 
-#TODO: this is extremely messy and should probably be redone
+#TODO: unimplemented needs to be implemented, ensure combobox and spinboxes work
     def load_data(self, data: str) -> None:
         """Loads the data from the file into the UI elements."""
         # Split the data string into arguments
-        args = data.strip().split()
-        arg_map = {}
+        args:list[str] = data.strip().split()
+        arg_map: dict[str, str | bool] = {}
         skip_next = False
 
         # Build a map of argument flags to their values (if any)
@@ -91,12 +91,12 @@ class GamescopeLogic:
                     arg_map[arg] = True  # flag only
 
         # Set widget values based on the mapping
-        for attr_name, (object_name, widget_class, arg) in self.widget_mapping.items():
-            widget = getattr(self, attr_name, None)
+        for object_name, (widget_class, arg) in self.widget_mapping.items():
+            widget = getattr(self, object_name, None)
             if widget is None:
                 continue
 
-            if attr_name == "unimplemented":
+            if object_name == "unimplemented":
                 # Set unimplemented settings as a string
                 widget.setText('')
                 continue
@@ -112,9 +112,9 @@ class GamescopeLogic:
             elif widget_class == QComboBox:
                 value = arg_map.get(arg, '')
                 if value and value is not True:
-                    idx = widget.findText(str(value))
-                    if idx != -1:
-                        widget.setCurrentIndex(idx)
+                    index = widget.findText(str(value))
+                    if index != -1:
+                        widget.setCurrentIndex(index)
                     else:
                         widget.setCurrentIndex(0)
                 else:
@@ -149,10 +149,10 @@ class GamescopeLogic:
                 self.config_list.append(f'{arg} {doubleSpinBox.value()} ')
 
         def compile_arguments(widget_mapping_items):
-            for attr_name, (object_name, widget_class, arg) in widget_mapping_items:
-                widget = getattr(self, attr_name, None)  # Get the widget from self
+            for object_name, (widget_class, arg) in widget_mapping_items:
+                widget = getattr(self, object_name, None)  # Get the widget from self
                 
-                if attr_name == "unimplemented":
+                if object_name == "unimplemented":
                     self.config_list.append(f'{widget.text()} ') # type: ignore
                 elif widget_class == QCheckBox:
                     apply_checkbox_input(widget, arg)
@@ -176,5 +176,4 @@ class GamescopeLogic:
         print(generated_config.strip())
 
         return generated_config.strip()
-    
-    
+
