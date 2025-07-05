@@ -56,8 +56,11 @@ dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
 
 
 fman.create_directory()
-fman.ensure_file(GLOBAL_CONFIG) # makes sure the scb.conf file exists and works properly
+#fman.create_new_file(GLOBAL_CONFIG) # makes sure the scb.conf file exists and works properly
 
+initialize = fman.ScopebuddyDirectory()
+initialize.create_file('scb.conf','Global Config file.',fman.SCB_DIR)
+initialize=None
 
 class ApplicationLogic:
     def __init__(self, window): 
@@ -68,6 +71,7 @@ class ApplicationLogic:
         self.mainFileEdit = self.window.findChild(QTabWidget,"tabWidget")
         self.statusBar = self.window.findChild(QStatusBar, "statusBar")
         self.button_new_config = self.window.findChild(QPushButton, 'button_new_config')
+        self.open_folder = self.window.findChild(QPushButton, "open_folder")
         self.file_list = self.window.findChild(QListWidget, 'file_list')
         self.large_logo = self.window.findChild(QLabel, "appIcon")
         
@@ -83,6 +87,7 @@ class ApplicationLogic:
 
 
         self.button_new_config.clicked.connect(self.new_config_pressed)
+        self.open_folder.clicked.connect(lambda: os.system(f"xdg-open {fman.SCB_DIR}"))
         self.file_list.itemClicked.connect(self.list_clicked)
 
         # Add a permanent label and pushButton to the status bar
@@ -198,7 +203,22 @@ class ApplicationLogic:
             print(f"File name: {file_name}")
             print(f"Display name: {display_name}")
                 
-            # TODO: use the information within the modal to create a new file
+            # Create a new config file in APPID_DIR with the given file name and display name
+            if file_name:
+                new_file_path = os.path.join(fman.APPID_DIR, file_name)
+                if not os.path.exists(new_file_path):
+                    # Create the config file using file_manager logic
+                    logic = fman.ScopebuddyDirectory()
+                    logic.create_file(file_name,display_name)
+                    
+                    # Add the new file to the list widget
+                    item = QListWidgetItem(display_name)
+                    item.setToolTip(f"File: {file_name}")
+                    self.file_list.addItem(item)
+                else:
+                    print(f"File {file_name} already exists.")
+            else:
+                print("File name is empty.")
 
 
 # Logic that loads the app

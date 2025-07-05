@@ -5,6 +5,27 @@ from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 
+#################################################
+# data directories for program and config files #
+#################################################
+
+# program files
+DATA_DIR:str = os.path.abspath(os.path.dirname(__file__))
+TEMPLATE:str = os.path.join(DATA_DIR, "default_scb.conf")
+
+# config files
+SCB_DIR:str = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy") #folder
+APPID_DIR:str = os.path.join(SCB_DIR, "AppID") #folder
+GLOBAL_CONFIG:str = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "scb.conf") #file
+
+# program UI files
+ui_main = os.path.join(DATA_DIR, "main.ui")
+ui_env_vars = os.path.join(DATA_DIR, "environment_variables.ui")
+ui_gamescope = os.path.join(DATA_DIR, "gamescope.ui")
+ui_general_settings = os.path.join(DATA_DIR, "general_settings.ui")
+
+ui_env_vars_entry = os.path.join(DATA_DIR, "env_var.ui")
+
 ########################
 # Managing Qt UI files #
 ########################
@@ -27,19 +48,25 @@ def load_widget(ui_file: str, window_title:str='Scopebuddy GUI', icon:QIcon=icon
 ####################################
 # Managing scopebuddy config files #
 ####################################
-
-def get_data_path():
-    """Returns the path to data of the program. This means files such as """
-    return os.path.abspath(os.path.dirname(__file__))
-
     
-def create_directory():
-    """Create the directory for /scopebuddy/scb.conf, returns full path to scb.conf"""
-    CONFIG_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
-    os.makedirs(CONFIG_DIR, exist_ok=True)
-    selected_config_file = os.path.join(CONFIG_DIR, "scb.conf")
+def create_directory() -> None:
+    """Create the directory for /scopebuddy/AppID."""
+    APPID_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID")
+    os.makedirs(APPID_DIR, exist_ok=True)
 
-def ensure_file(selected_config_file) -> None: 
+def invalid_filename(filename: str) -> bool:
+    """Determines that a given file name has only valid characters using re.search. 
+    Returns False if there are no issues."""
+    if not filename or '/' in filename or filename in ('.', '..'):
+        return True
+    # Use re.search to find any character NOT allowed
+    if search(r'[^\w\-.]', filename):
+        return True
+    return False
+
+
+
+def create_new_file(selected_config_file) -> None: 
     """creates config file if it doesn't exist, and calls on ensure_gamescope_line afterwards."""
     def ensure_gamescope_line(): 
         """ if config file doesn't have the gamescope args line, create one in the best place.
@@ -246,12 +273,52 @@ class ConfigFile:
         with open(self.path_to_file,'w') as file:
             file.writelines(lines)
 
-        
+    def validate_gamescope_line(self): 
+        """ if config file doesn't have an active gamescope args line, create one in the best place.
+        this will be after a commented out line if one is found, or at the end."""
 
-    def edit_gamescope_line(self, new_line:str) -> None | ValueError:
+        # will be used if the correct line isn't already present
+        new_line = f'SCB_GAMESCOPE_ARGS=""\n'
+
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        for i, line in enumerate(lines):
+            if line.startswith('SCB_GAMESCOPE_ARGS='):
+                match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
+                if match:
+                    #the line is exists and is good
+                    return 
+                else:
+                    #the line will be commented out because it will probably cause errors.
+                    #a proper line will be placed after it
+                    lines[i:i+1] = [f'#SCBGUI_ERROR_PREVENTATION!#{line}', new_line]
+                    with open(self.path_to_file, 'w') as file: 
+                        file.writelines(lines)
+                    return
+
+        # Assume the gamescope_args line has no breaking issues at this point.
+
+        # check for the default commented out line in the config file.
+        # if found, place the new gamescope line right after it
+        for i, line in enumerate(lines):
+            if line.startswith('#SCB_GAMESCOPE_ARGS'):
+                lines[i:i+1] = [line, new_line]
+                # Write the modified lines back to the file
+                with open(self.path_to_file, 'w') as file:
+                    file.writelines(lines)
+                return
+    
+        # no match was found, so create the necessary line at the end of the file
+        with open(self.path_to_file, 'a') as file:
+            if lines and not lines[-1].endswith('\n'):
+                file.write('\n')
+            file.write('SCB_GAMESCOPE_ARGS=""\n')
+        return
+
+    def edit_gamescope_line(self, new_line:str) -> None:
         """Changes the gamescope args in the file to the newly listed ones,
-        commenting out the old line and appending the new one in its place.
-        Will return a ValueError if a known invalid set of flags is sent."""
+        commenting out the old line and appending the new one in its place."""
         print("EDIT GAMESCOPE LINE!")
         pass
 
@@ -289,28 +356,46 @@ class ScopebuddyDirectory:
 
     # DATA EDITING
 
-    def append_appid_entry(self,filename:int,displayname:str):
-        """Adds a new file to the AppID directory and gives it a displayname."""
-        pass
+    def create_file(self,filename:str,displayname:str='',directory:str=APPID_DIR) -> bool:
+        """Adds a new file to the chosen directory and gives it a displayname. 
+        If no display name is provided, it will default to the filename.
+        If the file cannot be made, it will return True."""
+        if invalid_filename(filename):
+            print("The chosen filename is not valid.")
+            return True
+
+        new_file_path = os.path.join(directory, filename)
+        os.makedirs(directory, exist_ok=True)
+        try:
+            if os.path.exists(new_file_path):
+                raise FileExistsError
+            else:
+                shutil.copyfile(TEMPLATE, new_file_path)
+                new_file = ConfigFile(new_file_path)
+
+                if displayname:
+                    new_file.edit_displayname(displayname)
+                    new_file.validate_gamescope_line()
+                else:
+                    new_file.edit_displayname(filename)
+                    new_file.validate_gamescope_line()
+
+                return False
+
+        except FileExistsError as e:
+            print(f"Unable to create config file: {e}")
+            return True
+        except FileNotFoundError as e:
+            print(f"Unable to create config file: {e}")
+            return True
+        except PermissionError as e:
+            print(f"Unable to create config file: {e}")
+            return True
+        except Exception as e:
+            print(f"Unanticipated error: {e}")
+            return True
+
+
         
 
 
-#################################################
-# data directories for program and config files #
-#################################################
-
-DATA_DIR:str = os.path.abspath(os.path.dirname(__file__))
-TEMPLATE:str = os.path.join(DATA_DIR, "default_scb.conf")
-
-APPID_DIR:str = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID") #folder
-GLOBAL_CONFIG:str = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "scb.conf") #file
-
-#SVG_PATH = QIcon.themeSearchPaths()[0] + "/io.github.rfrench3.scopebuddy-gui.svg"
-
-
-ui_main = os.path.join(DATA_DIR, "main.ui")
-ui_env_vars = os.path.join(DATA_DIR, "environment_variables.ui")
-ui_gamescope = os.path.join(DATA_DIR, "gamescope.ui")
-ui_general_settings = os.path.join(DATA_DIR, "general_settings.ui")
-
-ui_env_vars_entry = os.path.join(DATA_DIR, "env_var.ui")
