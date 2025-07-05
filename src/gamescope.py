@@ -65,9 +65,10 @@ class GamescopeLogic:
             #self. = parent_widget.findChild(Q, '')  # type: ignore
 
 
-            self.apply_button.clicked.connect(self.print_new_config)
-
-
+            self.apply_button.clicked.connect(self.save_data)
+            self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Gamescope"))
+            self.reset_button.clicked.connect(self.clear_data)
+            self.defaults_button.clicked.connect(self.reset_data)
 
             self.load_data(file.print_gamescope_line())
 
@@ -157,8 +158,30 @@ class GamescopeLogic:
         if unimplemented_widget:
             unimplemented_widget.setText(' '.join(unimplemented_args))
         
-
+    def save_data(self) -> None:
+        self.file.edit_gamescope_line(self.print_new_config())
         
+    def clear_data(self):
+        """Empties all input fields."""
+        for object_name, (widget_class, arg) in self.widget_mapping.items():
+            widget = getattr(self, object_name, None)
+            if arg:
+                if widget_class == QCheckBox:
+                    widget.setChecked(False)
+                elif widget_class == QLineEdit:
+                    widget.setText('')
+                elif widget_class == QComboBox:
+                    widget.setCurrentIndex(0)
+                elif widget_class == QDoubleSpinBox:
+                    widget.setValue(1.0)
+                else:
+                    pass
+
+
+    def reset_data(self) -> None:
+        """Empties all input fields. Then, loads data from file into those input fields."""
+        self.clear_data()
+        self.load_data(self.file.print_gamescope_line())
 
     def print_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
