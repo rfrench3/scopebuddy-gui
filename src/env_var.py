@@ -30,14 +30,14 @@ class EnvVarLogic:
             self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Environment_variables"))
 
             # Load lines from the file
-            self.load_data(self.file)
+            self.load_data()
 
             # Start the field with one blank entry
             self.new_entry()
 
-    def load_data(self, file:ConfigFile) -> None:
+    def load_data(self) -> None:
         """Loads the data from the file into the UI elements."""
-        variables_list:list[str] = file.print_export_lines()
+        variables_list:list[str] = self.file.print_export_lines()
 
         for entry in variables_list:
             self.new_entry(entry)

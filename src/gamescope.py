@@ -24,7 +24,6 @@ class GamescopeLogic:
                 'lineEdit_fps': (QLineEdit, '-r'),
                 'lineEdit_maxScaleFactor': (QLineEdit, '-m'),
                 'lineEdit_upscalerSharpness': (QLineEdit, '--sharpness'),
-                'lineEdit_unimplementedSettings': (QLineEdit, '--placeholder-value'),
                 
                 # QCheckBox widgets
                 'checkBox_fullscreen': (QCheckBox, '-f'),
@@ -47,6 +46,9 @@ class GamescopeLogic:
                 'toolButton_renderedResolution': (QToolButton, ''),
                 'toolButton_outputResolution': (QToolButton, ''),
                 'toolButton_fps': (QToolButton, ''),
+
+                # Non-specified
+                'lineEdit_unimplementedSettings': (QLineEdit, '--placeholder-value'),
             }
             
             # Initialize all widgets using the mapping TODO: re-implement QIntValidator
@@ -69,7 +71,6 @@ class GamescopeLogic:
 
             self.load_data(file.print_gamescope_line())
 
-#TODO: unimplemented needs to be implemented, ensure combobox and spinboxes work
     def load_data(self, data: str) -> None:
         """Loads the data from the file into the UI elements."""
         # Split the data string into arguments
@@ -90,25 +91,30 @@ class GamescopeLogic:
                 else:
                     arg_map[arg] = True  # flag only
 
+        # Track which arguments have been processed
+        processed_args = set()
+        
         # Set widget values based on the mapping
         for object_name, (widget_class, arg) in self.widget_mapping.items():
             widget = getattr(self, object_name, None)
             if widget is None:
                 continue
 
-            if object_name == "unimplemented":
-                # Set unimplemented settings as a string
-                widget.setText('')
-                continue
+            if object_name == "lineEdit_unimplementedSettings":
+                continue  # Handle this separately after processing other widgets
 
             if not arg:
                 continue  # Skip widgets without a CLI argument
 
             if widget_class == QCheckBox:
                 widget.setChecked(arg in arg_map)
+                if arg in arg_map:
+                    processed_args.add(arg)
             elif widget_class == QLineEdit:
                 value = arg_map.get(arg, '')
                 widget.setText(str(value) if value is not True else '')
+                if arg in arg_map:
+                    processed_args.add(arg)
             elif widget_class == QComboBox:
                 value = arg_map.get(arg, '')
                 if value and value is not True:
@@ -119,12 +125,37 @@ class GamescopeLogic:
                         widget.setCurrentIndex(0)
                 else:
                     widget.setCurrentIndex(0)
+                if arg in arg_map:
+                    processed_args.add(arg)
             elif widget_class == QDoubleSpinBox:
                 value = arg_map.get(arg, '')
                 try:
                     widget.setValue(float(value))
                 except (ValueError, TypeError):
                     widget.setValue(1.0)
+                if arg in arg_map:
+                    processed_args.add(arg)
+        
+        # Collect unprocessed arguments for the unimplemented widget
+        unimplemented_args = []
+        skip_next = False
+        for i, arg in enumerate(args):
+            if skip_next:
+                skip_next = False
+                continue
+            
+            if arg.startswith('-') or arg.startswith('--'):
+                if arg not in processed_args:
+                    if i + 1 < len(args) and not args[i + 1].startswith('-'):
+                        unimplemented_args.append(f"{arg} {args[i + 1]}")
+                        skip_next = True
+                    else:
+                        unimplemented_args.append(arg)
+        
+        # Set the unimplemented widget with remaining arguments
+        unimplemented_widget = getattr(self, 'lineEdit_unimplementedSettings', None)
+        if unimplemented_widget:
+            unimplemented_widget.setText(' '.join(unimplemented_args))
         
 
         
@@ -152,8 +183,9 @@ class GamescopeLogic:
             for object_name, (widget_class, arg) in widget_mapping_items:
                 widget = getattr(self, object_name, None)  # Get the widget from self
                 
-                if object_name == "unimplemented":
-                    self.config_list.append(f'{widget.text()} ') # type: ignore
+                if object_name == "lineEdit_unimplementedSettings":
+                    if widget and widget.text().strip():  # Only add if there's content
+                        self.config_list.append(f'{widget.text().strip()} ')
                 elif widget_class == QCheckBox:
                     apply_checkbox_input(widget, arg)
                 elif widget_class == QLineEdit:
@@ -166,7 +198,6 @@ class GamescopeLogic:
                 
 
         #TODO: input validation for lineEdits is needed
-        #TODO: figure out why an additional space is consistently inserted in the middle
         compile_arguments(self.widget_mapping.items())
 
         generated_config = ''

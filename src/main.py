@@ -6,6 +6,8 @@ It is licensed under the GPLv3.0 exclusively.
 '''
 
 '''
+If a function returns a bool to indicate success or failure, False means success and True means there was an error.
+
 Each page gets its own dedicated logic file, every "ui_filename.ui" comes with a "ui_filename.py" for logic.
 
 Select a file: Welcome page. Select the config file to load for the rest of the program.
@@ -197,7 +199,9 @@ class ApplicationLogic:
             file_name_edit = dialog.findChild(QLineEdit, "file_name")
             display_name_edit = dialog.findChild(QLineEdit, "display_name")
             
-            file_name = file_name_edit.text().strip() + ".conf" # type: ignore
+            if not file_name_edit.text().endswith(".conf"): # type: ignore
+                file_name = file_name_edit.text().strip() + ".conf" # type: ignore
+            
             display_name = display_name_edit.text().strip() # type: ignore
                 
             print(f"File name: {file_name}")

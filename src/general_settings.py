@@ -23,12 +23,17 @@ class GeneralSettingsLogic:
             
 
             # Load lines from the file
-            self.load_data(self.file)
+            self.load_data()
     
-    def load_data(self,file:ConfigFile) -> None:
+    def load_data(self) -> None:
+        """Loads data from the file into the interface."""
+        self.display_name.setText(self.file.print_displayname())
+
+        if self.file.print_path() == fman.GLOBAL_CONFIG:
+            self.display_name.setDisabled(True)
+
         pass
 
-        #TODO: deactivate_file needs to set NOSCOPE to 1 and comment out everything
             
     def erase_data(self):
         pass
@@ -38,6 +43,7 @@ class GeneralSettingsLogic:
 
         if self.file.print_displayname() != self.display_name.text():
             self.file.edit_displayname(self.display_name.text())
+            #TODO: update file selector screen with new displayname 
 
         
         
