@@ -10,9 +10,9 @@ class GeneralSettingsLogic:
 
             # Initialize and connect inputs
             self.display_name = parent_widget.findChild(QLineEdit, 'display_name')  # type: ignore
-            self.scb_noscope = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore
+            #self.scb_noscope = parent_widget.findChild(QCheckBox, 'scb_noscope')  # Removed to reduce complexity # type: ignore
             self.scb_auto_flags = parent_widget.findChild(QCheckBox, 'scb_auto_flags')  # type: ignore
-            self.deactivate_file = parent_widget.findChild(QCheckBox, 'deactivate_file')  # type: ignore
+            #self.deactivate_file = parent_widget.findChild(QCheckBox, 'deactivate_file')  # Removed to reduce complexity   # type: ignore
             self.delete_file = parent_widget.findChild(QPushButton, 'delete_file')  # type: ignore
             self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
             self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
@@ -34,7 +34,12 @@ class GeneralSettingsLogic:
         pass
 
     def save_data(self):
-        pass    
+        """Saves data from each of the elements into the file."""
+
+        if self.file.print_displayname() != self.display_name.text():
+            self.file.edit_displayname(self.display_name.text())
+
+        
         
 
     
