@@ -4,8 +4,9 @@ sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
 from PySide6.QtWidgets import (
     QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton,
-    QStatusBar, QDialogButtonBox, QToolButton, QWidget
+    QStatusBar, QDialogButtonBox, QToolButton, QWidget, QMenu
     )
+from PySide6.QtGui import QAction
 
 from file_manager import ConfigFile
 
@@ -71,6 +72,59 @@ class GamescopeLogic:
             self.defaults_button.clicked.connect(self.reset_data)
 
             self.load_data(file.print_gamescope_line())
+
+
+
+
+            # Set up the menus
+            self.menu_rendered = QMenu()
+            self.action_1080p_r = QAction("Render at 1920x1080 (Best for compatibility)", self.menu_rendered)
+            self.action_1440p_r = QAction("Render at 2560x1440", self.menu_rendered)
+            self.action_4k_r = QAction("Render at 3840x2160 (4K UHD)", self.menu_rendered)
+            self.menu_rendered.addActions([self.action_1080p_r,self.action_1440p_r,self.action_4k_r])
+            
+            self.menu_output = QMenu()
+            self.action_1080p_o = QAction("Output to 1920x1080", self.menu_output)
+            self.action_1440p_o = QAction("Output to 2560x1440", self.menu_output)
+            self.action_4k_o = QAction("Output to 3840x2160 (4K UHD)", self.menu_output)
+            self.menu_output.addActions([self.action_1080p_o,self.action_1440p_o,self.action_4k_o])
+
+            self.menu_fps = QMenu()
+            self.action_0 = QAction("Monitor refresh rate (default)", self.menu_fps)
+            self.action_30 = QAction("Set 30fps cap (Low)", self.menu_fps)
+            self.action_60 = QAction("Set 60fps cap (Medium)", self.menu_fps)
+            self.action_120 = QAction("Set 120fps cap (High)", self.menu_fps)
+            self.menu_fps.addActions([self.action_0,self.action_30,self.action_60,self.action_120])
+
+
+
+            self.toolButton_renderedResolution.setMenu(self.menu_rendered) # type: ignore
+            self.toolButton_renderedResolution.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup) # type: ignore
+            self.toolButton_renderedResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }") # type: ignore
+
+            self.toolButton_outputResolution.setMenu(self.menu_output) # type: ignore
+            self.toolButton_outputResolution.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup) # type: ignore
+            self.toolButton_outputResolution.setStyleSheet("QToolButton::menu-indicator { image: none; }") # type: ignore
+
+            self.toolButton_fps.setMenu(self.menu_fps) # type: ignore
+            self.toolButton_fps.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup) # type: ignore
+            self.toolButton_fps.setStyleSheet("QToolButton::menu-indicator { image: none; }") # type: ignore
+
+
+            # Connect actions to slots or functions
+
+            self.action_1080p_r.triggered.connect(self.handle_menu_renderedResolution_1)
+            self.action_1440p_r.triggered.connect(self.handle_menu_renderedResolution_2)
+            self.action_4k_r.triggered.connect(self.handle_menu_renderedResolution_3)
+
+            self.action_1080p_o.triggered.connect(self.handle_menu_outputResolution_1)
+            self.action_1440p_o.triggered.connect(self.handle_menu_outputResolution_2)
+            self.action_4k_o.triggered.connect(self.handle_menu_outputResolution_3)
+
+            self.action_0.triggered.connect(lambda: self.lineEdit_fps.setText('')) # type: ignore
+            self.action_30.triggered.connect(lambda: self.lineEdit_fps.setText('30')) # type: ignore
+            self.action_60.triggered.connect(lambda: self.lineEdit_fps.setText('60')) # type: ignore
+            self.action_120.triggered.connect(lambda: self.lineEdit_fps.setText('120')) # type: ignore
 
     def load_data(self, data: str) -> None:
         """Loads the data from the file into the UI elements."""
@@ -182,6 +236,32 @@ class GamescopeLogic:
         """Empties all input fields. Then, loads data from file into those input fields."""
         self.clear_data()
         self.load_data(self.file.print_gamescope_line())
+
+    def handle_menu_renderedResolution_1(self):
+        #print("Set rendered resolution to 1920x1080")
+        self.lineEdit_rWidth.setText('1920') # type: ignore
+        self.lineEdit_rHeight.setText('1080') # type: ignore
+    def handle_menu_renderedResolution_2(self):
+        #print("Set rendered resolution to 2560x1440")
+        self.lineEdit_rWidth.setText('2560') # type: ignore
+        self.lineEdit_rHeight.setText('1440') # type: ignore
+    def handle_menu_renderedResolution_3(self):
+        #print("Set rendered resolution to 4K UHD")
+        self.lineEdit_rWidth.setText('3840') # type: ignore
+        self.lineEdit_rHeight.setText('2160') # type: ignore
+
+    def handle_menu_outputResolution_1(self):
+        #print("Set output resolution to 1920x1080")
+        self.lineEdit_oWidth.setText('1920') # type: ignore
+        self.lineEdit_oHeight.setText('1080') # type: ignore
+    def handle_menu_outputResolution_2(self):
+        #print("Set output resolution to 2560x1440")
+        self.lineEdit_oWidth.setText('2560') # type: ignore
+        self.lineEdit_oHeight.setText('1440') # type: ignore
+    def handle_menu_outputResolution_3(self):
+        #print("Set output resolution to 4K UHD")
+        self.lineEdit_oWidth.setText('3840') # type: ignore
+        self.lineEdit_oHeight.setText('2160') # type: ignore
 
     def print_new_config(self) -> str: #output a new config string based on the user input
         self.config_list = []
