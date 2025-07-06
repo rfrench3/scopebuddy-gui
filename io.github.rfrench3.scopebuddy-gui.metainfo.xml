@@ -3,7 +3,17 @@
   <id>io.github.rfrench3.scopebuddy-gui</id>
 
   <name translate="no">Scopebuddy GUI</name>
-  <summary>Allows you to configure Gamescope through a GUI for Scopebuddy</summary>
+  <summary>Configure Gamescope and more</summary>
+  <keywords>
+    <keyword translate="no">Gamescope</keyword>
+    <keyword translate="no">Scopebuddy</keyword>
+    <keyword>gaming</keyword>
+    <keyword>environment</keyword>
+    <keyword>variables</keyword>
+    <keyword>gui</keyword>
+    <keyword>settings</keyword>
+  </keywords>
+
   <icon type="stock">io.github.rfrench3.scopebuddy-gui</icon>
 
   <metadata_license>MIT</metadata_license>
@@ -15,10 +25,7 @@
 
   <description>
     <p>
-      This GUI requires both Gamescope and Scopebuddy to be installed! If they are not, it will do nothing.
-    </p>
-    <p>
-      GUI for scopebuddy, a tool which makes editing launch options such as Gamescope far less of a hassle. This GUI guides users to properly use gamescope/scopebuddy by writing to ~/.config/scopebuddy/scb.conf for the user. It was made with Python and Qt Designer.
+      Convenient interface for saving, editing, and loading configurations for games. If you have ScopeBuddy installed, it can even apply these configurations automatically!
     </p>
   </description>
 
@@ -36,22 +43,33 @@
   <requires>
     <control>keyboard</control>
     <control>pointing</control>
-    <display_length compare="ge">768</display_length>
+    <control>touch</control>
+    <display_length compare="ge">600</display_length>
   </requires>
 
   <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v1.1.0/src/img/mainWindow.png</image>
+      <caption>The Scopebuddy GUI welcome screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/welcomeScreen.png</image>
     </screenshot>
     <screenshot>
-      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v1.1.0/src/img/applyWindow.png</image>
+      <caption>The Scopebuddy GUI general settings screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/generalSettings.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The Scopebuddy GUI environment variables screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/environmentVariables.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The Scopebuddy GUI gamescope settings screen.</caption>
+      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/gamescope.png</image>
     </screenshot>
   </screenshots>
   <releases>
-    <release version="1.1.2" date="2025-06-24">
+    <release version="2.0.0" date="2025-06-24">
       <description>
-        remove unused code, use os.path to find data directories instead of manually setting them
+        added game-specific config and environment variables support.
       </description>
     </release>
   </releases>
