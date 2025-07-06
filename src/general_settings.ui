@@ -322,16 +322,6 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="delete_file">
-        <property name="contextMenuPolicy">
-         <enum>Qt::ContextMenuPolicy::PreventContextMenu</enum>
-        </property>
-        <property name="text">
-         <string>Delete File (Permanent)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QDialogButtonBox" name="buttonBox">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>
