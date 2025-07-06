@@ -194,7 +194,7 @@ class ConfigFile:
                     return match.group(1)
         return 'No gamescope line'
 
-    def print_exact_line(self,startswith:str) -> bool:
+    def check_for_exact_line(self,startswith:str) -> bool:
         """Checks for a line that starts with a certain value. 
         Returns True if exactly that line it is found."""
 

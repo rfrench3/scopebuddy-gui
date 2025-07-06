@@ -10,7 +10,7 @@ class GeneralSettingsLogic:
 
             # Initialize and connect inputs
             self.display_name = parent_widget.findChild(QLineEdit, 'display_name')  # type: ignore
-            #self.scb_noscope = parent_widget.findChild(QCheckBox, 'scb_noscope')  # Removed to reduce complexity # type: ignore
+            self.scb_noscope = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore
             self.scb_auto_flags = parent_widget.findChild(QCheckBox, 'scb_auto_flags')  # type: ignore
             #self.deactivate_file = parent_widget.findChild(QCheckBox, 'deactivate_file')  # Removed to reduce complexity   # type: ignore
             self.delete_file = parent_widget.findChild(QPushButton, 'delete_file')  # type: ignore
@@ -32,7 +32,13 @@ class GeneralSettingsLogic:
         if self.file.print_path() == fman.GLOBAL_CONFIG:
             self.display_name.setDisabled(True)
 
-        pass
+        if self.file.check_for_exact_line("SCB_NOSCOPE=1"):
+            self.scb_noscope.setChecked(True)
+
+        if self.file.check_for_exact_line("SCB_AUTO_"):
+            self.scb_auto_flags.setChecked(True)
+        
+        
 
             
     def erase_data(self):
@@ -44,6 +50,41 @@ class GeneralSettingsLogic:
         if self.file.print_displayname() != self.display_name.text():
             self.file.edit_displayname(self.display_name.text())
             #TODO: update file selector screen with new displayname 
+
+        # Update all elements that don't get their own function at the same time
+        lines_to_change = {}
+        
+
+        # if noscope needs to be removed:
+        if (not self.scb_noscope.isChecked()) and self.file.check_for_exact_line("SCB_NOSCOPE=1"):
+            lines_to_change["SCB_NOSCOPE=1"] = "#SCB_NOSCOPE=1"
+
+        # if noscope needs to be added:
+        if self.scb_noscope.isChecked() and (not self.file.check_for_exact_line("SCB_NOSCOPE=1")):
+            lines_to_change["#SCB_NOSCOPE=1"] = "SCB_NOSCOPE=1"
+
+
+        # if scb_autos need to be removed:
+        if (not self.scb_auto_flags.isChecked()) and self.file.check_for_exact_line("SCB_AUTO"):
+            lines_to_change["SCB_AUTO_RES=1"] = "#SCB_AUTO_RES=1"
+            lines_to_change["SCB_AUTO_HDR=1"] = "#SCB_AUTO_HDR=1"
+            lines_to_change["SCB_AUTO_VRR=1"] = "#SCB_AUTO_VRR=1"
+
+        # if scb_autos need to be added:
+        if self.scb_auto_flags.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO")):
+            lines_to_change["#SCB_AUTO_RES=1"] = "SCB_AUTO_RES=1"
+            lines_to_change["#SCB_AUTO_HDR=1"] = "SCB_AUTO_HDR=1"
+            lines_to_change["#SCB_AUTO_VRR=1"] = "SCB_AUTO_VRR=1"
+            
+        list_current = []
+        list_new = []
+
+        for key, value in lines_to_change.items():
+            list_current.append(key)
+            list_new.append(value)
+
+        self.file.edit_exact_lines(list_current,list_new)
+            
 
         
         
