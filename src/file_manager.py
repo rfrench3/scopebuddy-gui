@@ -172,7 +172,7 @@ class ConfigFile:
                 return self.print_filename()
     
     def print_export_lines(self) -> list[str]:
-        """Returns a list of export lines (Environment Variables)."""
+        """Returns a list of active export lines (Environment Variables)."""
         export_lines: list[str] = []
         with open(self.path_to_file, 'r') as file:
             lines = file.readlines()
@@ -194,7 +194,19 @@ class ConfigFile:
                     return match.group(1)
         return 'No gamescope line'
 
-    
+    def print_exact_line(self,startswith:str) -> bool:
+        """Checks for a line that starts with a certain value. 
+        Returns True if exactly that line it is found."""
+
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        for line in lines:
+            if line.startswith(startswith):
+                return True
+        else:
+            return False
+
     
     # DATA EDITING
     
@@ -216,7 +228,6 @@ class ConfigFile:
         except Exception as e:
             print(f"Failed to edit display name: {e}")
         
-
     def edit_export_lines(self, new_lines:list[str]) -> None:
         """Changes the export lines in the file to the newly listed ones by commenting out
         or uncommenting in lines, only adding new lines when necessary."""
@@ -273,7 +284,7 @@ class ConfigFile:
         with open(self.path_to_file,'w') as file:
             file.writelines(lines)
 
-    def validate_gamescope_line(self): 
+    def create_new_gamescope_line(self): 
         """ if config file doesn't have an active gamescope args line, create one in the best place.
         this will be after a commented out line if one is found, or at the end."""
 
@@ -321,6 +332,39 @@ class ConfigFile:
         commenting out the old line and appending the new one in its place."""
         print("EDIT GAMESCOPE LINE!")
         pass
+
+    def edit_exact_lines(self,start_with:list[str],new_lines:list[str]) -> None:
+        """Checks for any lines that start with the start_with string, replaces it with their new line."""
+        if len(start_with) != len(new_lines):
+            raise ValueError
+        
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        lines_to_append = []
+        
+        for j, start_str in enumerate(start_with):
+            found = False
+            for i, line in enumerate(lines):
+                if line.startswith(start_str):
+                    # Preserve any data after the start_str portion, such as comments left by the user
+                    remaining_data = line[len(start_str):]
+                    lines[i] = new_lines[j] + remaining_data
+                    found = True
+                    break
+            
+            if not found:
+                # Add newline if the new line doesn't already end with one
+                line_to_add = new_lines[j] + '\n' if not new_lines[j].endswith('\n') else new_lines[j]
+                lines_to_append.append(line_to_add)
+        
+        # Append any lines that weren't found
+        if lines_to_append:
+            lines.extend(lines_to_append)
+        
+        with open(self.path_to_file, 'w') as file:
+            file.writelines(lines)
+        
 
 '''
 The ScopebuddyDirectory class:
@@ -375,10 +419,10 @@ class ScopebuddyDirectory:
 
                 if displayname:
                     new_file.edit_displayname(displayname)
-                    new_file.validate_gamescope_line()
+                    new_file.create_new_gamescope_line()
                 else:
                     new_file.edit_displayname(filename)
-                    new_file.validate_gamescope_line()
+                    new_file.create_new_gamescope_line()
 
                 return False
 
@@ -396,6 +440,6 @@ class ScopebuddyDirectory:
             return True
 
 
-        
+
 
 

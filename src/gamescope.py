@@ -167,13 +167,13 @@ class GamescopeLogic:
             widget = getattr(self, object_name, None)
             if arg:
                 if widget_class == QCheckBox:
-                    widget.setChecked(False)
+                    widget.setChecked(False) # type: ignore
                 elif widget_class == QLineEdit:
-                    widget.setText('')
+                    widget.setText('') # type: ignore
                 elif widget_class == QComboBox:
-                    widget.setCurrentIndex(0)
+                    widget.setCurrentIndex(0) # type: ignore
                 elif widget_class == QDoubleSpinBox:
-                    widget.setValue(1.0)
+                    widget.setValue(1.0) # type: ignore
                 else:
                     pass
 
