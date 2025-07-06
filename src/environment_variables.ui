@@ -94,7 +94,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;e.g. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;LD_PRELOAD=&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;, disable gamescope by using &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;SCB_NOSCOPE=1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;e.g. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;LD_PRELOAD=&amp;quot;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
