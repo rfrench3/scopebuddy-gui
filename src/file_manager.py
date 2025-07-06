@@ -64,67 +64,6 @@ def invalid_filename(filename: str) -> bool:
         return True
     return False
 
-
-
-def create_new_file(selected_config_file) -> None: 
-    """creates config file if it doesn't exist, and calls on ensure_gamescope_line afterwards."""
-    def ensure_gamescope_line(): 
-        """ if config file doesn't have the gamescope args line, create one in the best place.
-        this will be where a commented out line is if one is found, or at the end."""
-
-        # will be used if the correct line isn't already present
-        new_line = f'SCB_GAMESCOPE_ARGS=""\n'
-
-        with open(selected_config_file, 'r') as file:
-            lines = file.readlines()
-
-        for i, line in enumerate(lines):
-            if line.startswith('SCB_GAMESCOPE_ARGS='):
-                match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
-                if match:
-                    #the line is exists and is good
-                    return 
-                else:
-                    #the line will be commented out because it will probably cause errors.
-                    #a proper line will be placed after it
-                    lines[i:i+1] = [f'#SCBGUI_ERROR_PREVENTATION!#{line}', new_line]
-                    with open(selected_config_file, 'w') as file: 
-                        file.writelines(lines)
-                    return
-
-        # Assume the gamescope_args line has no breaking issues at this point.
-
-        # check for the default commented out line in the config file.
-        # if found, place the new gamescope line right after it
-        for i, line in enumerate(lines):
-            if line.startswith('#SCB_GAMESCOPE_ARGS'):
-                lines[i:i+1] = [line, new_line]
-                # Write the modified lines back to the file
-                with open(selected_config_file, 'w') as file:
-                    file.writelines(lines)
-                return
-    
-        # no match was found, so create the necessary line at the end of the file
-        with open(selected_config_file, 'a') as file:
-            if lines and not lines[-1].endswith('\n'):
-                file.write('\n')
-            file.write('SCB_GAMESCOPE_ARGS=""\n')
-        return
-            
-    try:
-        if os.path.exists(selected_config_file):
-            #print(f"Config file already exists at {selected_config_file}, ensuring the proper format...")
-            ensure_gamescope_line()
-            return
-        else:
-            #print(f"Creating config file at {selected_config_file} from template...")
-            shutil.copyfile(TEMPLATE, selected_config_file)
-            ensure_gamescope_line()
-            return
-    except Exception as e:
-        print(f"Error creating config file: {e}")
-
-
 '''
 The ConfigFile class:
 PURPOSE: store data about the scopebuddy config file given to it and have simple methods for reading/editing that data.

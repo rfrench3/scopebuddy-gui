@@ -58,11 +58,11 @@ dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
 
 
 fman.create_directory()
-#fman.create_new_file(GLOBAL_CONFIG) # makes sure the scb.conf file exists and works properly
 
+# Ensures the global config file will always exist
 initialize = fman.ScopebuddyDirectory()
 initialize.create_file('scb.conf','Global Config file.',fman.SCB_DIR)
-initialize=None
+initialize = None
 
 class ApplicationLogic:
     def __init__(self, window): 
