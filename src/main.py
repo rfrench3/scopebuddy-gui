@@ -123,17 +123,16 @@ class ApplicationLogic:
         
     def open_folder_clicked(self):
         """Shows a popup window with instructions for opening the Scopebuddy folder."""
-        fman.load_message_box(
-            parent=self.window,
-            icon=QMessageBox.Icon.Information,
-            title="Open Scopebuddy Folder",
-            text=(
+        msg = QMessageBox(self.window)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Open Scopebuddy Folder")
+        msg.setText(
             "To open the Scopebuddy config folder, run this in a terminal:\n\n"
             f"xdg-open {fman.SCB_DIR}\n\n"
             "A future update will open the folder automatically."
-            ),
-            standard_buttons=QMessageBox.StandardButton.Ok
-        )
+            )
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
         return
 
 

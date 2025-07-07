@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QLineEdit, QCheckBox, QDialogButtonBox
+from PySide6.QtWidgets import QLineEdit, QCheckBox, QDialogButtonBox, QMessageBox
 import file_manager as fman
 from file_manager import ConfigFile
 
@@ -7,6 +7,7 @@ class GeneralSettingsLogic:
             self.parent_logic = None  # Will be set by main.py
             self.entries = []  # Store references to all entry widgets
             self.file = file
+            self.parent_widget = parent_widget
 
             # Initialize and connect inputs
             self.display_name = parent_widget.findChild(QLineEdit, 'display_name')  # type: ignore
@@ -75,6 +76,14 @@ class GeneralSettingsLogic:
             list_new.append(value)
 
         self.file.edit_exact_lines(list_current,list_new)
+        
+        parent_window = self.parent_widget.window() if self.parent_widget else None
+        msg = QMessageBox(parent_window)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Success!")
+        msg.setText("Settings saved!")
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
             
 
         

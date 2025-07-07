@@ -4,7 +4,6 @@ from re import search
 from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
-from PySide6.QtWidgets import QMessageBox
 
 #################################################
 # data directories for program and config files #
@@ -46,15 +45,6 @@ def load_widget(ui_file: str, window_title:str='Scopebuddy GUI', icon:QIcon=icon
         widget.setWindowIcon(icon)
     return widget
 
-def load_message_box(parent,icon=QMessageBox.Icon.Information,title="Default Title",text="Default Text",standard_buttons=QMessageBox.StandardButton.Ok):
-    """Loads a QMessageBox, returns the output of .exec()"""
-    msg = QMessageBox(parent)
-    msg.setIcon(icon)
-    msg.setWindowTitle(title)
-    msg.setText(text)
-    msg.setStandardButtons(standard_buttons)
-    return msg.exec()
-    
 
 
 ####################################
