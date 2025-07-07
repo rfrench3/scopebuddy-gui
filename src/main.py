@@ -15,6 +15,17 @@ Select a file: Welcome page. Select the config file to load for the rest of the 
 
 Edit that file: Rest of the pages. They all edit aspects of that chosen file, 
     which could be the default scb.conf or the game-specific confs in AppID.
+
+new message box copy-paste:
+
+
+fman.load_message_box(
+    parent=self.window,
+    icon=QMessageBox.Icon.Information,
+    title="",
+    text="",
+    standard_buttons=QMessageBox.StandardButton.Ok)
+
 '''
 
 #TODO: Loading and unloading UI elements doesn't seem to free memory. 
@@ -112,13 +123,19 @@ class ApplicationLogic:
         
     def open_folder_clicked(self):
         """Shows a popup window with instructions for opening the Scopebuddy folder."""
-        
-        msg = QMessageBox(self.window)
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("Open Scopebuddy Folder")
-        msg.setText(f"To open the Scopebuddy config folder, run this in a terminal:\n\nxdg-open {fman.SCB_DIR}\n\nA future update will open the folder automatically.")
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-        msg.exec()
+        fman.load_message_box(
+            parent=self.window,
+            icon=QMessageBox.Icon.Information,
+            title="Open Scopebuddy Folder",
+            text=(
+            "To open the Scopebuddy config folder, run this in a terminal:\n\n"
+            f"xdg-open {fman.SCB_DIR}\n\n"
+            "A future update will open the folder automatically."
+            ),
+            standard_buttons=QMessageBox.StandardButton.Ok
+        )
+        return
+
 
     def unload_selected_file(self) -> None:
         """Unloads the chosen file and interface, then returns the user to the 'Select a File' page."""
