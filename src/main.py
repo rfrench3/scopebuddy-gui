@@ -48,7 +48,7 @@ GLOBAL_CONFIG = fman.GLOBAL_CONFIG
 selected_config: fman.ConfigFile | None = None
 
 
-ui_main = fman.ui_main
+ui_main = fman.ui_main # The design of the welcome page was heavily inspired by the welcome page of KATE. 
 ui_general_settings = fman.ui_general_settings
 ui_env_vars = fman.ui_env_vars
 ui_gamescope = fman.ui_gamescope
