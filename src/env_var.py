@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
-from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget, QDialogButtonBox
+from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget, QDialogButtonBox, QMessageBox
 import file_manager as fman
 from file_manager import ConfigFile
 
@@ -14,6 +14,7 @@ class EnvVarLogic:
             self.entries = []  # Store references to all entry widgets
             self.file = file
             self.env_vars_list = parent_widget.findChild(QWidget, 'additional_entries')  # type: ignore
+            self.parent_widget = parent_widget
 
             # Initialize and connect inputs
             self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
@@ -46,6 +47,14 @@ class EnvVarLogic:
         """Load data into a list and apply it to the file."""
         data:list[str] = self.return_env_vars_list()
         self.file.edit_export_lines(data)
+
+        parent_window = self.parent_widget.window() if self.parent_widget else None
+        msg = QMessageBox(parent_window)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Success!")
+        msg.setText("New Environment Variables saved!")
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
 
 
     def new_entry(self, data:str|None = None) -> None:

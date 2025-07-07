@@ -4,7 +4,7 @@ sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
 from PySide6.QtWidgets import (
     QLineEdit, QCheckBox, QDoubleSpinBox, QComboBox, QPushButton,
-    QStatusBar, QDialogButtonBox, QToolButton, QWidget, QMenu
+    QStatusBar, QDialogButtonBox, QToolButton, QWidget, QMenu, QMessageBox
     )
 from PySide6.QtGui import QAction
 
@@ -14,6 +14,7 @@ class GamescopeLogic:
     def __init__(self, file:ConfigFile, parent_widget:QWidget) -> None:
             self.parent_logic = None  # Will be set by main.py
             self.file = file  # Store the file path
+            self.parent_widget = parent_widget
             
             # Widget mapping for efficient initialization
             self.widget_mapping = {
@@ -214,6 +215,14 @@ class GamescopeLogic:
         
     def save_data(self) -> None:
         self.file.edit_gamescope_line(self.print_new_config())
+
+        parent_window = self.parent_widget.window() if self.parent_widget else None
+        msg = QMessageBox(parent_window)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Success!")
+        msg.setText("New Gamescope settings saved!")
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
         
     def clear_data(self):
         """Empties all input fields."""
