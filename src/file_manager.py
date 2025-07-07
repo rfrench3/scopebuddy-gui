@@ -152,7 +152,7 @@ class ConfigFile:
     def edit_displayname(self, new_name:str) -> None:
         """Changes the display name (the commented out line 1) inside the file.
         Does not save the old display name when doing this."""
-        print("EDIT DISPLAYNAME!")
+        
         try:
             with open(self.path_to_file, 'r') as file:
                 lines = file.readlines()
@@ -257,6 +257,7 @@ class ConfigFile:
                 # Write the modified lines back to the file
                 with open(self.path_to_file, 'w') as file:
                     file.writelines(lines)
+                self.gamescope_line: str = self.print_gamescope_line()
                 return
     
         # no match was found, so create the necessary line at the end of the file
@@ -264,13 +265,33 @@ class ConfigFile:
             if lines and not lines[-1].endswith('\n'):
                 file.write('\n')
             file.write('SCB_GAMESCOPE_ARGS=""\n')
+        self.gamescope_line: str = self.print_gamescope_line()
         return
 
-    def edit_gamescope_line(self, new_line:str) -> None:
+    def edit_gamescope_line(self, new_flags:str) -> None:
         """Changes the gamescope args in the file to the newly listed ones,
         commenting out the old line and appending the new one in its place."""
-        print("EDIT GAMESCOPE LINE!")
-        pass
+
+        new_line = f'SCB_GAMESCOPE_ARGS="{new_flags}"\n'
+
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        for i, line in enumerate(lines):
+            if line.startswith('SCB_GAMESCOPE_ARGS='):
+
+                lines[i:i+1] = [f'#SCBGUI#{line}', new_line]
+                with open(self.path_to_file, 'w') as file: 
+                    file.writelines(lines)
+                # update gamescope line stored by program
+                self.gamescope_line: str = self.print_gamescope_line()
+                return
+            
+        # place gamescope line at the end, because no line was found in the file
+        with open(self.path_to_file, 'a') as file: 
+            file.writelines(new_line)
+        self.gamescope_line: str = self.print_gamescope_line()
+        return
 
     def edit_exact_lines(self,start_with:list[str],new_lines:list[str]) -> None:
         """Checks for any lines that start with the start_with string, replaces it with their new line."""
