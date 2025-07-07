@@ -8,20 +8,13 @@ It is licensed under the GPLv3.0 exclusively.
 '''
 If a function returns a bool to indicate success or failure, False means success and True means there was an error.
 
-Each page gets its own dedicated logic file, every "ui_filename.ui" comes with a "ui_filename.py" for logic.
+Each page gets its own dedicated logic file, every "ui_filename.ui" comes with a "ui_filename.py" for logic. 
+Any operation regarding reading/writing a scopebuddy config file is done through the fman.ConfigFile class.
 
 Select a file: Welcome page. Select the config file to load for the rest of the program.
 
 Edit that file: Rest of the pages. They all edit aspects of that chosen file, 
     which could be the default scb.conf or the game-specific confs in AppID.
-
-any way to get to the "Edit that file" section must select a file. 
-Any way to get back to "Select a file" must finish and fully clear operations on the loaded file.
-    This should minimize the risk of files being loaded unexpectedly.
-
-In logic terms: Any code that sets the index of main window's QStackedWidget to 1 must LOAD a new file.
-                Any code that sets the index of main window's QStackedWidget to 0 must UNLOAD the loaded
-                file and reset the interface to its original state.
 '''
 
 #TODO: Loading and unloading UI elements doesn't seem to free memory. 
