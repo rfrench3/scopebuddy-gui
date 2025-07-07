@@ -24,7 +24,7 @@ import sys
 import os
 
 # PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog, QLineEdit
+from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog, QLineEdit, QMessageBox
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
@@ -82,7 +82,7 @@ class ApplicationLogic:
 
 
         self.button_new_config.clicked.connect(self.new_config_pressed)
-        self.open_folder.clicked.connect(lambda: os.system(f"xdg-open {fman.SCB_DIR}"))
+        self.open_folder.clicked.connect(self.open_folder_clicked)
         self.file_list.itemClicked.connect(self.list_clicked)
 
         # Add a permanent label and pushButton to the status bar
@@ -110,8 +110,16 @@ class ApplicationLogic:
             self.file_list.addItem(item)
         
         
-    
+    def open_folder_clicked(self):
+        """Shows a popup window with instructions for opening the Scopebuddy folder."""
         
+        msg = QMessageBox(self.window)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Open Scopebuddy Folder")
+        msg.setText(f"To open the Scopebuddy config folder, run this in a terminal:\n\nxdg-open {fman.SCB_DIR}\n\nA future update will open the folder automatically.")
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
+
     def unload_selected_file(self) -> None:
         """Unloads the chosen file and interface, then returns the user to the 'Select a File' page."""
         def unload_interface(self) -> None:
