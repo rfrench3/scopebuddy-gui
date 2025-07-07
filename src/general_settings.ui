@@ -292,7 +292,7 @@
                </sizepolicy>
               </property>
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On supported desktops, this will automatically determine and set output Width, output Height, HDR, and Adaptive Sync (VRR) for gamescope. For a list of supported desktops, see the official ScopeBuddy documentation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check the ScopeBuddy GUI documentation for more detailed information!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_33">
                <property name="spacing">
