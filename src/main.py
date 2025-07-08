@@ -35,7 +35,7 @@ import sys
 import os
 
 # PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog, QLineEdit, QMessageBox
+from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog, QLineEdit, QMessageBox, QMainWindow
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
@@ -67,6 +67,46 @@ fman.create_directory()
 initialize = fman.ScopebuddyDirectory()
 initialize.create_file('scb.conf','Global Config file.',fman.SCB_DIR)
 initialize = None
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.logic = None  # type: ApplicationLogic | None
+        
+        # Load the UI from the .ui file
+        self.ui_widget = fman.load_widget(ui_main)
+        self.setCentralWidget(self.ui_widget)
+        self.setWindowTitle("Scopebuddy GUI")
+        self.setWindowIcon(fman.icon)
+        
+    def closeEvent(self, event):
+        """This ensures that attempting to close the window while a file is loaded results in a dialog,
+        prompting the user to either save changes, discard them, or not close the app."""
+        global selected_config
+        if selected_config is not None and self.logic:
+            confirmation = self.logic.exit_dialog()
+            if confirmation == QMessageBox.StandardButton.Cancel:
+                event.ignore()
+                return
+            elif confirmation == QMessageBox.StandardButton.Apply:
+                # Save all data before closing
+                stop = self.logic.general_settings_logic.save_data() if self.logic.general_settings_logic else False
+                if stop:
+                    event.ignore()
+                    return
+                stop = self.logic.env_vars_logic.save_data() if self.logic.env_vars_logic else False
+                if stop:
+                    event.ignore()
+                    return
+                stop = self.logic.gamescope_logic.save_data() if self.logic.gamescope_logic else False
+                if stop:
+                    event.ignore()
+                    return
+            # If Apply succeeded or Discard was chosen, allow close
+            event.accept()
+        else:
+            # No file loaded, close normally
+            event.accept()
 
 class ApplicationLogic:
     def __init__(self, window): 
@@ -286,40 +326,9 @@ class ApplicationLogic:
 app = QApplication([])
 icon = fman.icon
 
-window_main = fman.load_widget(ui_main,"Scopebuddy GUI")
-logic = ApplicationLogic(window_main)
-
-# Seeing if this works when packaged into a flatpak
-# Override the closeEvent to show exit dialog when needed
-def closeEvent(event):
-    global selected_config
-    if selected_config is not None:
-        confirmation = logic.exit_dialog()
-        if confirmation == QMessageBox.StandardButton.Cancel:
-            event.ignore()
-            return
-        elif confirmation == QMessageBox.StandardButton.Apply:
-            # Save all data before closing
-            stop = logic.general_settings_logic.save_data() if logic.general_settings_logic else False
-            if stop:
-                event.ignore()
-                return
-            stop = logic.env_vars_logic.save_data() if logic.env_vars_logic else False
-            if stop:
-                event.ignore()
-                return
-            stop = logic.gamescope_logic.save_data() if logic.gamescope_logic else False
-            if stop:
-                event.ignore()
-                return
-        # If Apply succeeded or Discard was chosen, allow close
-        event.accept()
-    else:
-        # No file loaded, close normally
-        event.accept()
-
-# Monkey patch the closeEvent onto the window
-window_main.closeEvent = closeEvent
+window_main = MainWindow()
+logic = ApplicationLogic(window_main.ui_widget)
+window_main.logic = logic
 
 window_main.show()
 app.exec()
