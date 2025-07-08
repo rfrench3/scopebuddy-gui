@@ -49,10 +49,14 @@ class EnvVarLogic:
         self.file.edit_export_lines(data)
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
+
+        display_new_vars = ", ".join(self.return_env_vars_list())
         msg = QMessageBox(parent_window)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle("Success!")
-        msg.setText("New Environment Variables saved!")
+        msg.setText("New Environment Variables saved!\n\n"
+                    f"{display_new_vars}"
+                    )
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
 
