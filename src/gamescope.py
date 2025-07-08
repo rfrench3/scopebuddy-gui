@@ -280,7 +280,8 @@ class GamescopeLogic:
         if do_not_save:
             return True
 
-        self.file.edit_gamescope_line(new_config)
+        if new_config.strip() != self.file.print_gamescope_line().strip():
+            self.file.edit_gamescope_line(new_config)
         msg = QMessageBox(parent_window)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle("Success!")
