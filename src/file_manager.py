@@ -176,6 +176,9 @@ class ConfigFile:
         with open(self.path_to_file, 'r') as file:
             lines = file.readlines()
 
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
+
         # disable all oldlines
         for i, oldline in enumerate(lines):
             if oldline.startswith("export "):
@@ -235,6 +238,9 @@ class ConfigFile:
         with open(self.path_to_file, 'r') as file:
             lines = file.readlines()
 
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
+
         for i, line in enumerate(lines):
             if line.startswith('SCB_GAMESCOPE_ARGS='):
                 match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
@@ -279,6 +285,9 @@ class ConfigFile:
         with open(self.path_to_file, 'r') as file:
             lines = file.readlines()
 
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
+
         for i, line in enumerate(lines):
             if line.startswith('SCB_GAMESCOPE_ARGS='):
 
@@ -302,6 +311,9 @@ class ConfigFile:
         
         with open(self.path_to_file, 'r') as file:
             lines = file.readlines()
+
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
 
         lines_to_append = []
         
