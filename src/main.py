@@ -98,7 +98,7 @@ class ApplicationLogic:
 
         # Add a permanent label and pushButton to the status bar
         self.status_label = QLabel("File: None")
-        self.status_button = QPushButton("Exit Without Saving")
+        self.status_button = QPushButton("Exit File")
         self.status_button.clicked.connect(self.unload_selected_file)
 
         self.statusBar.addWidget(self.status_button)  # Left side
@@ -137,7 +137,22 @@ class ApplicationLogic:
 
 
     def unload_selected_file(self) -> None:
-        """Unloads the chosen file and interface, then returns the user to the 'Select a File' page."""
+        """Prompts the user with a dialog window to be certain they wish to exit.
+        Unloads the chosen file and interface, then returns the user to the 'Select a File' page."""
+
+        msg = QMessageBox(self.window)
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setWindowTitle("Exit File?")
+        msg.setText(
+        "Are you certain you wish to exit the file?\n"
+        "Any changes that you have not applied will not be saved!"
+        )
+        msg.setStandardButtons(QMessageBox.StandardButton.Close | QMessageBox.StandardButton.Cancel)
+        result = msg.exec()
+        if result != QMessageBox.StandardButton.Close:
+            return
+
+
         def unload_interface(self) -> None:
             """Fully unloads interface elements."""
                 
