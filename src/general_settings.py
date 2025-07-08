@@ -39,6 +39,9 @@ class GeneralSettingsLogic:
     def save_data(self):
         """Saves data from each of the elements into the file."""
 
+        parent_window = self.parent_widget.window() if self.parent_widget else None
+
+
         if self.file.print_displayname() != self.display_name.text():
             self.file.edit_displayname(self.display_name.text())
             #TODO: update file selector screen with new displayname 
@@ -49,7 +52,24 @@ class GeneralSettingsLogic:
 
         # if noscope needs to be removed:
         if (not self.scb_noscope.isChecked()) and self.file.check_for_exact_line("SCB_NOSCOPE=1"):
-            lines_to_change["SCB_NOSCOPE=1"] = "#SCB_NOSCOPE=1"
+
+            # make sure this wont lead to regular mangohud being paired with gamescope
+            if (
+                self.file.check_for_exact_line("export mangohud") or
+                self.file.check_for_exact_line("export MANGOHUD=1")
+            ):
+                msg = QMessageBox(parent_window)
+                msg.setIcon(QMessageBox.Icon.Warning)
+                msg.setWindowTitle("Warning!")
+                msg.setText(
+                "You have MangoHUD as an environment variable and are attempting to enable Gamescope!"
+                "This is not supported.\n"
+                "You should either use the \"MangoHUD Overlay\" checkbox inside of Gamescope or disable Gamescope!"
+                )
+                msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
+                result = msg.exec()
+                if result == QMessageBox.StandardButton.Ignore:
+                    lines_to_change["SCB_NOSCOPE=1"] = "#SCB_NOSCOPE=1"
 
         # if noscope needs to be added:
         if self.scb_noscope.isChecked() and (not self.file.check_for_exact_line("SCB_NOSCOPE=1")):
