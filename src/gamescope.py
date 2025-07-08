@@ -220,7 +220,12 @@ class GamescopeLogic:
         msg = QMessageBox(parent_window)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle("Success!")
-        msg.setText("New Gamescope settings saved!")
+        msg.setText(
+            "New Gamescope settings saved!\n\n"
+            "Your active Gamescope flags are:\n"
+            f"gamescope {self.print_new_config()} -- %command%"
+            "(you can copy-paste that into Steam to use Gamescope directly!)"
+        )
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
         
