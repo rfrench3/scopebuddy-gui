@@ -68,10 +68,11 @@ class GeneralSettingsLogic:
                 )
                 msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
                 result = msg.exec()
-                if result == QMessageBox.StandardButton.Ignore:
-                    lines_to_change["SCB_NOSCOPE=1"] = "#SCB_NOSCOPE=1"
-                else:
+                if result != QMessageBox.StandardButton.Ignore:
                     return True
+                
+            lines_to_change["SCB_NOSCOPE=1"] = "#SCB_NOSCOPE=1"
+
 
         # if noscope needs to be added:
         if self.scb_noscope.isChecked() and (not self.file.check_for_exact_line("SCB_NOSCOPE=1")):
