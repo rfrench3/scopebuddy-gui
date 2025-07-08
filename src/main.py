@@ -289,5 +289,37 @@ icon = fman.icon
 window_main = fman.load_widget(ui_main,"Scopebuddy GUI")
 logic = ApplicationLogic(window_main)
 
+# Seeing if this works when packaged into a flatpak
+# Override the closeEvent to show exit dialog when needed
+def closeEvent(event):
+    global selected_config
+    if selected_config is not None:
+        confirmation = logic.exit_dialog()
+        if confirmation == QMessageBox.StandardButton.Cancel:
+            event.ignore()
+            return
+        elif confirmation == QMessageBox.StandardButton.Apply:
+            # Save all data before closing
+            stop = logic.general_settings_logic.save_data() if logic.general_settings_logic else False
+            if stop:
+                event.ignore()
+                return
+            stop = logic.env_vars_logic.save_data() if logic.env_vars_logic else False
+            if stop:
+                event.ignore()
+                return
+            stop = logic.gamescope_logic.save_data() if logic.gamescope_logic else False
+            if stop:
+                event.ignore()
+                return
+        # If Apply succeeded or Discard was chosen, allow close
+        event.accept()
+    else:
+        # No file loaded, close normally
+        event.accept()
+
+# Monkey patch the closeEvent onto the window
+window_main.closeEvent = closeEvent
+
 window_main.show()
 app.exec()
