@@ -129,29 +129,54 @@ class ApplicationLogic:
         msg.setText(
             "To open the Scopebuddy config folder, run this in a terminal:\n\n"
             f"xdg-open {fman.SCB_DIR}\n\n"
-            "A future update will open the folder automatically."
+            "In a future update, this button will open the folder automatically."
             )
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
         return
 
+    def exit_dialog(self) -> QMessageBox.StandardButton:
+        """When the user attempts to close the window or exit the file,
+        this popup ensures they intended to do so. 
+        This dialog is heavily inspired by KDE's System Settings."""
+        msg = QMessageBox(self.window)
+        msg.setIcon(QMessageBox.Icon.Warning)
+        msg.setWindowTitle("Exit?")
+        msg.setText(
+        "Are you certain you wish to exit the file?\n"
+        "\"Apply\" double-checks that everything is saved."
+        )
+        msg.setStandardButtons(QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel)
+        result = msg.exec()
+        return result # type: ignore
 
     def unload_selected_file(self) -> None:
         """Prompts the user with a dialog window to be certain they wish to exit.
-        Unloads the chosen file and interface, then returns the user to the 'Select a File' page."""
-
-        msg = QMessageBox(self.window)
-        msg.setIcon(QMessageBox.Icon.Question)
-        msg.setWindowTitle("Exit File?")
-        msg.setText(
-        "Are you certain you wish to exit the file?\n"
-        "Any changes that you have not applied will not be saved!"
-        )
-        msg.setStandardButtons(QMessageBox.StandardButton.Close | QMessageBox.StandardButton.Cancel)
-        result = msg.exec()
-        if result != QMessageBox.StandardButton.Close:
+        Unloads the chosen file and interface, then returns the user to the 'Select a File' page.
+        The dialog does not occur if the user is on the main menu, the app simply closes."""
+        #if self.general_settings_logic:
+            # if the file-editing portion of the app is loaded:
+        confirmation = self.exit_dialog()
+        if confirmation == QMessageBox.StandardButton.Cancel:
+            print("CANCEL")
             return
-
+        elif confirmation == QMessageBox.StandardButton.Apply:
+            print("APPLY")
+            stop = self.general_settings_logic.save_data() #type: ignore
+            if stop:
+                self.mainFileEdit.setCurrentIndex(0)
+                return
+            stop = self.env_vars_logic.save_data() #type: ignore
+            if stop:
+                self.mainFileEdit.setCurrentIndex(1)
+                return
+            stop = self.gamescope_logic.save_data() #type: ignore
+            if stop:
+                self.mainFileEdit.setCurrentIndex(2)
+                return
+        else:
+            print("DISCARD")
+            
 
         def unload_interface(self) -> None:
             """Fully unloads interface elements."""
@@ -187,7 +212,7 @@ class ApplicationLogic:
                 gamescope_widget = fman.load_widget(ui_gamescope)
 
                 # Initialize the logic for the ui pages
-                self.general_settings = GeneralSettingsLogic(file, general_settings_widget)
+                self.general_settings_logic = GeneralSettingsLogic(file, general_settings_widget)
                 self.env_vars_logic = EnvVarLogic(file, env_vars_widget)
                 self.gamescope_logic = GamescopeLogic(file, gamescope_widget)
                     

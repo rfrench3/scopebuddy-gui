@@ -213,7 +213,7 @@ class GamescopeLogic:
         if unimplemented_widget:
             unimplemented_widget.setText(' '.join(unimplemented_args))
         
-    def save_data(self) -> None:
+    def save_data(self) -> bool:
         """Does a few checks to ensure certain known incompatibilities are explained to the user,
         then saves to the config file."""
         parent_window = self.parent_widget.window() if self.parent_widget else None
@@ -231,7 +231,8 @@ class GamescopeLogic:
             self.file.check_for_exact_line("export MANGOHUD")
             ) else False
         
-        show_success_message = True
+        # determines whether the file will be saved after all error dialogs
+        do_not_save:bool = False
 
         if gamescope_active and regular_mangohud:
             msg = QMessageBox(parent_window)
@@ -244,7 +245,7 @@ class GamescopeLogic:
             msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
             result = msg.exec()
             if result != QMessageBox.StandardButton.Ignore:
-                show_success_message = False
+                do_not_save = True
 
         # Gamescope does not allow -w or -W to be set without -h or -H being set as well.
         if (
@@ -261,7 +262,7 @@ class GamescopeLogic:
             msg.setStandardButtons(QMessageBox.StandardButton.Cancel | QMessageBox.StandardButton.Ignore)
             result = msg.exec()
             if result != QMessageBox.StandardButton.Ignore:
-                show_success_message = False
+                do_not_save = True
 
             
 
@@ -276,19 +277,22 @@ class GamescopeLogic:
             msg.setStandardButtons(QMessageBox.StandardButton.Ok)
             msg.exec()
             
-        if show_success_message:
-            self.file.edit_gamescope_line(new_config)
-            msg = QMessageBox(parent_window)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("Success!")
-            msg.setText(
-                "New Gamescope settings saved!\n"
-                "Your active Gamescope flags are:\n\n"
-                f"gamescope {self.print_new_config()} -- %command%\n\n" # read directly from the file again in case the write failed
-                "(you can copy-paste that into Steam to use Gamescope directly!)"
-            )
-            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-            msg.exec()
+        if do_not_save:
+            return True
+
+        self.file.edit_gamescope_line(new_config)
+        msg = QMessageBox(parent_window)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Success!")
+        msg.setText(
+            "New Gamescope settings saved!\n"
+            "Your active Gamescope flags are:\n\n"
+            f"gamescope {self.print_new_config()} -- %command%\n\n" # read directly from the file again in case the write failed
+            "(you can copy-paste that into Steam to use Gamescope directly!)"
+        )
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
+        return False
         
     def clear_data(self):
         """Empties all input fields."""

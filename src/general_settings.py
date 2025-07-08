@@ -36,7 +36,7 @@ class GeneralSettingsLogic:
             self.scb_auto_flags.setChecked(True)
         
 
-    def save_data(self):
+    def save_data(self) -> bool:
         """Saves data from each of the elements into the file."""
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
@@ -70,6 +70,8 @@ class GeneralSettingsLogic:
                 result = msg.exec()
                 if result == QMessageBox.StandardButton.Ignore:
                     lines_to_change["SCB_NOSCOPE=1"] = "#SCB_NOSCOPE=1"
+                else:
+                    return True
 
         # if noscope needs to be added:
         if self.scb_noscope.isChecked() and (not self.file.check_for_exact_line("SCB_NOSCOPE=1")):
@@ -101,9 +103,10 @@ class GeneralSettingsLogic:
         msg = QMessageBox(parent_window)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle("Success!")
-        msg.setText("Settings saved!")
+        msg.setText("General settings saved!")
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
+        return False
             
 
         

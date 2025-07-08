@@ -43,13 +43,11 @@ class EnvVarLogic:
         for entry in variables_list:
             self.new_entry(entry)
 
-    def save_data(self):
+    def save_data(self) -> bool:
         """Load data into a list and apply it to the file."""
         data:list[str] = self.return_env_vars_list()
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
-
-        show_success_message:bool = True
 
         # Ensure user is warned if they are combining regular mangohud with gamescope
         adding_noscope:bool = False
@@ -80,22 +78,22 @@ class EnvVarLogic:
             msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
             result = msg.exec()
             if result != QMessageBox.StandardButton.Ignore:
-                show_success_message = False
+                return True
 
-        if show_success_message:
-            self.file.edit_export_lines(data)
+        self.file.edit_export_lines(data)
 
-            display_new_vars = " ".join(self.return_env_vars_list()) + r" %command%"
-            if display_new_vars != r" %command%":
-                additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
-            else:
-                additional_message = ''
-            msg = QMessageBox(parent_window)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("Success!")
-            msg.setText(f"New Environment Variables saved! {additional_message}")
-            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-            msg.exec()
+        display_new_vars = " ".join(self.return_env_vars_list()) + r" %command%"
+        if display_new_vars != r" %command%":
+            additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
+        else:
+            additional_message = ''
+        msg = QMessageBox(parent_window)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Success!")
+        msg.setText(f"New Environment Variables saved! {additional_message}")
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
+        return False
 
 
     def new_entry(self, data:str|None = None) -> None:
