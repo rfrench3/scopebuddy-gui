@@ -389,7 +389,7 @@ class ScopebuddyDirectory:
                 return False
 
         except FileExistsError as e:
-            print(f"Unable to create config file: {e}")
+            print(f"Unable to create config file because it already exists.")
             return True
         except FileNotFoundError as e:
             print(f"Unable to create config file: {e}")

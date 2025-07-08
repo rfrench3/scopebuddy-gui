@@ -238,7 +238,7 @@ class GamescopeLogic:
                 elif widget_class == QDoubleSpinBox:
                     widget.setValue(1.0) # type: ignore
                 else:
-                    pass
+                    raise RuntimeError # this should never happen
 
 
     def reset_data(self) -> None:
