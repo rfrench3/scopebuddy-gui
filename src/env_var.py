@@ -49,21 +49,36 @@ class EnvVarLogic:
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
 
-        # Ensure user is warned if they are combining regular mangohud with gamescope
-        gamescope_active:bool = False if (self.file.check_for_exact_line("SCB_NOSCOPE=1") or self.file.check_for_exact_line("export SCB_NOSCOPE=1")) else True
-        regular_mangohud:bool = True if (self.file.check_for_exact_line("export mangohud") or self.file.check_for_exact_line("export MANGOHUD")) else False
-        show_success_message = True
+        show_success_message:bool = True
 
-        if gamescope_active and regular_mangohud:
-            mgh = QMessageBox(parent_window)
-            mgh.setIcon(QMessageBox.Icon.Warning)
-            mgh.setWindowTitle("Warning!")
-            mgh.setText(
-            "You have gamescope enabled and are attempting to use regular MangoHUD!\n"
+        # Ensure user is warned if they are combining regular mangohud with gamescope
+        adding_noscope:bool = False
+        adding_mangohud:bool = False
+        for variable in data:
+            if variable.startswith("mangohud") or variable.startswith("MANGOHUD=1"):
+                adding_mangohud = True
+            if variable.startswith("SCB_NOSCOPE=1"):
+                adding_noscope = True
+
+            if adding_noscope and adding_mangohud:
+                break # both have already been located
+
+        gamescope_active:bool = False if (
+            self.file.check_for_exact_line("SCB_NOSCOPE=1") or 
+            self.file.check_for_exact_line("export SCB_NOSCOPE=1") or
+            adding_noscope
+            ) else True
+
+        if gamescope_active and adding_mangohud:
+            msg = QMessageBox(parent_window)
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setWindowTitle("Warning!")
+            msg.setText(
+            "You have gamescope enabled and are attempting to use regular MangoHUD! This is not supported.\n"
             "You should either disable Gamescope or use the \"MangoHUD Overlay\" checkbox inside of Gamescope!"
             )
-            mgh.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
-            result = mgh.exec()
+            msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
+            result = msg.exec()
             if result != QMessageBox.StandardButton.Ignore:
                 show_success_message = False
 
