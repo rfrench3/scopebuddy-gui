@@ -46,21 +46,41 @@ class EnvVarLogic:
     def save_data(self):
         """Load data into a list and apply it to the file."""
         data:list[str] = self.return_env_vars_list()
-        self.file.edit_export_lines(data)
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
 
-        display_new_vars = " ".join(self.return_env_vars_list()) + r" %command%"
-        if display_new_vars != r" %command%":
-            additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
-        else:
-            additional_message = ''
-        msg = QMessageBox(parent_window)
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("Success!")
-        msg.setText(f"New Environment Variables saved! {additional_message}")
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-        msg.exec()
+        # Ensure user is warned if they are combining regular mangohud with gamescope
+        gamescope_active:bool = False if (self.file.check_for_exact_line("SCB_NOSCOPE=1") or self.file.check_for_exact_line("export SCB_NOSCOPE=1")) else True
+        regular_mangohud:bool = True if (self.file.check_for_exact_line("export mangohud") or self.file.check_for_exact_line("export MANGOHUD")) else False
+        show_success_message = True
+
+        if gamescope_active and regular_mangohud:
+            mgh = QMessageBox(parent_window)
+            mgh.setIcon(QMessageBox.Icon.Warning)
+            mgh.setWindowTitle("Warning!")
+            mgh.setText(
+            "You have gamescope enabled and are attempting to use regular MangoHUD!\n"
+            "You should either disable Gamescope or use the \"MangoHUD Overlay\" checkbox inside of Gamescope!"
+            )
+            mgh.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
+            result = mgh.exec()
+            if result != QMessageBox.StandardButton.Ignore:
+                show_success_message = False
+
+        if show_success_message:
+            self.file.edit_export_lines(data)
+
+            display_new_vars = " ".join(self.return_env_vars_list()) + r" %command%"
+            if display_new_vars != r" %command%":
+                additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
+            else:
+                additional_message = ''
+            msg = QMessageBox(parent_window)
+            msg.setIcon(QMessageBox.Icon.Information)
+            msg.setWindowTitle("Success!")
+            msg.setText(f"New Environment Variables saved! {additional_message}")
+            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg.exec()
 
 
     def new_entry(self, data:str|None = None) -> None:
