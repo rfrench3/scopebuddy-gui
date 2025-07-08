@@ -50,13 +50,15 @@ class EnvVarLogic:
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
 
-        display_new_vars = ", ".join(self.return_env_vars_list())
+        display_new_vars = " ".join(self.return_env_vars_list()) + r" %command%"
+        if display_new_vars != r" %command%":
+            additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
+        else:
+            additional_message = ''
         msg = QMessageBox(parent_window)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle("Success!")
-        msg.setText("New Environment Variables saved!\n\n"
-                    f"{display_new_vars}"
-                    )
+        msg.setText(f"New Environment Variables saved! {additional_message}")
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
 
