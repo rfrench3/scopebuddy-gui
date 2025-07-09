@@ -132,21 +132,13 @@ class ApplicationLogic:
         self.env_vars_logic = None
         self.gamescope_logic = None
         self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
-        
-        # Load SVG into UI
-        
-        svg_widget = QSvgWidget(fman.svg_path)
-        if svg_widget.renderer().isValid():
-            layout = self.large_logo.layout()
-            layout.addWidget(svg_widget)
-        else:
-            # Use QPixmap of the icon instead of SVG
-            print("SVG Failed to render, falling back to the blurry png...")
-            pixmap = fman.icon.pixmap(128, 128)
-            label = QLabel()
-            label.setPixmap(pixmap)
-            layout = self.large_logo.layout()
-            layout.addWidget(label)
+                
+        #TODO: Figure out how to make it display the SVG
+        pixmap = fman.icon.pixmap(128, 128)
+        label = QLabel()
+        label.setPixmap(pixmap)
+        layout = self.large_logo.layout()
+        layout.addWidget(label)
     
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
