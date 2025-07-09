@@ -134,11 +134,19 @@ class ApplicationLogic:
         self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
                 
         #TODO: Figure out how to make it display the SVG
-        pixmap = fman.icon.pixmap(128, 128)
-        label = QLabel()
-        label.setPixmap(pixmap)
-        layout = self.large_logo.layout()
-        layout.addWidget(label)
+
+        # Try to display the SVG logo, fall back to pixmap if SVG not found
+        if os.path.exists(fman.svg_image):
+            svg_widget = QSvgWidget(fman.svg_image)
+            svg_widget.setFixedSize(128, 128)
+            layout = self.large_logo.layout()
+            layout.addWidget(svg_widget)
+        else:
+            pixmap = fman.icon.pixmap(128, 128)
+            label = QLabel()
+            label.setPixmap(pixmap)
+            layout = self.large_logo.layout()
+            layout.addWidget(label)
     
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
