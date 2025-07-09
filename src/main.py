@@ -153,13 +153,24 @@ class ApplicationLogic:
         # Locate game-specific configs
         self.appid_files = fman.ScopebuddyDirectory()
 
+        # load all configs into UI
+        self.reload_file_list()
+        
+    def reload_file_list(self) -> None:
+        """Clears all entries from self.file_list, and then reloads them."""
+        self.file_list.clear()
+
+        # Load global config file
+        item = QListWidgetItem("Global")
+        item.setToolTip(f"File: scb.conf")
+        self.file_list.addItem(item)
+
         # Load config files that have been found into the list widget
         appid_dict = self.appid_files.print_appid_dict()
         for filename, displayname in appid_dict.items():
             item = QListWidgetItem(displayname)
             item.setToolTip(f"File: {os.path.basename(filename)}")
             self.file_list.addItem(item)
-        
         
     def open_folder_clicked(self):
         """Shows a popup window with instructions for opening the Scopebuddy folder."""
@@ -233,6 +244,9 @@ class ApplicationLogic:
         global selected_config
         unload_interface(self)
         selected_config = None
+
+        self.reload_file_list()
+
         self.mainFileSelect.setCurrentIndex(0)
         self.statusBar.hide()
 
@@ -271,6 +285,8 @@ class ApplicationLogic:
             self.mainFileSelect.setCurrentIndex(1)
             self.statusBar.show()
 
+            
+
             print(f"---FILE LOADED---\n{file}\n-----------------")
         item = self.file_list.currentItem()
         
@@ -280,14 +296,12 @@ class ApplicationLogic:
             filename:str = item.toolTip()[6:]
             filepath:str = os.path.join(fman.APPID_DIR,filename)
 
-
-
         file = fman.ConfigFile(filepath)
         load_with_selected_file(self, file)
         self.status_label.setText(f"File ({file.print_filename()}): {file.print_displayname()}")
 
     def new_config_pressed(self) -> None:
-        """opens a modal that has the user create a new config with a Steam AppID.""" #TODO:TODO: update the link in the modal to my docs, update docs
+        """opens a modal that has the user create a new config with a Steam AppID.""" 
         dialog: QDialog = fman.load_widget(dialog_new_file) # type: ignore
         result = dialog.exec()
         
