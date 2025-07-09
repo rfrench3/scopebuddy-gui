@@ -35,7 +35,13 @@ import sys
 import os
 
 # PySide6, Qt Designer UI files
-from PySide6.QtWidgets import QApplication, QStackedWidget, QStatusBar, QListWidget, QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog, QLineEdit, QMessageBox, QMainWindow
+from PySide6.QtWidgets import (
+    QApplication, QStackedWidget, QStatusBar, QListWidget,
+    QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog,
+    QLineEdit, QMessageBox, QMainWindow, QWidget
+    )
+from PySide6.QtSvgWidgets import QSvgWidget
+from PySide6.QtSvg import QSvgRenderer
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
@@ -119,7 +125,7 @@ class ApplicationLogic:
         self.button_new_config = self.window.findChild(QPushButton, 'button_new_config')
         self.open_folder = self.window.findChild(QPushButton, "open_folder")
         self.file_list = self.window.findChild(QListWidget, 'file_list')
-        self.large_logo = self.window.findChild(QLabel, "appIcon")
+        self.large_logo = self.window.findChild(QWidget, "widget_app_icon")
         
         # Initialize logic references (but don't create widgets yet)
         self.general_settings_logic = None
@@ -127,11 +133,22 @@ class ApplicationLogic:
         self.gamescope_logic = None
         self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
         
-        #TODO: Find a clean way to find and render the svg
-        pixmap = icon.pixmap(1024, 1024)
-        self.large_logo.setPixmap(pixmap)
-
-
+        # Load SVG into UI
+        
+        svg_widget = QSvgWidget(fman.svg_path)
+        if svg_widget.renderer().isValid():
+            layout = self.large_logo.layout()
+            layout.addWidget(svg_widget)
+        else:
+            # Use QPixmap of the icon instead of SVG
+            print("SVG Failed to render, falling back to the blurry png...")
+            pixmap = fman.icon.pixmap(128, 128)
+            label = QLabel()
+            label.setPixmap(pixmap)
+            layout = self.large_logo.layout()
+            layout.addWidget(label)
+    
+        
         self.button_new_config.clicked.connect(self.new_config_pressed)
         self.open_folder.clicked.connect(self.open_folder_clicked)
         self.file_list.itemClicked.connect(self.list_clicked)
