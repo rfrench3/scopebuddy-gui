@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QAction
 
 from file_manager import ConfigFile
+import file_manager as fman
 
 class GamescopeLogic:
     def __init__(self, file:ConfigFile, parent_widget:QWidget) -> None:
@@ -235,15 +236,14 @@ class GamescopeLogic:
         do_not_save:bool = False
 
         if gamescope_active and regular_mangohud:
-            msg = QMessageBox(parent_window)
-            msg.setIcon(QMessageBox.Icon.Warning)
-            msg.setWindowTitle("Warning!")
-            msg.setText(
-            "You have gamescope enabled and are attempting to use regular MangoHUD!\n"
-            "You should either disable Gamescope or use the \"MangoHUD Overlay\" checkbox inside of Gamescope!"
+            result = fman.load_message_box(
+                parent_window,
+                "Warning!",
+                ("You have gamescope enabled and are attempting to use regular MangoHUD!\n"
+                "You should either disable Gamescope or use the \"MangoHUD Overlay\" checkbox inside of Gamescope!"),
+                QMessageBox.Icon.Warning,
+                QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel
             )
-            msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
-            result = msg.exec()
             if result != QMessageBox.StandardButton.Ignore:
                 do_not_save = True
 
@@ -252,47 +252,46 @@ class GamescopeLogic:
             ("-w" in new_config and "-h" not in new_config) or
             ("-W" in new_config and "-H" not in new_config)
         ):
-            msg = QMessageBox(parent_window)
-            msg.setIcon(QMessageBox.Icon.Warning)
-            msg.setWindowTitle("Warning!")
-            msg.setText(
-            "You have specified a width (-w or -W) without a corresponding height (-h or -H)!\n"
-            "Gamescope will not launch unless only height or both are specified."
+            result = fman.load_message_box(
+                parent_window,
+                "Warning!",
+                ("You have specified a width (-w or -W) without a corresponding height (-h or -H)!\n"
+                 "Gamescope will not launch unless only height or both are specified."),
+                QMessageBox.Icon.Warning,
+                QMessageBox.StandardButton.Cancel | QMessageBox.StandardButton.Ignore
             )
-            msg.setStandardButtons(QMessageBox.StandardButton.Cancel | QMessageBox.StandardButton.Ignore)
-            result = msg.exec()
             if result != QMessageBox.StandardButton.Ignore:
                 do_not_save = True
 
             
 
         if not gamescope_active:
-            msg = QMessageBox(parent_window)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("Notice!")
-            msg.setText(
-            "You are changing the settings for Gamescope, but Gamescope is disabled!\n"
-            "These settings will have no effect unless you go to General Settings and re-enable Gamescope!"
+            fman.load_message_box(
+                parent_window,
+                "Notice!",
+                (
+                    "You are changing the settings for Gamescope, but Gamescope is disabled!\n"
+                    "These settings will have no effect unless you go to General Settings and re-enable Gamescope!"
+                ),
+                QMessageBox.Icon.Information,
+                QMessageBox.StandardButton.Ok
             )
-            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-            msg.exec()
             
         if do_not_save:
             return True
 
         if new_config.strip() != self.file.print_gamescope_line().strip():
             self.file.edit_gamescope_line(new_config)
-        msg = QMessageBox(parent_window)
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("Success!")
-        msg.setText(
-            "New Gamescope settings saved!\n"
+        fman.load_message_box(
+            parent_window,
+            "Success!",
+            ("New Gamescope settings saved!\n"
             "Your active Gamescope flags are:\n\n"
-            f"gamescope {self.print_new_config()} -- %command%\n\n" # read directly from the file again in case the write failed
-            "(you can copy-paste that into Steam to use Gamescope directly!)"
+            f"gamescope {self.print_new_config()} -- %command%\n\n"
+            "(you can copy-paste that into Steam to use Gamescope directly!)"),
+            QMessageBox.Icon.Information,
+            QMessageBox.StandardButton.Ok
         )
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-        msg.exec()
         return False
         
     def clear_data(self):
