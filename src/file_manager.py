@@ -4,6 +4,7 @@ from re import search
 from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
+from PySide6.QtWidgets import QMessageBox
 
 #################################################
 # data directories for program and config files #
@@ -52,7 +53,14 @@ def load_widget(ui_file: str, window_title:str='Scopebuddy GUI', icon:QIcon|None
         widget.setWindowIcon(icon) #type:ignore
     return widget
 
-
+def load_message_box(parent_window,title:str,  text:str,  icon:QMessageBox.Icon=QMessageBox.Icon.Information,  standard_buttons:QMessageBox.StandardButton=QMessageBox.StandardButton.Ok) -> QMessageBox.StandardButton:
+    """Loads a QMessageBox, returns the result of exec()."""
+    msg = QMessageBox(parent_window)
+    msg.setIcon(icon)
+    msg.setWindowTitle(title)
+    msg.setText(text)
+    msg.setStandardButtons(standard_buttons)
+    return msg.exec() #type:ignore
 
 ####################################
 # Managing scopebuddy config files #
@@ -408,7 +416,7 @@ class ScopebuddyDirectory:
                 return False
 
         except FileExistsError:
-            print(f"Unable to create config file because it already exists.")
+            # Expected response outside of first launch
             return True
         except FileNotFoundError as e:
             print(f"Unable to create config file: {e}")

@@ -15,17 +15,6 @@ Select a file: Welcome page. Select the config file to load for the rest of the 
 
 Edit that file: Rest of the pages. They all edit aspects of that chosen file, 
     which could be the default scb.conf or the game-specific confs in AppID.
-
-new message box copy-paste:
-
-
-fman.load_message_box(
-    parent=self.window,
-    icon=QMessageBox.Icon.Information,
-    title="",
-    text="",
-    standard_buttons=QMessageBox.StandardButton.Ok)
-
 '''
 
 #TODO: Loading and unloading UI elements doesn't seem to free memory. 
@@ -133,22 +122,12 @@ class ApplicationLogic:
         self.gamescope_logic = None
         self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
                 
-        #TODO: Figure out how to make it display the SVG
 
-        # Try to display the SVG logo, fall back to pixmap if SVG not found
-        print("svg image path: ", fman.svg_path)
-        if os.path.exists(fman.svg_path):
-            svg_widget = QSvgWidget(fman.svg_path)
-            svg_widget.setFixedSize(128, 128)
-            layout = self.large_logo.layout()
-            layout.addWidget(svg_widget)
-        else:
-            print("svg image not found")
-            pixmap = fman.icon.pixmap(128, 128)
-            label = QLabel()
-            label.setPixmap(pixmap)
-            layout = self.large_logo.layout()
-            layout.addWidget(label)
+        svg_widget = QSvgWidget(fman.svg_path)
+        svg_widget.setFixedSize(128, 128)
+        layout = self.large_logo.layout()
+        layout.addWidget(svg_widget)
+
     
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
@@ -228,24 +207,25 @@ class ApplicationLogic:
             # if the file-editing portion of the app is loaded:
         confirmation = self.exit_dialog()
         if confirmation == QMessageBox.StandardButton.Cancel:
-            print("CANCEL")
             return
         elif confirmation == QMessageBox.StandardButton.Apply:
-            print("APPLY")
+            # automatically switches the user to the page they chose
             stop = self.general_settings_logic.save_data() #type: ignore
             if stop:
                 self.mainFileEdit.setCurrentIndex(0)
                 return
+            
             stop = self.env_vars_logic.save_data() #type: ignore
             if stop:
                 self.mainFileEdit.setCurrentIndex(1)
                 return
+            
             stop = self.gamescope_logic.save_data() #type: ignore
             if stop:
                 self.mainFileEdit.setCurrentIndex(2)
                 return
-        else:
-            print("DISCARD")
+        
+        # else: discard was selected or all applies completed, proceed 
             
 
         def unload_interface(self) -> None:
@@ -306,7 +286,7 @@ class ApplicationLogic:
 
             
 
-            print(f"---FILE LOADED---\n{file}\n-----------------")
+            #print(f"---FILE LOADED---\n{file}\n-----------------")
         item = self.file_list.currentItem()
         
         if item.text() == "Global":
@@ -334,11 +314,12 @@ class ApplicationLogic:
             
             display_name = display_name_edit.text().strip() # type: ignore
                 
-            print(f"File name: {file_name}")
-            print(f"Display name: {display_name}")
-                
             # Create a new config file in APPID_DIR with the given file name and display name
-            if file_name:
+            if (file_name and
+            not fman.invalid_filename(file_name) and
+            file_name != ".conf"
+            ):
+                # the given file name is valid, make sure it does not already exist
                 new_file_path = os.path.join(fman.APPID_DIR, file_name)
                 if not os.path.exists(new_file_path):
                     # Create the config file using file_manager logic
@@ -350,9 +331,42 @@ class ApplicationLogic:
                     item.setToolTip(f"File: {file_name}")
                     self.file_list.addItem(item)
                 else:
-                    print(f"File {file_name} already exists.")
+                    fman.load_message_box(
+                        self.window,
+                        "Error",
+                        (f"File {file_name} already exists.\n"
+                        "Hover over the items in the list to see their file names."),
+                        QMessageBox.Icon.Warning,
+                        QMessageBox.StandardButton.Ok
+                    )
+            elif fman.invalid_filename(file_name):
+                # The box had invalid characters
+                fman.load_message_box(
+                    self.window,
+                    "Error",
+                    "File name contains invalid characters.",
+                    QMessageBox.Icon.Warning,
+                    QMessageBox.StandardButton.Ok
+                )
+            elif file_name == ".conf":
+                # The box was left empty
+                fman.load_message_box(
+                    self.window,
+                    "Error",
+                    "File name is empty.",
+                    QMessageBox.Icon.Warning,
+                    QMessageBox.StandardButton.Ok
+                )
             else:
-                print("File name is empty.")
+                fman.load_message_box(
+                    self.window,
+                    "Error",
+                    ("File name is invalid for a reason the developer did not account for.\n"
+                    "If you see this, please report your file name to the GitHub issue tracker."),
+                    QMessageBox.Icon.Warning,
+                    QMessageBox.StandardButton.Ok
+                )
+
 
 
 # Logic that loads the app
