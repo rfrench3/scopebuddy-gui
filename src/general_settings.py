@@ -58,16 +58,15 @@ class GeneralSettingsLogic:
                 self.file.check_for_exact_line("export mangohud") or
                 self.file.check_for_exact_line("export MANGOHUD=1")
             ):
-                msg = QMessageBox(parent_window)
-                msg.setIcon(QMessageBox.Icon.Warning)
-                msg.setWindowTitle("Warning!")
-                msg.setText(
-                "You have MangoHUD as an environment variable and are attempting to enable Gamescope!"
-                "This is not supported.\n"
-                "You should either use the \"MangoHUD Overlay\" checkbox inside of Gamescope or disable Gamescope!"
+                result = fman.load_message_box(
+                    parent_window,
+                    "Warning!",
+                    ("You have MangoHUD as an environment variable and are attempting to enable Gamescope!\n"
+                    "This is not supported.\n"
+                    "You should either use the \"MangoHUD Overlay\" checkbox inside of Gamescope or disable Gamescope!"),
+                    QMessageBox.Icon.Warning,
+                    QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel
                 )
-                msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
-                result = msg.exec()
                 if result != QMessageBox.StandardButton.Ignore:
                     return True
                 
@@ -101,12 +100,13 @@ class GeneralSettingsLogic:
         self.file.edit_exact_lines(list_current,list_new)
         
         parent_window = self.parent_widget.window() if self.parent_widget else None
-        msg = QMessageBox(parent_window)
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("Success!")
-        msg.setText("General settings saved!")
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-        msg.exec()
+        fman.load_message_box(
+            parent_window,
+            "Success!",
+            "General settings saved!",
+            QMessageBox.Icon.Information,
+            QMessageBox.StandardButton.Ok
+        )
         return False
             
 
