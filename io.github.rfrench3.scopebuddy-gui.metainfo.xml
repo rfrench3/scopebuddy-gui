@@ -51,25 +51,29 @@
   <screenshots>
     <screenshot type="default">
       <caption>The Scopebuddy GUI welcome screen.</caption>
-      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/welcomeScreen.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/welcomeScreen.png</image>
+      <source>https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/welcomeScreen.png</source>
     </screenshot>
     <screenshot>
       <caption>The Scopebuddy GUI general settings screen.</caption>
-      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/generalSettings.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/generalSettings.png</image>
+      <source>https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/generalSettings.png</source>
     </screenshot>
     <screenshot>
       <caption>The Scopebuddy GUI environment variables screen.</caption>
-      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/environmentVariables.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/environmentVariables.png</image>
+      <source>https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/environmentVariables.png</source>
     </screenshot>
     <screenshot>
       <caption>The Scopebuddy GUI gamescope settings screen.</caption>
-      <image type="source"  xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/gamescope.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/gamescope.png</image>
+      <source>https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/gamescope.png</source>
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.0.0" date="2025-07-10">
+    <release version="2.0.1" date="2025-07-10">
       <description>
-        Added game-specific config selection and environment variables support.
+        Fixed screenshots section in metainfo to be flathub-compliant.
       </description>
     </release>
   </releases>
