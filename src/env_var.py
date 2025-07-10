@@ -68,15 +68,14 @@ class EnvVarLogic:
             ) else True
 
         if gamescope_active and adding_mangohud:
-            msg = QMessageBox(parent_window)
-            msg.setIcon(QMessageBox.Icon.Warning)
-            msg.setWindowTitle("Warning!")
-            msg.setText(
-            "You have gamescope enabled and are attempting to use regular MangoHUD! This is not supported.\n"
-            "You should either disable Gamescope or use the \"MangoHUD Overlay\" checkbox inside of Gamescope!"
+            result = fman.load_message_box(
+                parent_window,
+                "Warning!",
+                ("You have gamescope enabled and are attempting to use regular MangoHUD! This is not supported.\n"
+                "You should either disable Gamescope or use the \"MangoHUD Overlay\" checkbox inside of Gamescope!"),
+                QMessageBox.Icon.Warning,
+                QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel
             )
-            msg.setStandardButtons(QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel)
-            result = msg.exec()
             if result != QMessageBox.StandardButton.Ignore:
                 return True
 
@@ -87,12 +86,13 @@ class EnvVarLogic:
             additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
         else:
             additional_message = ''
-        msg = QMessageBox(parent_window)
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("Success!")
-        msg.setText(f"New Environment Variables saved! {additional_message}")
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-        msg.exec()
+        fman.load_message_box(
+            parent_window,
+            "Success!",
+            f"New Environment Variables saved! {additional_message}",
+            QMessageBox.Icon.Information,
+            QMessageBox.StandardButton.Ok
+        )
         return False
 
 
