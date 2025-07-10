@@ -64,6 +64,11 @@ class GamescopeLogic:
             self.reset_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Reset) # type: ignore
             self.defaults_button = self.buttonBox.button(QDialogButtonBox.StandardButton.RestoreDefaults) # type: ignore
 
+            # Set the text of the buttons to be more immediately obvious
+            self.reset_button.setText("Clear")
+            self.defaults_button.setText("Set to Saved")
+
+
             # Initialize and connect inputs  (type: ignore comments prevent pyLance false positives)
             #self. = parent_widget.findChild(Q, '')  # type: ignore
 
