@@ -27,7 +27,8 @@ modules:
         tag: main #USE A TAGGED RELEASE WHEN SUBMITTING THIS!
     build-commands:
       - mkdir -p /app/share/scopebuddygui/img
-      - install -Dm755 src/scbgui.py /app/bin/scopebuddygui
+      - install -Dm755 src/main.py /app/bin/scopebuddygui
+      - install -m644 src/*.py /app/share/scopebuddygui/
       - install -m644 src/*.ui /app/share/scopebuddygui/
       - install -m644 src/img/io.github.rfrench3.scopebuddy-gui.svg /app/share/scopebuddygui/img/
       - install -m644 src/default_scb.conf /app/share/scopebuddygui/
