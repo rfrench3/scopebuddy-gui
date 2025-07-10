@@ -26,7 +26,7 @@ modules:
         url: https://github.com/rfrench3/scopebuddy-gui.git
         tag: main #USE A TAGGED RELEASE WHEN SUBMITTING THIS!
     build-commands:
-      - mkdir -p /app/share/scopebuddygui/img
+      - mkdir -p /app/share/scopebuddygui
       - install -Dm755 src/main.py /app/bin/scopebuddygui
       - install -m644 src/*.py /app/share/scopebuddygui/
       - install -m644 src/*.ui /app/share/scopebuddygui/
