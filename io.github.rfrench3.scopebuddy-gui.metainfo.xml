@@ -67,9 +67,9 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.0.0" date="2025-06-24">
+    <release version="2.0.0" date="2025-07-10">
       <description>
-        added game-specific config and environment variables support.
+        Added game-specific config selection and environment variables support.
       </description>
     </release>
   </releases>
