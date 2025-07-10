@@ -136,9 +136,9 @@ class ApplicationLogic:
         #TODO: Figure out how to make it display the SVG
 
         # Try to display the SVG logo, fall back to pixmap if SVG not found
-        print("svg image path: ", fman.svg_image)
-        if os.path.exists(fman.svg_image):
-            svg_widget = QSvgWidget(fman.svg_image)
+        print("svg image path: ", fman.svg_path)
+        if os.path.exists(fman.svg_path):
+            svg_widget = QSvgWidget(fman.svg_path)
             svg_widget.setFixedSize(128, 128)
             layout = self.large_logo.layout()
             layout.addWidget(svg_widget)

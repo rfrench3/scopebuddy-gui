@@ -27,7 +27,12 @@ ui_general_settings = os.path.join(DATA_DIR, "general_settings.ui")
 ui_env_vars_entry = os.path.join(DATA_DIR, "env_var.ui")
 
 # SVG file
-svg_image = os.path.join(DATA_DIR, "img", "io.github.rfrench3.scopebuddy-gui.svg") 
+FLATPAK_SVG_PATH = os.path.join("app","share","icons","hicolor","scalable","apps","io.github.rfrench3.scopebuddy-gui.svg") 
+if os.path.exists(FLATPAK_SVG_PATH):
+    svg_path = FLATPAK_SVG_PATH
+else:
+    print("The flatpak path for the svg was not found.")
+    svg_path = os.path.join(DATA_DIR,"img","io.github.rfrench3.scopebuddy-gui.svg") 
 
 ########################
 # Managing Qt UI files #
