@@ -172,31 +172,33 @@ class ApplicationLogic:
         
     def open_folder_clicked(self):
         """Shows a popup window with instructions for opening the Scopebuddy folder."""
-        msg = QMessageBox(self.window)
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("Open Scopebuddy Folder")
-        msg.setText(
+        fman.load_message_box(
+            self.window,
+            "Open Scopebuddy Folder",
+            (
             "To open the Scopebuddy config folder, run this in a terminal:\n\n"
             f"xdg-open {fman.SCB_DIR}\n\n"
             "In a future update, this button will open the folder automatically."
-            )
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-        msg.exec()
+            ),
+            QMessageBox.Icon.Information,
+            QMessageBox.StandardButton.Ok
+        )
         return
 
     def exit_dialog(self) -> QMessageBox.StandardButton:
         """When the user attempts to close the window or exit the file,
         this popup ensures they intended to do so. 
         This dialog is heavily inspired by KDE's System Settings."""
-        msg = QMessageBox(self.window)
-        msg.setIcon(QMessageBox.Icon.Warning)
-        msg.setWindowTitle("Exit?")
-        msg.setText(
-        "Are you certain you wish to exit the file?\n"
-        "\"Apply\" double-checks that everything is saved."
-        )
-        msg.setStandardButtons(QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel)
-        result = msg.exec()
+        result = fman.load_message_box(
+            self.window,
+            "Exit?",
+            (
+            "Are you certain you wish to exit the file?\n"
+            "\"Apply\" double-checks that everything is saved."
+            ),
+            QMessageBox.Icon.Warning,
+            QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel
+            )
         return result # type: ignore
 
     def unload_selected_file(self) -> None:
