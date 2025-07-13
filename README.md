@@ -5,7 +5,7 @@
 
 <h2 align="center">A Graphical Frontend for the scopebuddy tool.</h2>
 
-![Main Window](src/img/mainWindow.png)
+![Welcome Screen](src/img/welcomeScreen.png)
 
 <h1 align="center">Features</h1>
 
