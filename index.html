@@ -43,14 +43,26 @@
           <div class="card-body">
             <p>ScopeBuddy GUI is a graphical interface you can use to easily generate a set of launch arguments for gamescope.
               Ordinarily, this would require you to understand Gamescope well enough to manually type-out every detail of what you want. 
-              With this tool, all you need to do is click on the settings you want! 
-                To activate these settings in any game you have<sup>1</sup>, all you need to do is type <code>scb -- %command%</code> into the 
-              Launch Options box for that game! If you do not wish to install scopebuddy and scopebuddy-gui, but still want a gamescope config generated, there is a web-based version <a href="web-ui/index.html">here</a>.</p>
-            <p>Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power – it is safe to use alongside any such advanced configuration, however.</p>
+              With this tool, all you need to do is click on the settings you want!
+
+              To activate these settings in any game you have<sup>1</sup>, all you need to do is type <code>scb -- %command%</code> into the 
+              Launch Options box for that game! If you do not wish to install scopebuddy and scopebuddy-gui, 
+              but still want a gamescope config generated, there is a web-based version <a href="web-ui/index.html">here</a>.</p>
+
+            <p>Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power – it 
+              is safe to use alongside any such advanced configuration, however.</p>
             <br>
-            <p>ScopeBuddy GUI entirely depends on Gamescope and ScopeBuddy:</p>
-            <p><a href="https://github.com/ValveSoftware/gamescope" target="_blank">Gamescope</a> is a micro-compositor made by ValveSoftware that is used to simplify running games and other software. It can handle a lot of things many games struggle with such as extreme resolutions, entering fullscreen, extremely wide monitors, and more! This can greatly reduce glitchy behavior, improving the gaming experience.</p>
-            <p><a href="https://github.com/HikariKnight/ScopeBuddy" target="_blank">Scopebuddy</a> is a tool made by HikariKnight that makes it easier to use Gamescope. It allows you to do many things, which includes creating a general Gamescope configuration for all of your games.</p>
+            <p>ScopeBuddy GUI entirely depends on Gamescope and/or ScopeBuddy:</p>
+
+            <p><a href="https://github.com/ValveSoftware/gamescope" target="_blank">Gamescope</a> 
+              is a micro-compositor made by ValveSoftware that is used to simplify running games and other software. 
+              It can handle a lot of things many games struggle with such as extreme resolutions, entering fullscreen, 
+              extremely wide monitors, and more! This can greatly reduce glitchy behavior, improving the gaming experience.</p>
+
+            <p><a href="https://github.com/HikariKnight/ScopeBuddy" target="_blank">Scopebuddy</a> 
+              is a tool made by HikariKnight that makes it easier to use Gamescope. It allows you to do many things, 
+              which includes creating a general Gamescope configuration for all of your games.</p>
+
             <p><sub>1. I strongly recommend adding games to Steam when attempting to use this tool, it makes things a lot easier.</sub></p>
           </div>
         </div>
@@ -63,9 +75,15 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>Using Gamescope can be a great tool even on standard monitors, and can be <span class="fw-bold">especially helpful</span> for very unusual monitors (very high resolution, ultrawide, etc)!</p>
-            <p>It allows you to easily configure your games and how they perform. You can maximize visual quality by setting a high resolution, or increase performance by setting a lower resolution! It allows you to fine-tune a variety of game-related settings to your liking.</p>
-            <p>For example, I personally have a very high-resolution 3:2 aspect ratio screen paired with a computer that can struggle with modern games at that resolution. Gamescope allows me to play games at a performant 1080p resolution and avoid any potential issues that come with my odd aspect ratio! I have some games I have only managed to open with Gamescope.</p>
+            <p>Using Gamescope can be a great tool even on standard monitors, and can be <span class="fw-bold">especially helpful</span> 
+              for very unusual monitors (very high resolution, ultrawide, etc)!</p>
+
+            <p>It allows you to easily configure your games and how they perform. You can maximize visual quality by setting a high resolution, 
+              or increase performance by setting a lower resolution! It allows you to fine-tune a variety of game-related settings to your liking.</p>
+              
+            <p>For example, I personally have a very high-resolution 3:2 aspect ratio screen paired with a computer that can struggle 
+              with modern games at that resolution. Gamescope allows me to play games at a performant 1080p resolution and avoid any 
+              potential issues that come with my odd aspect ratio! I have some games I have only managed to open with Gamescope.</p>
           </div>
         </div>
       </div>
@@ -77,8 +95,13 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>Fill in the fields you wish to change, click the apply button, double-check the new settings compared to the old settings, and click save!</p>
-            <p>When the GUI applies a new config, it deactivates the old config in ~/.config/scopebuddy/ without removing it, adding in the new one. This means worse-case, you can manually reapply any old configuration! It can build up over time with excessive config editing, but text files are small and it is easy enough to manually clean out if ever necessary.</p>
+            <p>Fill in the fields you wish to change, click the apply button, 
+              double-check the new settings compared to the old settings, and click save!</p>
+
+            <p>When the GUI applies a new config, it deactivates the old config in ~/.config/scopebuddy/ without removing it, 
+              adding in the new one. This means worse-case, you can manually reapply any old configuration! 
+              It can build up over time with excessive config editing, but text files are small and it is easy 
+              enough to manually clean out if ever necessary.</p>
           </div>
         </div>
       </div>
@@ -110,8 +133,13 @@
             <hr>
             <h2>Big Picture Mode</h2>
             
-                <li style="color: rgb(255, 88, 88);">On the SteamDeck interface (gamescope session), using scopebuddy results in gamescope launch arguments being ignored as they would otherwise prevent the game from starting; gamescope cannot be run within itself.</li>
-                <p style="color: rgb(255, 88, 88);"><strong>Enter desktop mode to launch games for the settings in Scopebuddy GUI to work!</strong></p>
+                <li style="color: rgb(255, 88, 88);">On the SteamDeck interface (gamescope session), 
+                  using scopebuddy results in gamescope launch arguments being ignored as they would 
+                  otherwise prevent the game from starting; gamescope cannot be run within itself.</li>
+                  
+                <p style="color: rgb(255, 88, 88);"><strong>
+                  Enter desktop mode to launch games for the settings in Scopebuddy GUI to work!
+                </strong></p>
                 
                 <li>Navigate to your Library and select the game you want to use with Gamescope.</li>
                 
@@ -140,9 +168,12 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>There is currently not an easy way to use scopebuddy with Lutris. I recommend you instead use the built-in gamescope configuration provided by Lutris.</p>
-            <p>For playing games on the Epic Game Store, Bazzite recommends using the Heroic Games Launcher.</p>
-            <p>The guide for lutris has not been created.</p>
+            <p>There is currently not an easy way to use scopebuddy with Lutris. 
+              I recommend you instead use the built-in gamescope configuration provided by Lutris.</p>
+            <p>For playing games on the Epic Game Store, Bazzite recommends using the 
+              <a href="https://flathub.org/apps/com.heroicgameslauncher.hgl" target="_blank" rel="noopener noreferrer">Heroic Games Launcher</a> 
+              instead of trying to run the Epic Games Store on Linux.</p>
+            <p>A guide for lutris has not been created.</p>
           </div>
         </div>
       </div>
@@ -154,7 +185,8 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>The guide for heroic has not been created.</p>
+            <p>I recommend you use the built-in gamescope configuration provided by Heroic.</p>
+            <p>A guide for heroic has not been created.</p>
           </div>
         </div>
       </div>
@@ -167,12 +199,20 @@
         <div class="card h-100">
           <div class="card-body">
             <h2>Low resolution, poor visual quality</h2>
-            <p>Make sure the resolution you chose the game to render at is a "regular, nice" value. Some examples are the ones in the dropdown menu, half of the resolution of your screen, exactly the resolution of your screen, etc.</p>
-            <p style="color: rgb(255, 88, 88);">Leaving the rendered resolution fields blank will lead to their default 720p resolution, which will look very low-quality on many screens! Setting the rendered resolution too high will cause poor performance.</p>
-            <p>If setting the rendered width and height to match your screen fails, you can also check the in-game settings to see if they can solve the problem! For example, I have noticed that Overwatch 2 works best with Gamescope when it is run in borderless window mode.</p>
-            <h2></h2>
-            <p></p>
-            <p>Over time, this section will be filled with issues that are commonly reported. If you have an issue, especially one that is easy to encounter, post it in the GitHub!</p>
+            <p>Make sure the resolution you chose the game to render at is a "regular, nice" value. 
+              Some examples are the ones in the dropdown menu, half of the resolution of your screen, 
+              exactly the resolution of your screen, etc.</p>
+
+            <p style="color: rgb(255, 88, 88);">Leaving the rendered resolution fields blank will lead to their default 720p resolution, 
+              which will look very low-quality on many screens! Setting the rendered resolution too high will cause poor performance.</p>
+
+            <p>If setting the rendered width and height to match your screen fails, 
+              you can also check the in-game settings to see if they can solve the problem! For example, 
+              I have noticed that Overwatch 2 works best with Gamescope when it is run in borderless window mode.</p>
+
+            <br>
+
+            <p>If you have an issue, especially one that is easy to encounter, post it in the GitHub!</p>
           </div>
         </div>
       </div>
@@ -184,11 +224,14 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. The web-based version uses JavaScript. The app itself is built from source with the following commands (run inside of the app's main folder):</p>
+            <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. 
+              The web-based version uses JavaScript. The app itself is built from source with the following commands 
+              (run inside of the app's main folder):</p>
             <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
             <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
             <br>
-            <p>If you are interested in making a flatpak app with Qt and Python, or a website with bootstrap similar to this one, my GitHub has templates of both you can use!</p>
+            <p>If you are interested in making a flatpak app with Qt and Python, or a website with bootstrap similar to this one, 
+              my GitHub has templates of both you can use!</p>
           </div>
         </div>
       </div>
