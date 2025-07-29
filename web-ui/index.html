@@ -46,7 +46,7 @@
                     <label class="form-label mb-0" for="fps" data-tooltip="Maximum amount of frames per second (FPS) the game will attempt to render. Lowering this will save power and can help reduce stutters, but lowering it below your monitor's refresh rate will result in a visibly less smooth experience.">Refresh Rate (FPS)</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <input type="number" class="form-control ms-2" id="fps" placeholder="60" min="1" max="9999" step="1">
+                    <input type="number" class="form-control ms-2" id="fps" placeholder="Monitor's FPS" min="1" max="9999" step="1">
                 </div>
             </div>
             <hr>
@@ -107,21 +107,10 @@
             <hr>
             <div class="mb-3 row g-2 align-items-center">
                 <div class="col-auto">
-                    <label class="form-label mb-0" for="force_grab_cursor" data-tooltip="Ensures the mouse stays where it should in certain situations.">Force Grab Cursor</label>
+                    <label class="form-label mb-0" for="force_grab_cursor" data-tooltip="Instead of relying on the host's mouse position, gamescope will render and handle its own separate mouse cursor.">Force Grab Cursor</label>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
                     <input class="form-check-input" type="checkbox" id="force_grab_cursor">
-                    <span class="mx-1"></span>
-                    <label class="form-check-label">Enable?</label>
-                </div>
-            </div>
-            <hr>
-            <div class="mb-3 row g-2 align-items-center">
-                <div class="col-auto">
-                    <label class="form-label mb-0" for="force_internal_fullscreen" data-tooltip="Should every window launched be forced into fullscreen? (Primarily relevant for games with dedicated launchers)">Force Fullscreen within Gamescope Window</label>
-                </div>
-                <div class="col d-flex justify-content-end align-items-center">
-                    <input class="form-check-input" type="checkbox" id="force_internal_fullscreen">
                     <span class="mx-1"></span>
                     <label class="form-check-label">Enable?</label>
                 </div>
@@ -133,6 +122,17 @@
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
                     <input type="number" step="0.01" min="0" max="9999" value="1.00" class="form-control" id="mouse_sensitivity" />
+                </div>
+            </div>
+            <hr>
+                        <div class="mb-3 row g-2 align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0" for="force_internal_fullscreen" data-tooltip="Should every window launched be forced into fullscreen? (Primarily relevant for games with dedicated launchers)">Force Fullscreen within Gamescope Window</label>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <input class="form-check-input" type="checkbox" id="force_internal_fullscreen">
+                    <span class="mx-1"></span>
+                    <label class="form-check-label">Enable?</label>
                 </div>
             </div>
             <hr>
