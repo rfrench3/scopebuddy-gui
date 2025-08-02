@@ -35,10 +35,9 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.0.4" date="2025-08-02" type="stable">
+    <release version="2.0.5" date="2025-08-02" type="stable">
       <description>
-        <p>Fixed the broken upscaler settings and updated the buttons on the welcome screen.</p>
-        <p>Now using jdAppStreamEdit to prevent constant AppStream problems.</p>
+        <p>Fix a bug caused by 2.0.3 where the upscaler comboboxes would no longer load into the UI from the file</p>
       </description>
     </release>
   </releases>
