@@ -113,6 +113,7 @@ class ApplicationLogic:
         self.statusBar = self.window.findChild(QStatusBar, "statusBar")
         self.button_new_config = self.window.findChild(QPushButton, 'button_new_config')
         self.open_folder = self.window.findChild(QPushButton, "open_folder")
+        self.docs_link = self.window.findChild(QPushButton, "button_about")
         self.file_list = self.window.findChild(QListWidget, 'file_list')
         self.large_logo = self.window.findChild(QWidget, "widget_app_icon")
         
@@ -132,6 +133,7 @@ class ApplicationLogic:
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
         self.open_folder.clicked.connect(self.open_folder_clicked)
+        self.docs_link.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
         self.file_list.itemClicked.connect(self.list_clicked)
 
         # Add a permanent label and pushButton to the status bar
@@ -178,7 +180,7 @@ class ApplicationLogic:
             (
             "To open the Scopebuddy config folder, run this in a terminal:\n\n"
             f"xdg-open {fman.SCB_DIR}\n\n"
-            "In a future update, this button will open the folder automatically."
+            "This will allow you to directly edit, create, or delete config files without relying on the GUI."
             ),
             QMessageBox.Icon.Information,
             QMessageBox.StandardButton.Ok
