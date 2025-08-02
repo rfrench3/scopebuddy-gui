@@ -71,9 +71,9 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.0.3" date="2025-08-2">
+    <release version="2.0.4" date="2025-08-2">
       <description>
-        Fixed the broken upscaler settings, updated the buttons on the welcome screen
+        <p>Fixed the broken upscaler settings and updated the buttons on the welcome screen.</p>
       </description>
     </release>
   </releases>
