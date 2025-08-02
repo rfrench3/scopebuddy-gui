@@ -51,8 +51,8 @@
   <screenshots>
     <screenshot type="default">
       <caption>The Scopebuddy GUI welcome screen.</caption>
-      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/welcomeScreen.png</image>
-      <image>https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.0/src/img/welcomeScreen.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.3/src/img/welcomeScreen.png</image>
+      <image>https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.0.3/src/img/welcomeScreen.png</image>
     </screenshot>
     <screenshot>
       <caption>The Scopebuddy GUI general settings screen.</caption>
@@ -71,9 +71,9 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.0.2" date="2025-07-10">
+    <release version="2.0.3" date="2025-08-2">
       <description>
-        Fixed screenshots section in metainfo to be flathub-compliant.
+        Fixed the broken upscaler settings, updated the buttons on the welcome screen
       </description>
     </release>
   </releases>
