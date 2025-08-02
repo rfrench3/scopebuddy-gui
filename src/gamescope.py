@@ -356,7 +356,7 @@ class GamescopeLogic:
             
         def apply_combobox_input(comboBox, arg): #appends combobox input to the config list (unless default)
             if comboBox.currentIndex() != 0:
-                self.config_list.append(f'{arg} {comboBox.currentText()} ')
+                self.config_list.append(f'{arg} {comboBox.currentText().lower()} ')
 
         def apply_checkbox_input(checkBox, arg): #appends checkbox input to the config list 
             if checkBox.isChecked():
