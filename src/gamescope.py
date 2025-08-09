@@ -29,6 +29,7 @@ class GamescopeLogic:
                 'lineEdit_upscalerSharpness': (QLineEdit, '--sharpness'),
                 
                 # QCheckBox widgets
+                'checkBox_globalGamescope': (QCheckBox, ''),
                 'checkBox_fullscreen': (QCheckBox, '-f'),
                 'checkBox_borderless': (QCheckBox, '-b'),
                 'checkBox_hdr': (QCheckBox, '--hdr-enabled'),
@@ -69,7 +70,7 @@ class GamescopeLogic:
             self.defaults_button.setText("Set to Saved")
 
 
-            # Initialize and connect inputs  (type: ignore comments prevent pyLance false positives)
+            # Initialize and connect inputs  (type: ignore comments prevent pyLance false error flags)
             #self. = parent_widget.findChild(Q, '')  # type: ignore
 
 
@@ -222,7 +223,23 @@ class GamescopeLogic:
     def save_data(self) -> bool:
         """Does a few checks to ensure certain known incompatibilities are explained to the user,
         then saves to the config file."""
+
         parent_window = self.parent_widget.window() if self.parent_widget else None
+
+        if self.checkBox_globalGamescope.isChecked(): #type:ignore
+            # ensure no gamescope line is present so the global config is not overridden
+            self.file.edit_exact_lines(["SCB_GAMESCOPE_ARGS="],["#SCBGUI#SCB_GAMESCOPE_ARGS="])
+            fman.load_message_box(
+                parent_window,
+                "Success!",
+                ("New Gamescope settings saved!\n"
+                "The Gamescope settings in the global file will now apply to this game!"),
+                QMessageBox.Icon.Information,
+                QMessageBox.StandardButton.Ok
+            )
+            return False
+
+        
 
         new_config = self.print_new_config()
 

@@ -320,7 +320,9 @@ class ConfigFile:
         return
 
     def edit_exact_lines(self,start_with:list[str],new_lines:list[str]) -> None:
-        """Checks for any lines that start with the start_with string, replaces it with their new line."""
+        """Checks for any lines that start with the start_with string, 
+        replaces that portion with the string in the 2nd list's same index.\n
+        Edit only one line by using two lists with one entry."""
         if len(start_with) != len(new_lines):
             raise ValueError
         
