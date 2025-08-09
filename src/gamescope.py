@@ -50,6 +50,7 @@ class GamescopeLogic:
                 'toolButton_renderedResolution': (QToolButton, ''),
                 'toolButton_outputResolution': (QToolButton, ''),
                 'toolButton_fps': (QToolButton, ''),
+                'widget_globalGamescope': (QWidget, ''),
 
                 # Non-specified
                 'lineEdit_unimplementedSettings': (QLineEdit, '--placeholder-value'),
@@ -136,6 +137,11 @@ class GamescopeLogic:
 
     def load_data(self, data: str) -> None:
         """Loads the data from the file into the UI elements."""
+
+        if self.file.print_path() == fman.GLOBAL_CONFIG:
+            self.widget_globalGamescope.hide() #type:ignore
+        
+
         # Split the data string into arguments
         args:list[str] = data.strip().split()
         arg_map: dict[str, str | bool] = {}
