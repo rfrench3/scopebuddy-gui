@@ -93,8 +93,11 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SteamDeck=1 is an environment variable that tells games to treat your device as a SteamDeck, while SteamDeck=0 tells them to do the opposite. The effects of this are entirely dependent on the game.</string>
+                </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;e.g. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;LD_PRELOAD=&amp;quot;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;e.g. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;SteamDeck=1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
