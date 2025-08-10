@@ -24,8 +24,10 @@ ui_main = os.path.join(DATA_DIR, "main.ui")
 ui_env_vars = os.path.join(DATA_DIR, "environment_variables.ui")
 ui_gamescope = os.path.join(DATA_DIR, "gamescope.ui")
 ui_general_settings = os.path.join(DATA_DIR, "general_settings.ui")
+ui_launch_options = os.path.join(DATA_DIR, "launch_options.ui")
 
 ui_env_vars_entry = os.path.join(DATA_DIR, "env_var.ui")
+ui_launch_options_entry = os.path.join(DATA_DIR, "launch_opt.ui")
 
 # SVG file for display on the homepage
 svg_path:str = os.path.join(DATA_DIR,"io.github.rfrench3.scopebuddy-gui.svg") 

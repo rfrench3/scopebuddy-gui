@@ -38,6 +38,7 @@ import file_manager as fman
 from env_var import EnvVarLogic
 from gamescope import GamescopeLogic
 from general_settings import GeneralSettingsLogic
+from launch_options import LaunchOptionsLogic
 
 
 DATA_DIR = fman.DATA_DIR
@@ -51,6 +52,7 @@ ui_main = fman.ui_main # The design of the welcome page was heavily inspired by 
 ui_general_settings = fman.ui_general_settings
 ui_env_vars = fman.ui_env_vars
 ui_gamescope = fman.ui_gamescope
+ui_launch_options = fman.ui_launch_options
 
 # Dialog of welcome page
 dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
@@ -267,17 +269,20 @@ class ApplicationLogic:
                 general_settings_widget = fman.load_widget(ui_general_settings)
                 env_vars_widget = fman.load_widget(ui_env_vars)
                 gamescope_widget = fman.load_widget(ui_gamescope)
+                launch_options_widget = fman.load_widget(ui_launch_options)
 
                 # Initialize the logic for the ui pages
                 self.general_settings_logic = GeneralSettingsLogic(file, general_settings_widget)
                 self.env_vars_logic = EnvVarLogic(file, env_vars_widget)
                 self.gamescope_logic = GamescopeLogic(file, gamescope_widget)
+                self.launch_options_logic = LaunchOptionsLogic(file, launch_options_widget)
                     
                 # Clear existing tabs and add new ones
                 self.mainFileEdit.clear()
                 self.mainFileEdit.addTab(general_settings_widget, "General Settings")
                 self.mainFileEdit.addTab(env_vars_widget, "Environment Variables")
                 self.mainFileEdit.addTab(gamescope_widget, "Gamescope")
+                self.mainFileEdit.addTab(launch_options_widget, "Launch Options")
                 
                 self.interface_loaded = True
             
