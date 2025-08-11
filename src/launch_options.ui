@@ -107,7 +107,7 @@
                <item>
                 <widget class="QLineEdit" name="lineEdit">
                  <property name="placeholderText">
-                  <string>e.g. --launcher-skip</string>
+                  <string>e.g. --launcher-skip -autoconfig -novid</string>
                  </property>
                 </widget>
                </item>
@@ -156,7 +156,7 @@
                   <item>
                    <widget class="QLabel" name="label_13">
                     <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format of these launch options follows Steam! If you have set launch options in Steam and are unfamiliar with the use of %command%, all you need to do is enter your launch options here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format of these launch options follows Steam! If you have set launch options in Steam and are unfamiliar with the use of %command%, all you need to do is enter your launch options here (each one separated by a space, as it would be in Steam).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                     <property name="wordWrap">
                      <bool>true</bool>
