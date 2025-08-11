@@ -47,18 +47,20 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>ScopeBuddy GUI is a graphical interface you can use to easily generate a set of launch arguments for gamescope.
-              Ordinarily, this would require you to understand Gamescope well enough to manually type-out every detail of what you want. 
+            <p>ScopeBuddy GUI is a graphical interface you can use to easily generate 
+              a configuration for environment variables, launch options, and Gamescope.
+              Ordinarily, this would require you to understand command-line syntax and 
+              Gamescope well enough to manually type-out every detail of what you want. 
               With this tool, all you need to do is click on the settings you want!
 
               To activate these settings in any game you have<sup>1</sup>, all you need to do is type <code>scb -- %command%</code> into the 
               Launch Options box for that game! If you do not wish to install scopebuddy and scopebuddy-gui, 
-              but still want a gamescope config generated, there is a web-based version <a href="web-ui/index.html">here</a>.</p>
+              but still want a Gamescope config generated, there is a web-based version <a href="web-ui/index.html">here</a>.</p>
 
             <p>Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power – it 
               is safe to use alongside any such advanced configuration, however.</p>
             <br>
-            <p>ScopeBuddy GUI entirely depends on Gamescope and/or ScopeBuddy:</p>
+            <p>To be useful, ScopeBuddy GUI largely depends on the user having Gamescope and/or ScopeBuddy installed:</p>
 
             <p><a href="https://github.com/ValveSoftware/gamescope" target="_blank">Gamescope</a> 
               is a micro-compositor made by ValveSoftware that is used to simplify running games and other software. 
@@ -69,7 +71,7 @@
               is a tool made by HikariKnight that makes it easier to use Gamescope. It allows you to do many things, 
               which includes creating a general Gamescope configuration for all of your games.</p>
 
-            <p><sub>1. I strongly recommend adding games to Steam when attempting to use this tool, it makes things a lot easier.</sub></p>
+            <p><sub>1. ScopeBuddy works best with games installed through Steam, but is also able to be used elsewhere.</sub></p>
           </div>
         </div>
       </div>
@@ -140,8 +142,8 @@
             <h2>Big Picture Mode</h2>
             
                 <li style="color: rgb(255, 88, 88);">On the SteamDeck interface (gamescope session), 
-                  using scopebuddy results in gamescope launch arguments being ignored as they would 
-                  otherwise prevent the game from starting; gamescope cannot be run within itself.</li>
+                  using scopebuddy results in Gamescope launch arguments being ignored as they would 
+                  otherwise prevent the game from starting; Gamescope cannot be run within itself.</li>
                   
                 <p style="color: rgb(255, 88, 88);"><strong>
                   Enter desktop mode to launch games for the settings in Scopebuddy GUI to work!
@@ -194,6 +196,12 @@
             <li>Enable the "Advanced" toggle in the top right of the window</li>
             <li>Scroll to the "Game execution" section, in the Command Prefix line, enter <code>scb -- </code>,
                then click "Save" in the top right of the window.</li>
+
+
+            <p>If you follow these steps and create a Steam shortcut, the shortcut will properly work with your scopebuddy settings!</p>
+          </div>
+        </div>
+      </div>
     </section>
     
     <section class="row row-cols-1 g-4 mb-5" id="heroic">
@@ -202,7 +210,7 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>I recommend you use the built-in gamescope configuration provided by Heroic.</p>
+            <p>I recommend you use the built-in Gamescope configuration provided by Heroic.</p>
             <p>A guide for heroic has not been created.</p>
           </div>
         </div>
