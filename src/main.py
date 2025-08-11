@@ -98,6 +98,10 @@ class MainWindow(QMainWindow):
                 if stop:
                     event.ignore()
                     return
+                stop = self.logic.launch_options_logic.save_data() if self.logic.launch_options_logic else False
+                if stop:
+                    event.ignore()
+                    return
             # If Apply succeeded or Discard was chosen, allow close
             event.accept()
         else:
@@ -122,6 +126,7 @@ class ApplicationLogic:
         self.general_settings_logic = None
         self.env_vars_logic = None
         self.gamescope_logic = None
+        self.launch_options_logic = None
         self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
                 
 
@@ -229,6 +234,11 @@ class ApplicationLogic:
             if stop:
                 self.mainFileEdit.setCurrentIndex(2)
                 return
+            
+            stop = self.launch_options_logic.save_data() #type: ignore
+            if stop:
+                self.mainFileEdit.setCurrentIndex(3)
+                return
         
         # else: discard was selected or all applies completed, proceed 
             
@@ -243,6 +253,7 @@ class ApplicationLogic:
             self.general_settings_logic = None
             self.env_vars_logic = None
             self.gamescope_logic = None
+            self.launch_options_logic = None
             self.interface_loaded = False
 
         global selected_config
