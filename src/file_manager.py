@@ -161,10 +161,12 @@ class ConfigFile:
             lines = file.readlines()
 
         for line in lines:
-            if line.startswith('command+='):
-                match = search(r"command+='([^']*)'", line)
+            if line.startswith(r'command+='):
+                print("LINE DETECTED")
+                match = search(r"command\+='([^']*)'", line)
                 if match:
                     return match.group(1)
+                
         return 'No launch options line'
 
     def check_for_exact_line(self,startswith:str) -> bool:

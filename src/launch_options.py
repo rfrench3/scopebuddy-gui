@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
 from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget, QDialogButtonBox, QMessageBox
@@ -35,13 +36,28 @@ class LaunchOptionsLogic:
             # Start the field with one blank entry
             self.new_entry()
     
-    #TODO: update
     def load_data(self) -> None:
         """Loads the data from the file into the UI elements."""
-        variables_list:list[str] = self.file.print_export_lines()
 
-        for entry in variables_list:
-            self.new_entry(entry)
+        arguments_list = re.findall(r'(?:[^\s"]+|"[^"]*")+', self.file.print_launch_options().strip())
+
+        # each argument is added when the next new argument is detected
+        argument = ''
+        for entry in arguments_list:
+            if entry.startswith('"'):
+                argument += f' {entry}'
+                entry = ''
+            else:
+                # the entry is a new argument, load the previous one (unless argument is empty)
+                if argument.strip():
+                    self.new_entry(argument)
+                argument = entry
+
+        # Ensure the final argument is loaded if not empty
+        if argument.strip():
+            self.new_entry(argument)
+
+            
 
     #TODO: update
     def save_data(self) -> bool:
@@ -98,7 +114,7 @@ class LaunchOptionsLogic:
 
 
     def new_entry(self, data:str|None = None) -> None:
-        """Creates a new entry in the environment variables list."""
+        """Creates a new entry in the launch options list."""
         new_entry = fman.load_widget(entry)
         layout = self.launch_options_list.layout()
         layout.addWidget(new_entry)
@@ -146,5 +162,5 @@ class LaunchOptionsLogic:
                 vars_list.append(variable_line.text().strip())
 
         return vars_list
-    
-    
+
+
