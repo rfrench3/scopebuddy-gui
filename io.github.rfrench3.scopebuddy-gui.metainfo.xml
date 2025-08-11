@@ -41,9 +41,9 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.1.1a" date="2025-08-11" type="stable">
+    <release version="2.1.1b" date="2025-08-11" type="stable">
       <description>
-        <p>Fix metainfo: control strictly needs a "requires" and add a caption to the newly added screenshot</p>
+        <p>Fix metainfo: required size was also defined as recommended size, causing the error.</p>
       </description>
     </release>
   </releases>
@@ -55,12 +55,11 @@
     <category>Settings</category>
   </categories>
   <requires>
-    <control>keyboard</control>
     <display_length compare="ge">600</display_length>
   </requires>
   <recommends>
     <control>pointing</control>
-    <display_length compare="ge">600</display_length>
+    <control>keyboard</control>
   </recommends>
   <content_rating type="oars-1.1"/>
   <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
