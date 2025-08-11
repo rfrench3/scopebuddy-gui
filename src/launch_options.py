@@ -1,6 +1,5 @@
 import sys
 import os
-import re
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
 from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget, QDialogButtonBox, QMessageBox
@@ -12,155 +11,51 @@ entry:str = fman.ui_launch_options_entry
 class LaunchOptionsLogic:
     def __init__(self, file:ConfigFile, parent_widget=None) -> None:
             self.parent_logic = None  # Will be set by main.py
-            self.entries = []  # Store references to all entry widgets
             self.file = file
-            self.launch_options_list = parent_widget.findChild(QWidget, 'additional_entries')  # type: ignore
             self.parent_widget = parent_widget
 
             # Initialize and connect inputs
-            self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
+            self.line_edit = parent_widget.findChild(QLineEdit, 'lineEdit') # type: ignore
             self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
 
             self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
             self.help_button = self.button_box.button(QDialogButtonBox.StandardButton.Help) # type: ignore
-            self.reset_button = self.button_box.button(QDialogButtonBox.StandardButton.Reset) # type: ignore
-            self.defaults_button = self.button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults) # type: ignore
-            
-            self.add_entry.clicked.connect(self.new_entry)
+
             self.apply_button.clicked.connect(self.save_data)
             self.help_button.clicked.connect(lambda: os.system("xdg-open https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955"))
 
-            # Load lines from the file
+            # Load line from the file
             self.load_data()
 
-            # Start the field with one blank entry
-            self.new_entry()
-    
     def load_data(self) -> None:
         """Loads the data from the file into the UI elements."""
 
-        arguments_list = re.findall(r'(?:[^\s"]+|"[^"]*")+', self.file.print_launch_options().strip())
+        argument = self.file.print_launch_options().strip()
+        self.line_edit.setText(argument)
+        
 
-        # each argument is added when the next new argument is detected
-        argument = ''
-        for entry in arguments_list:
-            if entry.startswith('"'):
-                argument += f' {entry}'
-                entry = ''
-            else:
-                # the entry is a new argument, load the previous one (unless argument is empty)
-                if argument.strip():
-                    self.new_entry(argument)
-                argument = entry
 
-        # Ensure the final argument is loaded if not empty
-        if argument.strip():
-            self.new_entry(argument)
+
 
             
 
     #TODO: update
     def save_data(self) -> bool:
-        """Load data into a list and apply it to the file."""
-        data:list[str] = self.return_env_vars_list()
-
+        """Save the user input to the file's command+=' ' line."""
+        
         parent_window = self.parent_widget.window() if self.parent_widget else None
 
-        # Ensure user is warned if they are combining regular mangohud with gamescope
-        adding_noscope:bool = False
-        adding_mangohud:bool = False
-        for variable in data:
-            if variable.startswith("mangohud") or variable.startswith("MANGOHUD=1"):
-                adding_mangohud = True
-            if variable.startswith("SCB_NOSCOPE=1"):
-                adding_noscope = True
-
-            if adding_noscope and adding_mangohud:
-                break # both have already been located
-
-        gamescope_active:bool = False if (
-            self.file.check_for_exact_line("SCB_NOSCOPE=1") or 
-            self.file.check_for_exact_line("export SCB_NOSCOPE=1") or
-            adding_noscope
-            ) else True
-
-        if gamescope_active and adding_mangohud:
-            result = fman.load_message_box(
-                parent_window,
-                "Warning!",
-                ("You have gamescope enabled and are attempting to use regular MangoHUD! This is not supported.\n"
-                "You should either disable Gamescope or use the \"MangoHUD Overlay\" checkbox inside of Gamescope!"),
-                QMessageBox.Icon.Warning,
-                QMessageBox.StandardButton.Ignore | QMessageBox.StandardButton.Cancel
-            )
-            if result != QMessageBox.StandardButton.Ignore:
-                return True
-
-        self.file.edit_export_lines(data)
-
-        display_new_vars = " ".join(self.return_env_vars_list()) + r" %command%"
-        if display_new_vars != r" %command%":
-            additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
-        else:
-            additional_message = ''
+        new_line = f' {self.line_edit.text().strip()}'
+        self.file.edit_launch_options(new_line)
+        
         fman.load_message_box(
             parent_window,
             "Success!",
-            f"New Environment Variables saved! {additional_message}",
+            f"New launch options saved!",
             QMessageBox.Icon.Information,
             QMessageBox.StandardButton.Ok
         )
         return False
 
-
-    def new_entry(self, data:str|None = None) -> None:
-        """Creates a new entry in the launch options list."""
-        new_entry = fman.load_widget(entry)
-        layout = self.launch_options_list.layout()
-        layout.addWidget(new_entry)
-        
-        # Find and store references to the widgets
-        variable_line = new_entry.findChild(QLineEdit, 'variable_line')
-        delete_entry = new_entry.findChild(QToolButton, 'delete_entry')
-        
-        # Put file's variables into entry
-        if data:
-            variable_line.setText(data) # type: ignore
-
-        # Store the entry data for later access
-        entry_data = {
-            'widget': new_entry,
-            'variable_line': variable_line,
-            'delete_entry': delete_entry
-        }
-        self.entries.append(entry_data)
-        
-        # Connect the delete button to remove this entry
-        if delete_entry:
-            delete_entry.clicked.connect(lambda: self.remove_entry(entry_data))
-    
-    def remove_entry(self, entry_data) -> None:
-        """Remove an entry from the list."""
-
-        layout = self.launch_options_list.layout()
-        layout.removeWidget(entry_data['widget'])
-        
-        # Delete the widget
-        entry_data['widget'].deleteLater() # prevent memory leak
-        
-        # Remove from our list
-        self.entries.remove(entry_data)
-
-    #TODO: update
-    def return_env_vars_list(self) -> list[str]:
-        """Outputs a list of environment variables input by the user."""
-        vars_list = []
-
-        for entry_data in self.entries:
-            variable_line = entry_data['variable_line']
-            if variable_line and variable_line.text().strip():  # Only include non-empty entries
-                vars_list.append(variable_line.text().strip())
-
-        return vars_list
 
 

@@ -167,7 +167,7 @@ class ConfigFile:
                 if match:
                     return match.group(1)
                 
-        return 'No launch options line'
+        return ''
 
     def check_for_exact_line(self,startswith:str) -> bool:
         """Checks for a line that starts with a certain value. 
