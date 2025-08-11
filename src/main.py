@@ -344,11 +344,8 @@ class ApplicationLogic:
                     # Create the config file using file_manager logic
                     logic = fman.ScopebuddyDirectory()
                     logic.create_file(file_name,display_name)
-                    
-                    # Add the new file to the list widget
-                    item = QListWidgetItem(display_name)
-                    item.setToolTip(f"File: {file_name}")
-                    self.file_list.addItem(item)
+
+                    self.reload_file_list()
                 else:
                     fman.load_message_box(
                         self.window,

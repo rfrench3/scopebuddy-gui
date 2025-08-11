@@ -413,13 +413,6 @@ class ScopebuddyDirectory:
     def __init__(self) -> None:
         self.directory_path = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
         self.appid_path = os.path.join(self.directory_path,"AppID")
-
-        # This will only be needed for the AppID folder.
-        self.config_files = [
-            ConfigFile(os.path.join(self.appid_path, file))
-            for file in os.listdir(self.appid_path)
-            if os.path.isfile(os.path.join(self.appid_path, file)) and file.endswith(".conf")
-        ]
         
     def __str__(self) -> str:
         """Returns detected path to scopebuddy directory."""
@@ -427,11 +420,26 @@ class ScopebuddyDirectory:
     
     def print_files_list(self) -> list[str]:
         """Returns a list of readable strings describing each config file."""
-        return [f"{config.print_filename()}: {config.print_displayname()}" for config in self.config_files]
+
+        config_files = [
+            ConfigFile(os.path.join(self.appid_path, file))
+            for file in os.listdir(self.appid_path)
+            if os.path.isfile(os.path.join(self.appid_path, file)) and file.endswith(".conf")
+            ]
+
+
+        return [f"{config.print_filename()}: {config.print_displayname()}" for config in config_files]
     
     def print_appid_dict(self) -> dict[str, str]:
         """Returns a dictionary of filepath: displayname"""
-        return {config.print_path(): config.print_displayname() for config in self.config_files}
+
+        config_files = [
+            ConfigFile(os.path.join(self.appid_path, file))
+            for file in os.listdir(self.appid_path)
+            if os.path.isfile(os.path.join(self.appid_path, file)) and file.endswith(".conf")
+            ]
+        
+        return {config.print_path(): config.print_displayname() for config in config_files}
     
 
 
