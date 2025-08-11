@@ -42,14 +42,6 @@ header p {
   font-size: 1.5rem;
 }
 
-.navigator {
-  color: #f4f4f5;
-}
-
-.navigator:hover {
-  color: #60a5fa;
-}
-
 div.content-area {
   padding-left: 12.5%;
   padding-right: 12.5%;
@@ -57,14 +49,24 @@ div.content-area {
 
 .image-gallery {
   overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
 }
 
 .image-gallery img {
-  max-height: 300px;
-  margin-right: 12px;
+  max-height: 240px;
+  margin-left: 12px;
+  margin-top: 12px;
+  padding-top: -12px;
+  padding-bottom: -12px;
+  margin-bottom: 12px;
   display: inline-block;
-  box-shadow: #f50000;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.image-gallery img:hover {
+  transform: scale(1.04);
 }
 
 

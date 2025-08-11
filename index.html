@@ -27,6 +27,7 @@
         </a>
         <a href="web-ui/index.html" class="btn btn-outline-light btn-sm">Web-based Config Generator</a>
       </div>
+      <hr>
       <nav class="d-flex flex-wrap justify-content-center gap-2">
         <a href="#benefits" class="btn btn-outline-light btn-sm">Benefits</a>
         <a href="#steam" class="btn btn-outline-light btn-sm">Steam</a>
@@ -117,8 +118,8 @@
             <hr>
             <!-- Scrolls horizontally if there isn't enough space -->
             <div class="image-gallery">
-              <img src="images/Desktop1.png" alt="Steam Launch Options Example">
-              <img src="images/Desktop2.png" alt="Steam Launch Options Example">
+              <img src="images/Desktop1.png" alt="Steam Guide">
+              <img src="images/Desktop2.png" alt="Steam Guide">
             </div>
             <hr>
             <h2>Big Picture Mode</h2>
@@ -143,9 +144,9 @@
                 <li>This will launch the game using your current ScopeBuddy configuration.</li>
                 <hr>
                 <div class="image-gallery">
-                  <img src="images/BigPicture1.png" alt="Steam Launch Options Example">
-                  <img src="images/BigPicture2.png" alt="Steam Launch Options Example">
-                  <img src="images/BigPicture3.png" alt="Steam Launch Options Example">
+                  <img src="images/BigPicture1.png" alt="Steam Guide">
+                  <img src="images/BigPicture2.png" alt="Steam Guide">
+                  <img src="images/BigPicture3.png" alt="Steam Guide">
                 </div>
                 <hr>
                 
@@ -185,9 +186,9 @@
 
               <hr>
               <div class="image-gallery">
-                <img src="images/lutris1.png" alt="Lutris Screenshot 1" />
-                <img src="images/lutris2.png" alt="Lutris Screenshot 2" />
-                <img src="images/lutris3.png" alt="Lutris Screenshot 3" />
+                <img src="images/lutris1.png" alt="Lutris Guide" />
+                <img src="images/lutris2.png" alt="Lutris Guide" />
+                <img src="images/lutris3.png" alt="Lutris Guide" />
               </div>
               <hr>
             <p>If you follow these steps and create a Steam shortcut, the shortcut will properly work with your scopebuddy settings!</p>
@@ -255,53 +256,32 @@
     </section>
   </main>  
   
+  <!-- Image Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content bg-dark">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center position-relative">
+          <button type="button" class="btn btn-outline-light position-absolute top-50 start-0 translate-middle-y ms-3" id="prevImageBtn" style="z-index: 1050;">
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+          <img id="modalImage" src="" alt="" class="img-fluid" style="max-height: 80vh;">
+          <button type="button" class="btn btn-outline-light position-absolute top-50 end-0 translate-middle-y me-3" id="nextImageBtn" style="z-index: 1050;">
+            <span aria-hidden="true">&raquo;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <footer class="bg-dark border-top py-4 mt-5 text-center">
     <a href="#" class="btn btn-outline-light btn-sm">Return to top</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- RTL/LTR Auto-Detection Script -->
-  <script>
-    const rtlCss = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css";
-    const ltrCss = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css";
-    const html = document.documentElement;
-    const bootstrapCss = document.getElementById('bootstrap-css');
-
-    // List of RTL language codes
-    const rtlLangs = [
-      'ar', 'he', 'fa', 'ur', 'ps', 'syr', 'dv', 'ku', 'yi'
-    ];
-
-    function isRtlLang(lang) {
-      return rtlLangs.some(rtl => lang.toLowerCase().startsWith(rtl));
-    }
-
-    function setDirectionByLanguage(lang) {
-      if (isRtlLang(lang)) {
-        html.setAttribute('dir', 'rtl');
-        bootstrapCss.setAttribute('href', rtlCss);
-      } else {
-        html.setAttribute('dir', 'ltr');
-        bootstrapCss.setAttribute('href', ltrCss);
-      }
-      html.setAttribute('lang', lang);
-    }
-
-    // On page load, auto-detect
-    setDirectionByLanguage(navigator.language || navigator.userLanguage);
-
-    // Detect language changes post-load (e.g., by translation tools)
-    let lastLang = html.getAttribute('lang') || (navigator.language || navigator.userLanguage);
-
-    const observer = new MutationObserver(() => {
-      const currentLang = html.getAttribute('lang');
-      if (currentLang && currentLang !== lastLang) {
-        setDirectionByLanguage(currentLang);
-        lastLang = currentLang;
-      }
-    });
-
-    observer.observe(html, { attributes: true, attributeFilter: ['lang'] });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
