@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
-from PySide6.QtWidgets import QToolButton, QLineEdit, QCheckBox, QWidget, QDialogButtonBox, QMessageBox
+from PySide6.QtWidgets import QLineEdit, QDialogButtonBox, QMessageBox
 import file_manager as fman
 from file_manager import ConfigFile
 
@@ -33,13 +33,6 @@ class LaunchOptionsLogic:
         argument = self.file.print_launch_options().strip()
         self.line_edit.setText(argument)
         
-
-
-
-
-            
-
-    #TODO: update
     def save_data(self) -> bool:
         """Save the user input to the file's command+=' ' line."""
         

@@ -30,7 +30,6 @@ from PySide6.QtWidgets import (
     QLineEdit, QMessageBox, QMainWindow, QWidget
     )
 from PySide6.QtSvgWidgets import QSvgWidget
-from PySide6.QtSvg import QSvgRenderer
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
