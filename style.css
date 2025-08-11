@@ -55,17 +55,23 @@ div.content-area {
   padding-right: 12.5%;
 }
 
+.image-gallery {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.image-gallery img {
+  max-height: 300px;
+  margin-right: 12px;
+  display: inline-block;
+  box-shadow: #f50000;
+}
+
 
 .card {
   background: #27272a;
   border: 1px solid #3f3f46;
   color: #e4e4e7;
-}
-
-.images {
-  max-width:75%;
-  border:1px solid #ccc;
-  margin-top:1em;
 }
 
 /* RTL support for text alignment */

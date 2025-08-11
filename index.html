@@ -114,11 +114,12 @@
                 </li>
                 
                 <li>This will launch the game using your current ScopeBuddy configuration.</li>
-            
-            <img src="images/Desktop1.png" alt="Steam Launch Options Example" class="images">
-            <img src="images/Desktop2.png" alt="Steam Launch Options Example" class="images">
-            <br>
-            <br>
+            <hr>
+            <!-- Scrolls horizontally if there isn't enough space -->
+            <div class="image-gallery">
+              <img src="images/Desktop1.png" alt="Steam Launch Options Example">
+              <img src="images/Desktop2.png" alt="Steam Launch Options Example">
+            </div>
             <hr>
             <h2>Big Picture Mode</h2>
             
@@ -140,10 +141,14 @@
                 </li>
                 
                 <li>This will launch the game using your current ScopeBuddy configuration.</li>
-
-                <img src="images/BigPicture1.png" alt="Steam Launch Options Example" class="images">
-                <img src="images/BigPicture2.png" alt="Steam Launch Options Example" class="images">
-                <img src="images/BigPicture3.png" alt="Steam Launch Options Example" class="images">
+                <hr>
+                <div class="image-gallery">
+                  <img src="images/BigPicture1.png" alt="Steam Launch Options Example">
+                  <img src="images/BigPicture2.png" alt="Steam Launch Options Example">
+                  <img src="images/BigPicture3.png" alt="Steam Launch Options Example">
+                </div>
+                <hr>
+                
 
             </p>
           </div>
@@ -178,7 +183,13 @@
             <li>Scroll to the "Game execution" section, in the Command Prefix line, enter <code>scb -- </code>,
                then click "Save" in the top right of the window.</li>
 
-
+              <hr>
+              <div class="image-gallery">
+                <img src="images/lutris1.png" alt="Lutris Screenshot 1" />
+                <img src="images/lutris2.png" alt="Lutris Screenshot 2" />
+                <img src="images/lutris3.png" alt="Lutris Screenshot 3" />
+              </div>
+              <hr>
             <p>If you follow these steps and create a Steam shortcut, the shortcut will properly work with your scopebuddy settings!</p>
           </div>
         </div>
@@ -232,7 +243,7 @@
           <div class="card-body">
             <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. 
               The web-based version uses JavaScript. The app itself is built from source with the following commands 
-              (run inside of the app's main folder):</p>
+              (run inside of a folder with the yml):</p>
             <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
             <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
             <br>
