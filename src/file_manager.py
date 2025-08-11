@@ -96,6 +96,7 @@ class ConfigFile:
         self.displayname: str = self.print_displayname()
         self.export_lines: list[str] = self.print_export_lines()
         self.gamescope_line: str = self.print_gamescope_line()
+        self.launch_options: str = self.print_launch_options()
 
     # DATA OUTPUT
 
@@ -107,6 +108,7 @@ class ConfigFile:
             f"Display Name: {self.print_displayname()}\n"
             f"Export Lines: {self.print_export_lines()}\n"
             f"Gamescope Line: {self.print_gamescope_line()}"
+            f"Launch Options: {self.print_launch_options()}"
         )
         return output
     
@@ -119,7 +121,8 @@ class ConfigFile:
         return os.path.basename(self.path_to_file)
     
     def print_displayname(self) -> str:
-        """Read the display name (the commented out line 1) from the active file."""
+        """Read the display name (the commented out line 1) from the active file.
+        If the first line does not start with "# ", return the file name instead."""
         if self.path_to_file == GLOBAL_CONFIG:
             return "Global Config"
         with open(self.path_to_file, 'r') as file:
@@ -151,6 +154,18 @@ class ConfigFile:
                 if match:
                     return match.group(1)
         return 'No gamescope line'
+    
+    def print_launch_options(self) -> str:
+        """Returns the stored launch options as a string."""
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        for line in lines:
+            if line.startswith('command+='):
+                match = search(r"command+='([^']*)'", line)
+                if match:
+                    return match.group(1)
+        return 'No launch options line'
 
     def check_for_exact_line(self,startswith:str) -> bool:
         """Checks for a line that starts with a certain value. 
@@ -167,6 +182,7 @@ class ConfigFile:
 
     
     # DATA EDITING
+    #TODO: implementing regex/string normals for editing lines would simplify certain things
     
     def edit_displayname(self, new_name:str) -> None:
         """Changes the display name (the commented out line 1) inside the file.
@@ -358,6 +374,32 @@ class ConfigFile:
         with open(self.path_to_file, 'w') as file:
             file.writelines(lines)
         
+    def edit_launch_options(self, new_flags:str) -> None:
+        """Changes the launch options in the file to the newly listed ones."""
+
+        new_line = f"command+=' {new_flags.strip()}'\n"
+
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
+
+        for i, line in enumerate(lines):
+            if line.startswith('command+='):
+
+                lines[i] = new_line
+                with open(self.path_to_file, 'w') as file: 
+                    file.writelines(lines)
+                # update launch options line stored by program
+                self.launch_options: str = self.print_launch_options()
+                return
+            
+        # place launch options line at the end, because no line was found in the file
+        with open(self.path_to_file, 'a') as file: 
+            file.writelines(new_line)
+        self.launch_options: str = self.print_launch_options()
+        return
 
 '''
 The ScopebuddyDirectory class:

@@ -18,7 +18,6 @@ class EnvVarLogic:
 
             # Initialize and connect inputs
             self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
-            self.noscope_checkbox = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore
             self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
 
             self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore

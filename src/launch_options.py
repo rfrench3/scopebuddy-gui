@@ -13,12 +13,11 @@ class LaunchOptionsLogic:
             self.parent_logic = None  # Will be set by main.py
             self.entries = []  # Store references to all entry widgets
             self.file = file
-            self.env_vars_list = parent_widget.findChild(QWidget, 'additional_entries')  # type: ignore
+            self.launch_options_list = parent_widget.findChild(QWidget, 'additional_entries')  # type: ignore
             self.parent_widget = parent_widget
 
             # Initialize and connect inputs
             self.add_entry = parent_widget.findChild(QToolButton, 'add_entry')  # type: ignore
-            self.noscope_checkbox = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore
             self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
 
             self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
@@ -28,14 +27,15 @@ class LaunchOptionsLogic:
             
             self.add_entry.clicked.connect(self.new_entry)
             self.apply_button.clicked.connect(self.save_data)
-            self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Environment_variables"))
+            self.help_button.clicked.connect(lambda: os.system("xdg-open https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955"))
 
             # Load lines from the file
             self.load_data()
 
             # Start the field with one blank entry
             self.new_entry()
-
+    
+    #TODO: update
     def load_data(self) -> None:
         """Loads the data from the file into the UI elements."""
         variables_list:list[str] = self.file.print_export_lines()
@@ -43,6 +43,7 @@ class LaunchOptionsLogic:
         for entry in variables_list:
             self.new_entry(entry)
 
+    #TODO: update
     def save_data(self) -> bool:
         """Load data into a list and apply it to the file."""
         data:list[str] = self.return_env_vars_list()
@@ -99,7 +100,7 @@ class LaunchOptionsLogic:
     def new_entry(self, data:str|None = None) -> None:
         """Creates a new entry in the environment variables list."""
         new_entry = fman.load_widget(entry)
-        layout = self.env_vars_list.layout()
+        layout = self.launch_options_list.layout()
         layout.addWidget(new_entry)
         
         # Find and store references to the widgets
@@ -125,7 +126,7 @@ class LaunchOptionsLogic:
     def remove_entry(self, entry_data) -> None:
         """Remove an entry from the list."""
 
-        layout = self.env_vars_list.layout()
+        layout = self.launch_options_list.layout()
         layout.removeWidget(entry_data['widget'])
         
         # Delete the widget
@@ -134,6 +135,7 @@ class LaunchOptionsLogic:
         # Remove from our list
         self.entries.remove(entry_data)
 
+    #TODO: update
     def return_env_vars_list(self) -> list[str]:
         """Outputs a list of environment variables input by the user."""
         vars_list = []
