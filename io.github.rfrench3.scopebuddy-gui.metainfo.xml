@@ -36,7 +36,7 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.1.0" date="2025-08-10" type="stable">
+    <release version="2.1.0" date="2025-08-10" type="development">
       <description>
         <ul>
           <li>Button to use global scopebuddy config in appid configs</li>
