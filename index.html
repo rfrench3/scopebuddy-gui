@@ -174,15 +174,26 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>There is currently not an easy way to use scopebuddy with Lutris. 
-              I recommend you instead use the built-in gamescope configuration provided by Lutris.</p>
-            <p>For playing games on the Epic Game Store, Bazzite recommends using the 
+            <p>
+              My recommendation is to use the built-in configuration tools within Lutris, 
+              as all important features are present and scopebuddy currently does not easily work with every game run using Lutris.
+            </p>
+            <p>
+              For playing games on the Epic Game Store, Bazzite recommends using the 
               <a href="https://flathub.org/apps/com.heroicgameslauncher.hgl" target="_blank" rel="noopener noreferrer">Heroic Games Launcher</a> 
-              instead of trying to run the Epic Games Store on Linux.</p>
-            <p>A guide for lutris has not been created.</p>
-          </div>
-        </div>
-      </div>
+              instead of trying to run the Epic Games Store on Linux.
+            </p>
+            <p>
+              It is possible to use scopebuddy with Lutris,
+              but games that pop-up a launcher before the game window may launch the game outside of scopebuddy. 
+              To apply scopebuddy to a game in Lutris:
+            </p>
+
+            <li>Right click on the game, click on Configure</li>
+            <li>Click the System Options tab</li>
+            <li>Enable the "Advanced" toggle in the top right of the window</li>
+            <li>Scroll to the "Game execution" section, in the Command Prefix line, enter <code>scb -- </code>,
+               then click "Save" in the top right of the window.</li>
     </section>
     
     <section class="row row-cols-1 g-4 mb-5" id="heroic">
