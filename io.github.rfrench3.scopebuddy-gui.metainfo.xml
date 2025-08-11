@@ -35,18 +35,15 @@
       <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/gamescope.png</image>
     </screenshot>
     <screenshot>
+      <caption>Launch Options page.</caption>
       <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/launchOptions.png</image>
       <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/launchOptions.png</image>
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.1.1" date="2025-08-11" type="stable">
+    <release version="2.1.1a" date="2025-08-11" type="stable">
       <description>
-        <ul>
-          <li>New page to add launch options to games</li>
-          <li>Button to use global scopebuddy config in appid configs</li>
-          <li>Minor visual improvements to the Gamescope page</li>
-        </ul>
+        <p>Fix metainfo: control strictly needs a "requires" and add a caption to the newly added screenshot</p>
       </description>
     </release>
   </releases>
@@ -58,11 +55,11 @@
     <category>Settings</category>
   </categories>
   <requires>
+    <control>keyboard</control>
     <display_length compare="ge">600</display_length>
   </requires>
   <recommends>
     <control>pointing</control>
-    <control>keyboard</control>
     <display_length compare="ge">600</display_length>
   </recommends>
   <content_rating type="oars-1.1"/>
