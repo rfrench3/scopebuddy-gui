@@ -40,7 +40,7 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.1.0" date="2025-08-10" type="stable">
+    <release version="2.1.1" date="2025-08-11" type="stable">
       <description>
         <ul>
           <li>New page to add launch options to games</li>
