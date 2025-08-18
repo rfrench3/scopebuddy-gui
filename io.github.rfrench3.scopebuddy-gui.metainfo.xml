@@ -41,9 +41,9 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="2.1.1b" date="2025-08-11" type="stable">
+    <release version="2.1.2" date="2025-08-18" type="stable">
       <description>
-        <p>Fix metainfo: required size was also defined as recommended size, causing the error.</p>
+        <p>Fix #39: Open Folder button no longer guides users to opening the incorrect folder.</p>
       </description>
     </release>
   </releases>
