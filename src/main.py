@@ -185,7 +185,7 @@ class ApplicationLogic:
             "Open Scopebuddy Folder",
             (
             "To open the Scopebuddy config folder, run this in a terminal:\n\n"
-            f"xdg-open {fman.SCB_DIR}\n\n"
+            f"xdg-open {os.path.join(os.path.expanduser("~/.config"), "scopebuddy")}\n\n" #FIXME: fman.SCB_DIR was causing this to point inside the flatpak sandbox, though everything else works fine
             "This will allow you to directly edit, create, or delete config files without relying on the GUI."
             ),
             QMessageBox.Icon.Information,
