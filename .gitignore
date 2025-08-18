@@ -5,3 +5,4 @@
 /.venv
 scopebuddyGUI.flatpak
 /src/__pycache__
+.directory
