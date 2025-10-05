@@ -1,6 +1,53 @@
+/*
+Breeze Dark color scheme licensed under the LGPL2.0 or higher available at https://invent.kde.org/plasma/breeze/-/tree/master/colors
+these hex values were obtained by color picker and may be inaccurate
+
+main background: #202326
+section background: #1c1f22
+lines/outlines: #4b4d50
+button fill color: #292c30
+my preferred accent color: #344669
+button clicked accent color: #2e384b
+text color: #fcfcfc
+
+*/
+
+hr {
+  background-color: #4b4d50;
+}
+
+.breeze_button {
+  background-color: #292c30;
+  border-radius: 4px;
+  border: 1.5px solid #4b4d50;
+  color: #fcfcfc !important;
+  text-align: center;
+  padding: 4px 4px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.breeze_button:hover {
+  border-color: #395180;
+}
+
+.breeze_button:focus:hover,
+.breeze_button:active {
+  background-color: #2e384b;
+  border-color: #395180;
+}
+
+footer {
+  background-color: ;
+  
+  border-top: 1.5px solid #4b4d50;
+
+}
+
 body {
-  background: #1a1a1a;
-  color: #e4e4e7;
+  background: #202326;
+  color: #fcfcfc;
+  
 }
 
 /* Link color styling */
@@ -21,16 +68,16 @@ a:focus {
 }
 
 header {
-  background: #2d2d30;
+  background: #292c30;
   width: 100%;
-  color: #ffffff;
+  color: #fcfcfc;
   margin-bottom: 3rem;
-  border-bottom: 2px solid #3f3f46;
+  border-bottom: 2px solid #4b4d50;
 }
 
 /* Header title styling */
 header .fs-4 {
-  color: #f4f4f5;
+  color: #fcfcfc;
 }
 
 header .fs-4:hover {
@@ -75,11 +122,10 @@ div.content-area {
   transform: scale(1.04);
 }
 
-
 .card {
-  background: #27272a;
-  border: 1px solid #3f3f46;
-  color: #e4e4e7;
+  background: #1c1f22;
+  border: 1.5px solid #4b4d50;
+  color: #fcfcfc;
 }
 
 /* RTL support for text alignment */
@@ -100,23 +146,26 @@ html[dir="rtl"] body {
 
 /* Navigation button styling */
 .btn-outline-light {
-  border-color: #60a5fa;
-  color: #60a5fa;
-  transition: all 0.3s ease;
+  border-width: 1.5px;
+  border-color: #4b4d50;
+  color: #fcfcfc;
+  background-color: #292c30;
+  transition: all 0.1s ease;
 }
 
 .btn-outline-light:hover {
-  background-color: #60a5fa;
-  border-color: #60a5fa;
-  color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(96, 165, 250, 0.2);
+  color: #fcfcfc;
+  background-color: #292c30;
+  border-color: #395180;
+  
+  
+  
 }
 
-.btn-outline-light:focus,
-.btn-outline-light:active {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
-  color: #ffffff;
+.btn-outline-light:focus:hover,
+.btn-outline-light:active:hover {
+  color: #fcfcfc;
+  background-color: #2e384b;
+  border-color: #395180;
 }
 
