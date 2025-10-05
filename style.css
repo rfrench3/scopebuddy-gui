@@ -169,3 +169,60 @@ html[dir="rtl"] body {
   border-color: #395180;
 }
 
+
+/* BEGIN THE SCROLLBAR SECTION! */
+
+/* Scrollbar theme (Breeze-dark colors) */
+:root {
+  --bg: #202326;
+  --section: #1c1f22;
+  --outline: #4b4d50;
+  --thumb: #344669;
+  --thumb-active: #2e384b;
+  --thumb-border: #292c30;
+  --track: #1c1f22;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;               /* auto | thin | none */
+  scrollbar-color: var(--thumb) var(--track);
+}
+
+/* WebKit / Blink (Chrome, Edge, Safari) - global */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--track);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(75,77,80,0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--thumb), var(--thumb-active));
+  border-radius: 10px;
+  border: 3px solid var(--thumb-border); /* gives 'padding' between thumb and track */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--thumb-active);
+}
+
+/* corner (where horizontal + vertical meet) */
+::-webkit-scrollbar-corner {
+  background: var(--track);
+}
+
+/* Specific: thinner horizontal scrollbar for the image gallery */
+.image-gallery::-webkit-scrollbar {
+  height: 10px;
+}
+.image-gallery::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid var(--thumb-border);
+}
+
+/* END THE SCROLLBAR SECTION! */

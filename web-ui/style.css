@@ -1,19 +1,34 @@
+/*
+Breeze Dark color scheme licensed under the LGPL2.0 or higher available at https://invent.kde.org/plasma/breeze/-/tree/master/colors
+these hex values were obtained by color picker and may be inaccurate
+
+main background: #202326
+section background: #1c1f22
+lines/outlines: #4b4d50
+button fill color: #292c30
+my preferred accent color: #344669
+button clicked accent color: #2e384b
+text color: #fcfcfc
+*/
+
+
+
 /* Same header styling as main page */
 body {
-  background: #1a1a1a;
-  color: #e4e4e7;
+  background: #202326;
+  color: #fcfcfc;
 }
 
 header {
-  background: #2d2d30;
+  background: #292c30;
   width: 100%;
-  color: #ffffff;
+  color: #fcfcfc;
   margin-bottom: 3rem;
-  border-bottom: 2px solid #3f3f46;
+  border-bottom: 2px solid #4b4d50;
 }
 
 header .fs-4 {
-  color: #f4f4f5;
+  color: #fcfcfc;
   transition: all 0.3s ease;
   margin-left: 15%;
   margin-right: 15%;
@@ -50,8 +65,8 @@ form {
   left: 100%;
   top: 0;
   margin-left: 8px;
-  background: #333;
-  color: #fff;
+  background: #1c1f22;
+  color: #fcfcfc;
   padding: 4px 8px;
   border-radius: 4px;
   white-space: wrap;
@@ -82,40 +97,62 @@ form {
 
 /* Navigation button styling */
 .btn-outline-light {
-  border-color: #60a5fa;
-  color: #60a5fa;
-  transition: all 0.3s ease;
+  border-width: 1.5px;
+  border-color: #4b4d50;
+  color: #fcfcfc;
+  background-color: #292c30;
+  transition: all 0.15s ease;
 }
 
 .btn-outline-light:hover {
-  background-color: #60a5fa;
-  border-color: #60a5fa;
-  color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(96, 165, 250, 0.2);
+  color: #fcfcfc;
+  background-color: #292c30;
+  border-color: #395180;
 }
 
 .btn-outline-light:focus,
 .btn-outline-light:active {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
-  color: #ffffff;
+  color: #fcfcfc;
+  background-color: #2e384b;
+  border-color: #395180;
 }
 /* ---------- */
+
+/* Breeze button used on main site */
+.breeze_button {
+  background-color: #292c30;
+  border-radius: 4px;
+  border: 1.5px solid #4b4d50;
+  color: #fcfcfc !important;
+  text-align: center;
+  padding: 4px 4px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.breeze_button:hover {
+  border-color: #395180;
+}
+
+.breeze_button:focus:hover,
+.breeze_button:active {
+  background-color: #2e384b;
+  border-color: #395180;
+}
 
 
 
 input.form-control, select.form-select {
   background-color: #23232b;
-  color: #e4e4e7;
-  border: 1px solid #3f3f46;
+  color: #fcfcfc;
+  border: 1px solid #4b4d50;
 }
 
 input.form-control:focus, select.form-select:focus {
   background-color: #23232b;
-  color: #fff;
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.15);
+  color: #fcfcfc;
+  border-color: #395180;
+  box-shadow: 0 0 0 0.2rem rgba(57, 81, 128, 0.12);
 }
 
 input.form-control::placeholder {
@@ -124,12 +161,12 @@ input.form-control::placeholder {
 }
 
 input[type="checkbox"].form-check-input {
-  accent-color: #60a5fa;
+  accent-color: #344669;
   background-color: #23232b;
-  border: 1.5px solid #3f3f46;
+  border: 1.5px solid #4b4d50;
 }
 input[type="checkbox"].form-check-input:focus {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid #395180;
   outline-offset: 1px;
 }
 

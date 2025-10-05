@@ -47,7 +47,6 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            
             <p>ScopeBuddy GUI is a graphical interface you can use to easily generate 
               a configuration for environment variables, launch options, and Gamescope.
               Ordinarily, this would require you to understand command-line syntax and 
@@ -66,12 +65,15 @@
             <p><a href="https://github.com/HikariKnight/ScopeBuddy" target="_blank">Scopebuddy</a> 
               is a tool made by HikariKnight that makes it easier to use Gamescope. It allows you to do many things, 
               which includes creating a general Gamescope configuration for all of your games. This GUI does not cover all of its capabilities,
-              but allows for easier usage of its more simple features while preserving any advanced manually-set functions .</p>
+              but allows for easier usage of its more simple features while preserving any advanced manually-set functions.</p>
 
             <p><sub>1. Game launchers installed as flatpak may have difficulties using Gamescope.</sub></p>
           </div>
         </div>
       </div>
+      <a href='https://flathub.org/apps/io.github.rfrench3.scopebuddy-gui'>
+  <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
+</a>
     </section>
     
     <section class="row row-cols-1 g-4 mb-5" id="benefits">
@@ -100,18 +102,20 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <h2>Desktop UI</h2>
-            
-                <li>Open Steam and go to your Library.</li>
-                
-                <li>Right-click the game you want to use with Gamescope and select <strong>Properties</strong>.</li>
-                
-                <li>In the <strong>Launch Options</strong> field, enter either of the following:<br>
-                    <code>scopebuddy -- %command%</code><br>
-                    <code>scb -- %command%</code>
-                </li>
-                
-                <li>This will launch the game using your current ScopeBuddy configuration.</li>
+      <h2>Desktop UI</h2>
+
+  <ul class="mb-3 ps-3">
+        <li>Open Steam and go to your Library.</li>
+
+        <li>Right-click the game you want to use with Gamescope and select <strong>Properties</strong>.</li>
+
+        <li>In the <strong>Launch Options</strong> field, enter either of the following:<br>
+          <code>scopebuddy -- %command%</code><br>
+          <code>scb -- %command%</code>
+        </li>
+
+        <li>This will launch the game using your current ScopeBuddy configuration.</li>
+      </ul>
             <hr>
             <!-- Scrolls horizontally if there isn't enough space -->
             <div class="image-gallery">
@@ -120,25 +124,27 @@
             </div>
             <hr>
             <h2>Big Picture Mode</h2>
-            
-                <li>On the SteamDeck interface (gamescope session), 
-                  using ScopeBuddy results in Gamescope launch arguments being ignored as they would 
-                  otherwise prevent the game from starting; Gamescope cannot be run within itself. 
-                  <span style="color: rgb(255, 88, 88);"><strong>
-                    Enter desktop mode when launching games for gamescope settings to be applied!</strong></span>
-                </li>
-                <br>
-                <li>Navigate to your Library and select the game you want to use with Gamescope.</li>
-                
-                <li>Click on the gear icon (Settings) at the opposite side of the Play button.</li>
-                
-                <li>In the <strong>Launch Options</strong> field, enter either of the following:<br>
-                    <code>scopebuddy -- %command%</code><br>
-                    <code>scb -- %command%</code>
-                </li>
-                
-                <li>This will launch the game using your current ScopeBuddy configuration.</li>
-                <hr>
+
+            <ul class="mb-3 ps-3">
+              <li>On the SteamDeck interface (gamescope session),
+                using ScopeBuddy results in Gamescope launch arguments being ignored as they would
+                otherwise prevent the game from starting; Gamescope cannot be run within itself.
+                <span style="color: rgb(255, 88, 88);"><strong>
+                  Enter desktop mode when launching games for gamescope settings to be applied!</strong></span>
+              </li>
+
+              <li>Navigate to your Library and select the game you want to use with Gamescope.</li>
+
+              <li>Click on the gear icon (Settings) at the opposite side of the Play button.</li>
+
+              <li>In the <strong>Launch Options</strong> field, enter either of the following:<br>
+                  <code>scopebuddy -- %command%</code><br>
+                  <code>scb -- %command%</code>
+              </li>
+
+              <li>This will launch the game using your current ScopeBuddy configuration.</li>
+            </ul>
+            <hr>
                 <div class="image-gallery">
                   <img src="images/BigPicture1.webp" alt="Steam Guide">
                   <img src="images/BigPicture2.webp" alt="Steam Guide">
@@ -147,7 +153,7 @@
                 <hr>
                 
 
-            </p>
+            
           </div>
         </div>
       </div>
@@ -167,12 +173,14 @@
             <p>
               To apply scopebuddy to a game in Lutris:
             </p>
-            <li>Right click on the game, click on Configure</li>
-            <li>Click the System Options tab</li>
-            <li>Enable the "Advanced" toggle in the top right of the window</li>
-            <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable key <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopoebuddy GUI when you select a file)</li>
-            <li>Scroll to the "Game execution" section, in the Command Prefix line, enter <code>scb -- </code>,
-               then click "Save" in the top right of the window.</li>
+            <ul class="mb-3 ps-3">
+              <li>Right click on the game, click on Configure</li>
+              <li>Click the System Options tab</li>
+              <li>Enable the "Advanced" toggle in the top right of the window</li>
+              <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable key <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopebuddy GUI when you select a file)</li>
+              <li>Scroll to the "Game execution" section, in the Command Prefix line, enter <code>scb -- </code>,
+                 then click "Save" in the top right of the window.</li>
+            </ul>
 
               <hr>
               <div class="image-gallery">
@@ -194,10 +202,12 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <li>Click on the game's settings button</li>
-            <li>In the settings menu, click the Advanced tab</li>
-            <li>Scroll down to Wrapper command, put <code>scb</code> as the wrapper and <code> -- </code> as its arguments (ignore the warning, it is irrelevant in this case)</li>
-            <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopoebuddy GUI when you select a file)</li>
+            <ul class="mb-3 ps-3">
+              <li>Click on the game's settings button</li>
+              <li>In the settings menu, click the Advanced tab</li>
+              <li>Scroll down to Wrapper command, put <code>scb</code> as the wrapper and <code> -- </code> as its arguments (ignore the warning, it is irrelevant in this case)</li>
+              <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopebuddy GUI when you select a file)</li>
+            </ul>
             <hr>
               <div class="image-gallery">
                 <img src="images/heroic1.webp" alt="heroic Guide" />
@@ -252,8 +262,10 @@
             <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. 
               The web-based version uses JavaScript. The app itself is built from source with the following commands 
               (run inside of a folder with the yml):</p>
-            <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
-            <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
+            <ul class="mb-3">
+              <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
+              <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
+            </ul>
             <br>
             <p>If you are interested in making a flatpak app with Qt and Python, or a website with bootstrap similar to this one, 
               my GitHub has templates of both you can use! Additionally, I <strong>strongly</strong> recommend developing Qt/KDE applications inside of 
