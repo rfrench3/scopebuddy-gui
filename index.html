@@ -54,13 +54,8 @@
               With this tool, all you need to do is click on the settings you want!
 
               To activate these settings in any game you have<sup>1</sup>, all you need to do is type <code>scb -- %command%</code> into the 
-              Launch Options box for that game! If you do not wish to install scopebuddy and scopebuddy-gui, 
+              Launch Options box for that game! (syntax for various launchers are found below) If you do not wish to install scopebuddy and scopebuddy-gui, 
               but still want a Gamescope config generated, there is a web-based version <a href="web-ui/index.html">here</a>.</p>
-
-            <p>Scopebuddy itself is extremely powerful, and this GUI does not currently aim to cover all of its power – it 
-              is safe to use alongside any such advanced configuration, however.</p>
-            <br>
-            <p>To be useful, ScopeBuddy GUI largely depends on the user having Gamescope and/or ScopeBuddy installed:</p>
 
             <p><a href="https://github.com/ValveSoftware/gamescope" target="_blank">Gamescope</a> 
               is a micro-compositor made by ValveSoftware that is used to simplify running games and other software. 
@@ -69,9 +64,10 @@
 
             <p><a href="https://github.com/HikariKnight/ScopeBuddy" target="_blank">Scopebuddy</a> 
               is a tool made by HikariKnight that makes it easier to use Gamescope. It allows you to do many things, 
-              which includes creating a general Gamescope configuration for all of your games.</p>
+              which includes creating a general Gamescope configuration for all of your games. This GUI does not cover all of its capabilities,
+              but allows for easier usage of its more simple features while preserving any advanced manually-set functions .</p>
 
-            <p><sub>1. ScopeBuddy works best with games installed through Steam, but is also able to be used elsewhere.</sub></p>
+            <p><sub>1. Game launchers installed as flatpak may have difficulties using Gamescope.</sub></p>
           </div>
         </div>
       </div>
@@ -163,23 +159,17 @@
         <div class="card h-100">
           <div class="card-body">
             <p>
-              My recommendation is to use the built-in configuration tools within Lutris, 
-              as all important features are present and scopebuddy currently does not easily work with every game run using Lutris.
-            </p>
-            <p>
-              For playing games on the Epic Game Store, Bazzite recommends using the 
+              For playing games on the Epic Games Store, Bazzite recommends using the 
               <a href="https://heroicgameslauncher.com/" target="_blank" rel="noopener noreferrer">Heroic Games Launcher</a> 
-              instead of trying to run the Epic Games Store on Linux.
+              instead of trying to run the Epic Games Store through Lutris or similar alternatives.
             </p>
             <p>
-              It is possible to use scopebuddy with Lutris,
-              but games that pop-up a launcher before the game window may launch the game outside of scopebuddy. 
               To apply scopebuddy to a game in Lutris:
             </p>
-
             <li>Right click on the game, click on Configure</li>
             <li>Click the System Options tab</li>
             <li>Enable the "Advanced" toggle in the top right of the window</li>
+            <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable key <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopoebuddy GUI when you select a file)</li>
             <li>Scroll to the "Game execution" section, in the Command Prefix line, enter <code>scb -- </code>,
                then click "Save" in the top right of the window.</li>
 
@@ -203,11 +193,18 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>I recommend you use the built-in Gamescope configuration provided by Heroic.</p>
-            <p>
-              A guide for Heroic has not been created. If you launch Heroic itself with ScopeBuddy, 
-              games launched in Heroic should also launch in ScopeBuddy.
-            </p>
+            <li>Click on the game's settings button</li>
+            <li>In the settings menu, click the Advanced tab</li>
+            <li>Scroll down to Wrapper command, put <code>scb</code> as the wrapper and <code> -- </code> as its arguments (ignore the warning, it is irrelevant in this case)</li>
+            <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopoebuddy GUI when you select a file)</li>
+            <hr>
+              <div class="image-gallery">
+                <img src="images/heroic1.webp" alt="heroic Guide" />
+                <img src="images/heroic2.webp" alt="heroic Guide" />
+                <img src="images/heroic3.webp" alt="heroic Guide" />
+                <img src="images/heroic4.webp" alt="heroic Guide" />
+              </div>
+            <hr>
           </div>
         </div>
       </div>
@@ -231,9 +228,15 @@
               you can also check the in-game settings to see if they can solve the problem! For example, 
               I have noticed that Overwatch 2 in Gamescope works best when it is run in borderless window mode.</p>
 
+            <h2>MangoHUD</h2>
+            <p>When using MangoHUD with gamescope, make sure to use the built-in support that gamescope has and 
+              not the traditional <code>mangohud</code> in launch options. 
+              Scopebuddy GUI will attempt to detect when you apply gamescope and normal MangoHUD and warn you, 
+              so heed its warning!</p>
+
             <br>
 
-            <p>If you have an issue, especially one that is easy to encounter, post it in the GitHub!</p>
+            <p>If you have an issue, especially one that is easy to encounter, post it in the <a rel="stylesheet" href="https://github.com/rfrench3/scopebuddy-gui/issues" target="_blank">Github</a>!</p>
           </div>
         </div>
       </div>
@@ -252,7 +255,8 @@
             <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
             <br>
             <p>If you are interested in making a flatpak app with Qt and Python, or a website with bootstrap similar to this one, 
-              my GitHub has templates of both you can use!</p>
+              my GitHub has templates of both you can use! Additionally, I <strong>strongly</strong> recommend developing Qt/KDE applications inside of 
+              <a href="https://blues.win/posts/kde-dev-bazzite/" target="_blank">this distrobox</a> as it greatly simplifies development!</p>
           </div>
         </div>
       </div>
@@ -280,8 +284,11 @@
     </div>
   </div>
   
-  <footer class="bg-dark border-top py-4 mt-5 text-center">
-    <a href="#" class="btn btn-outline-light btn-sm">Return to top</a>
+  <footer class="bg-dark border-top py-4 mt-5">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap">
+      <span>This website mimics the <a href="https://invent.kde.org/plasma/breeze/-/tree/master/colors" target="_blank">Breeze-dark</a> color scheme from KDE, which is licensed under the LGPL2.0 or later.</span>
+      <a href="#" class="btn btn-outline-light btn-sm mx-auto">Return to top</a>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

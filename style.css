@@ -62,7 +62,13 @@ div.content-area {
   margin-bottom: 12px;
   display: inline-block;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#modalImage {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 12px;
 }
 
 .image-gallery img:hover {
