@@ -21,11 +21,9 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
 '''
 - apply button should be disabled unless there are changes, at which point it should be enabled
     - shared state.py for cross-file communication
-    - each page needs:
-        - handle_tab_leave
-        - has_unsaved_changes
+    - each page needs to know when its current state doesn't match the saved state and mark that in shared_data.unsaved_changes
 
-
+- proper error detection and handling when saving files
 
 - revamp file creator and locator to include non-AppID folders
 - put in place necessary work for non-English translations
