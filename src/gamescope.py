@@ -10,9 +10,11 @@ from PySide6.QtGui import QAction
 
 from file_manager import ConfigFile
 import file_manager as fman
+import shared_data
 
 class GamescopeLogic:
     def __init__(self, file:ConfigFile, parent_widget:QWidget) -> None:
+            self.initialized = False
             self.parent_logic = None  # Will be set by main.py
             self.file = file  # Store the file path
             self.parent_widget = parent_widget
@@ -59,7 +61,22 @@ class GamescopeLogic:
             # Initialize all widgets using the mapping TODO: re-implement QIntValidator
             for object_name, (widget_class, arg) in self.widget_mapping.items():
                 widget = parent_widget.findChild(widget_class, object_name)
+
+                if isinstance(widget, QLineEdit):
+                    widget.textChanged.connect(self.data_changed)
+                elif isinstance(widget, QCheckBox):
+                    widget.stateChanged.connect(self.data_changed)
+                elif isinstance(widget, QDoubleSpinBox):
+                    widget.valueChanged.connect(self.data_changed)
+                elif isinstance(widget, QComboBox):
+                    widget.currentIndexChanged.connect(self.data_changed)
+                elif object_name == 'checkBox_globalGamescope':
+                    widget.stateChanged.connect(self.data_changed) #type:ignore
+
                 setattr(self, object_name, widget)
+
+            self.checkBox_globalGamescope:QCheckBox
+
 
             self.apply_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
             self.help_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Help) # type: ignore
@@ -135,11 +152,35 @@ class GamescopeLogic:
             self.action_60.triggered.connect(lambda: self.lineEdit_fps.setText('60')) # type: ignore
             self.action_120.triggered.connect(lambda: self.lineEdit_fps.setText('120')) # type: ignore
 
+            
+            self.saved_data: list = [self.file.print_gamescope_line(), self.file.check_for_exact_line("#GGS=T#")]
+            self.apply_button.setEnabled(False)
+            self.initialized = True
+
+    def data_changed(self) -> None:
+        """When the user has inputted data, compare it to the saved data
+          and enable/disable the apply button based on that."""
+        if not self.initialized:
+            return
+
+        if (
+            self.saved_data == [self.print_new_config(), self.checkBox_globalGamescope.isChecked()] #type:ignore
+            ):
+            self.apply_button.setEnabled(False)
+            shared_data.unsaved_changes = False
+            return
+
+        shared_data.unsaved_changes = True
+        self.apply_button.setEnabled(True)
+
     def load_data(self, data: str) -> None:
         """Loads the data from the file into the UI elements."""
 
         if self.file.print_path() == fman.GLOBAL_CONFIG:
             self.widget_globalGamescope.hide() #type:ignore
+
+        if self.file.check_for_exact_line("#SCBGUI#global_gamescope=True"):
+            self.checkBox_globalGamescope.setChecked(True)#type:ignore
         
 
         # Split the data string into arguments
@@ -257,7 +298,7 @@ class GamescopeLogic:
         
         regular_mangohud:bool = True if (
             self.file.check_for_exact_line("export mangohud") or 
-            self.file.check_for_exact_line("export MANGOHUD")
+            self.file.check_for_exact_line("export MANGOHUD=1")
             ) else False
         
         # determines whether the file will be saved after all error dialogs
@@ -283,15 +324,15 @@ class GamescopeLogic:
             result = fman.load_message_box(
                 parent_window,
                 "Warning!",
-                ("You have specified a width (-w or -W) without a corresponding height (-h or -H)!\n"
-                 "Gamescope will not launch unless only height or both are specified."),
+                (
+                    "You have specified a width (-w or -W) without a corresponding height (-h or -H)!\n"
+                    "Gamescope will not launch unless only height or both are specified."
+                 ),
                 QMessageBox.Icon.Warning,
                 QMessageBox.StandardButton.Cancel | QMessageBox.StandardButton.Ignore
             )
             if result != QMessageBox.StandardButton.Ignore:
                 do_not_save = True
-
-            
 
         if not gamescope_active:
             fman.load_message_box(
