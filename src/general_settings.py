@@ -81,7 +81,8 @@ class GeneralSettingsLogic:
 
 
         if self.file.print_displayname() != self.display_name.text():
-            self.file.edit_displayname(self.display_name.text())
+            self.data['name'] = self.display_name.text()
+            self.file.edit_displayname(self.data['name'])
             #TODO: update file selector screen with new displayname 
 
         # Update all elements that don't get their own function at the same time
@@ -142,6 +143,7 @@ class GeneralSettingsLogic:
         self.file.edit_exact_lines(list_current,list_new)
         
         self.apply_button.setDisabled(True)
+        shared_data.unsaved_changes = False
         return False
             
 
