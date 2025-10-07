@@ -162,7 +162,6 @@ class ConfigFile:
 
         for line in lines:
             if line.startswith(r'command+='):
-                print("LINE DETECTED")
                 match = search(r"command\+='([^']*)'", line)
                 if match:
                     return match.group(1)
@@ -342,7 +341,8 @@ class ConfigFile:
     def edit_exact_lines(self,start_with:list[str],new_lines:list[str]) -> None:
         """Checks for any lines that start with the start_with string, 
         replaces that portion with the string in the 2nd list's same index.\n
-        Edit only one line by using two lists with one entry."""
+        Edit only one line by using two lists with one entry.
+        If a start_with string is empty or not found, append the new line to the end of the file."""
         if len(start_with) != len(new_lines):
             raise ValueError
         
@@ -357,6 +357,9 @@ class ConfigFile:
         for j, start_str in enumerate(start_with):
             found = False
             for i, line in enumerate(lines):
+                if start_str == '':
+                    break # empty start_str means new line
+
                 if line.startswith(start_str):
                     # Preserve any data after the start_str portion, such as comments left by the user
                     remaining_data = line[len(start_str):]
