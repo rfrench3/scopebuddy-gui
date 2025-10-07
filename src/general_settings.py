@@ -16,18 +16,11 @@ class GeneralSettingsLogic:
             self.scb_auto_flags = parent_widget.findChild(QCheckBox, 'scb_auto_flags')  # type: ignore
             self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
             self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
-            
-            
-
-
-
 
             self.apply_button.clicked.connect(self.save_data)
     
             # Load lines from the file
             self.load_data()
-
-            
 
             self.data = {
                 'name': self.display_name.text(),
@@ -142,14 +135,6 @@ class GeneralSettingsLogic:
 
         self.file.edit_exact_lines(list_current,list_new)
         
-        parent_window = self.parent_widget.window() if self.parent_widget else None
-        fman.load_message_box(
-            parent_window,
-            "Success!",
-            "General settings saved!",
-            QMessageBox.Icon.Information,
-            QMessageBox.StandardButton.Ok
-        )
         self.apply_button.setDisabled(True)
         return False
             
