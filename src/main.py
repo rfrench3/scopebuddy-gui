@@ -17,8 +17,12 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
     which could be the default scb.conf or the game-specific confs in AppID.
 '''
 
-#TODO: Loading and unloading UI elements doesn't seem to free memory. 
-# Not a major problem given how lightweight this app is, but figure out why for future projects.
+#TODO: SCOPE OF UPDATE:
+'''
+- apply button should be disabled unless there are changes, at which point it should be enabled
+- revamp file creator and locator to include non-AppID folders
+- put in place necessary work for non-English translations
+'''
 
 import sys
 import os
@@ -148,6 +152,7 @@ class ApplicationLogic:
         self.status_button.clicked.connect(self.unload_selected_file)
 
         self.statusBar.addWidget(self.status_button)  # Left side
+        
         self.statusBar.addPermanentWidget(self.status_label)  # Right side
         
 
