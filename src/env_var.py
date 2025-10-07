@@ -5,11 +5,14 @@ sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 from PySide6.QtWidgets import QToolButton, QLineEdit, QWidget, QDialogButtonBox, QMessageBox
 import file_manager as fman
 from file_manager import ConfigFile
+import shared_data
 
 entry:str = fman.ui_env_vars_entry
 
 class EnvVarLogic:
     def __init__(self, file:ConfigFile, parent_widget=None) -> None:
+            self.initialized = False
+
             self.parent_logic = None  # Will be set by main.py
             self.entries = []  # Store references to all entry widgets
             self.file = file
@@ -30,10 +33,34 @@ class EnvVarLogic:
             self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Environment_variables"))
 
             # Load lines from the file
+            
             self.load_data()
+            
 
             # Start the field with one blank entry
             self.new_entry()
+
+            # checks against saved_data should only begin once everything is initialized
+            self.saved_data:list[str] = self.file.print_export_lines()
+
+            self.apply_button.setEnabled(False)
+            self.initialized = True
+
+    def data_changed(self) -> None:
+        """When the user has inputted data, compare it to the saved data
+          and enable/disable the apply button based on that."""
+        if not self.initialized:
+            return
+
+        if (
+            self.saved_data == self.return_env_vars_list()
+            ):
+            self.apply_button.setEnabled(False)
+            shared_data.unsaved_changes = False
+            return
+
+        shared_data.unsaved_changes = True
+        self.apply_button.setEnabled(True)
 
     def load_data(self) -> None:
         """Loads the data from the file into the UI elements."""
@@ -77,21 +104,13 @@ class EnvVarLogic:
             )
             if result != QMessageBox.StandardButton.Ignore:
                 return True
+            
+        self.apply_button.setEnabled(False)
 
         self.file.edit_export_lines(data)
 
-        display_new_vars = " ".join(self.return_env_vars_list()) + r" %command%"
-        if display_new_vars != r" %command%":
-            additional_message = f'To use them directly in Steam:\n\n{display_new_vars}'
-        else:
-            additional_message = ''
-        fman.load_message_box(
-            parent_window,
-            "Success!",
-            f"New Environment Variables saved! {additional_message}",
-            QMessageBox.Icon.Information,
-            QMessageBox.StandardButton.Ok
-        )
+        self.saved_data:list[str] = self.file.print_export_lines()
+        shared_data.unsaved_changes = False
         return False
 
 
@@ -104,6 +123,9 @@ class EnvVarLogic:
         # Find and store references to the widgets
         variable_line = new_entry.findChild(QLineEdit, 'variable_line')
         delete_entry = new_entry.findChild(QToolButton, 'delete_entry')
+
+        variable_line.textChanged.connect(self.data_changed) #type:ignore
+        #delete_entry.clicked.connect(self.data_changed) #type:ignore
         
         # Put file's variables into entry
         if data:
@@ -132,9 +154,11 @@ class EnvVarLogic:
         
         # Remove from our list
         self.entries.remove(entry_data)
+        self.data_changed()
 
     def return_env_vars_list(self) -> list[str]:
-        """Outputs a list of environment variables input by the user."""
+        """Outputs a list of environment variables input by the user.
+        Ignores entries that are blank, and strips beginning/ending spaces."""
         vars_list = []
 
         for entry_data in self.entries:

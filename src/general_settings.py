@@ -5,6 +5,8 @@ import shared_data
 
 class GeneralSettingsLogic:
     def __init__(self, file:ConfigFile, parent_widget=None) -> None:
+            self.initialized = False # ensure certain functions don't run until __init__ is finished
+
             self.parent_logic = None  # Will be set by main.py
             self.entries = []  # Store references to all entry widgets
             self.file = file
@@ -33,10 +35,14 @@ class GeneralSettingsLogic:
             self.scb_auto_flags.stateChanged.connect(self.data_changed)
 
             self.apply_button.setDisabled(True)
+            self.initialized = True
 
     def data_changed(self) -> None:
         """When the user has inputted data, compare it to the saved data
           and enable/disable the apply button based on that."""
+
+        if not self.initialized:
+            return
 
         if (
             self.data['name'] == self.display_name.text() and
