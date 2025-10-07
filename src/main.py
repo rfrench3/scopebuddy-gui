@@ -20,6 +20,13 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
 #TODO: SCOPE OF UPDATE:
 '''
 - apply button should be disabled unless there are changes, at which point it should be enabled
+    - shared state.py for cross-file communication
+    - each page needs:
+        - handle_tab_leave
+        - has_unsaved_changes
+
+
+
 - revamp file creator and locator to include non-AppID folders
 - put in place necessary work for non-English translations
 '''
@@ -42,6 +49,8 @@ from env_var import EnvVarLogic
 from gamescope import GamescopeLogic
 from general_settings import GeneralSettingsLogic
 from launch_options import LaunchOptionsLogic
+
+import shared_data
 
 
 DATA_DIR = fman.DATA_DIR
@@ -82,6 +91,13 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         """This ensures that attempting to close the window while a file is loaded results in a dialog,
         prompting the user to either save changes, discard them, or not close the app."""
+
+        
+        if not shared_data.unsaved_changes: 
+            event.accept() # there are no unsaved changes
+            return 
+
+        #TODO: make sure this is still needed by end of update
         global selected_config
         if selected_config is not None and self.logic:
             confirmation = self.logic.exit_dialog()
@@ -139,6 +155,12 @@ class ApplicationLogic:
         layout = self.large_logo.layout()
         layout.addWidget(svg_widget)
 
+
+
+        # Track last index and intercept changes when there are unsaved changes
+        self._last_tab_index = self.mainFileEdit.currentIndex()
+        self.mainFileEdit.currentChanged.connect(self._on_tab_changed)
+
     
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
@@ -183,6 +205,22 @@ class ApplicationLogic:
             item.setToolTip(f"File: {os.path.basename(filename)}")
             self.file_list.addItem(item)
         
+    def _on_tab_changed(self) -> None:
+        """Prompt the user if there are unsaved changes. Revert to the previous
+        tab if the user cancels or if saving fails."""
+        current_index: int = self.mainFileEdit.currentIndex()
+        
+        if not shared_data.unsaved_changes:
+            return
+        
+        # there are unsaved changes
+
+        fman.load_message_box(
+            self.window,
+            "Apply Settings",
+            "The current page has unsaved changes."
+            )
+        
     def open_folder_clicked(self):
         """Shows a popup window with instructions for opening the Scopebuddy folder."""
         fman.load_message_box(
@@ -202,6 +240,12 @@ class ApplicationLogic:
         """When the user attempts to close the window or exit the file,
         this popup ensures they intended to do so. 
         This dialog is heavily inspired by KDE's System Settings."""
+
+        #TODO: Temporary fix, "discard changes" because there are no changes
+        if not shared_data.unsaved_changes:
+            return QMessageBox.StandardButton.Discard
+
+
         result = fman.load_message_box(
             self.window,
             "Exit?",
