@@ -75,9 +75,6 @@ class GamescopeLogic:
 
                 setattr(self, object_name, widget)
 
-            #self.checkBox_globalGamescope = parent_widget.findChild(QCheckBox, 'checkBox_globalGamescope')  # type: ignore
-
-
             self.apply_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
             self.help_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Help) # type: ignore
             self.reset_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Reset) # type: ignore
@@ -168,7 +165,7 @@ class GamescopeLogic:
 
         if (
             self.file.gamescope_data['args'] == self.return_new_config() and
-            self.file.gamescope_data['use_global'] == self.checkBox_globalGamescope.isChecked() #type:ignore
+            self.file.gamescope_data['active'] != self.checkBox_globalGamescope.isChecked() #type:ignore
             ):
             self.apply_button.setEnabled(False)
             shared_data.unsaved_changes = False
@@ -184,7 +181,7 @@ class GamescopeLogic:
         if self.file.path_to_file == fman.GLOBAL_CONFIG:
             self.widget_globalGamescope.hide() #type:ignore
 
-        if self.file.gamescope_data['use_global']:
+        if not self.file.gamescope_data['active']:
             self.checkBox_globalGamescope.setChecked(True)#type:ignore
         
 
@@ -276,11 +273,7 @@ class GamescopeLogic:
         """Does a few checks to ensure certain known incompatibilities are explained to the user,
         then saves to the config file."""
 
-        new_data = {}
-
         parent_window = self.parent_widget.window() if self.parent_widget else None
-
-        new_data['use_global'] = True if self.checkBox_globalGamescope.isChecked() else False
 
         new_args = self.return_new_config()
 
@@ -342,10 +335,8 @@ class GamescopeLogic:
             
         if do_not_save:
             return True
-
-        if new_args.strip() != self.file.gamescope_data['args'].strip():            
-            new_data['args'] = new_args
-            self.file.update_gamescope_data(new_data)
+    
+        self.file.edit_export_lines_gamescope(new_args, (not self.checkBox_globalGamescope.isChecked())) #type:ignore
         
         return False
    

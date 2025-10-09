@@ -146,14 +146,10 @@ class ConfigFile:
     def return_gamescope_data(self) -> dict:
         """return dictionary about the gamescope line's status.\n
         args: gamescope args\n
-        active:  is a gamescope line active?\n
-        present: is a gamescope line present?\n
-        use_global: is #SCBGUI#GLOBAL_GAMESCOPE=1 present?"""
+        active:  is a gamescope line active?"""
         data = {
             'args': '',
-            'active': False,
-            'present': False,
-            'use_global': False
+            'active': False
         }
 
         with open(self.path_to_file, 'r') as file:
@@ -168,13 +164,8 @@ class ConfigFile:
                 # return args
                 match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)                
                 data['args'] = match.group(1) if match else ''
-                data['present'] = True
                 if line.startswith('SCB_GAMESCOPE_ARGS='):
                     data['active'] = True
- 
-            #SCBGUI#GLOBAL_GAMESCOPE=0 and not being present are the same thing
-            if line.startswith('#SCBGUI#GLOBAL_GAMESCOPE=1'):
-                data['use_global'] = True #
 
         return data
 
@@ -361,16 +352,99 @@ class ConfigFile:
         self.gamescope_line: str = self.return_gamescope_data()['args']
         return
 
+    def edit_export_lines_gamescope(self, arguments:str, active:bool) -> None:
+        """Changes the gamescope line in the file to the newly listed ones by commenting out
+        or uncommenting in lines, only adding new lines when necessary.
+        (made for export lines, but works better for the gamescope line than my other efforts)"""
+
+        new_args = [arguments]
+
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
+
+        # disable all oldlines
+        for i, oldline in enumerate(lines):
+            if oldline.startswith("SCB_GAMESCOPE_ARGS="):
+                lines[i] = f"#{oldline}" 
+        
+        # re-enable any oldlines that match a newline
+        for i, oldline in enumerate(lines):
+            if oldline.startswith("#SCB_GAMESCOPE_ARGS=") or oldline.startswith("#SCBGUI#SCB_GAMESCOPE_ARGS="):
+                for args in new_args[:]:
+                    if oldline.startswith(f'SCB_GAMESCOPE_ARGS="{args}"'): # accounts for comments
+                        new_args.remove(args)
+                        lines[i] = oldline[1:]
+                        break
+
+
+        # append any newlines not in oldlines to the file
+        if new_args:
+            
+            for i, line in enumerate(lines[:]):
+                if i == 0:
+                    continue
+                            
+                prev_line_is_export:bool = (lines[i-1].startswith("SCB_GAMESCOPE_ARGS=") or 
+                                            lines[i-1].startswith("#SCB_GAMESCOPE_ARGS=") or 
+                                            lines[i-1].startswith("#SCBGUI#SCB_GAMESCOPE_ARGS=")
+                                            )
+                curr_line_is_not_export:bool = not (line.startswith("SCB_GAMESCOPE_ARGS=") or 
+                                                    line.startswith("#SCB_GAMESCOPE_ARGS=") or 
+                                                    line.startswith("#SCBGUI#SCB_GAMESCOPE_ARGS=")
+                                                    )
+
+                if prev_line_is_export and curr_line_is_not_export:
+                    
+                    for export in new_args[::-1]:
+                        lines.insert(i, f'SCB_GAMESCOPE_ARGS="{export}"\n')
+                        new_args.remove(export)
+                    
+                    break
+        
+
+        # append new exports to the end of the file, because none were found within the file
+        if new_args:
+            
+            append_lines = [
+                f'SCB_GAMESCOPE_ARGS="{line}\n"'
+                for line in new_args
+            ]
+
+            lines.extend(append_lines)
+
+        if not active:
+            for i, line in enumerate(lines):
+                if line.startswith("SCB_GAMESCOPE_ARGS="):
+                    lines[i] = f'#{line}'
+                    break
+
+        # remove duplicate lines
+        for i, line in enumerate(lines):
+            if i == 0:
+                continue
+            if lines[i] == lines[i-1]:
+                lines.pop(i)
+
+
+
+        with open(self.path_to_file,'w') as file:
+            file.writelines(lines)
+
+        self.gamescope_data = self.return_gamescope_data()
+
     def update_gamescope_data(self, data:dict) -> None:
         """Update information about the gamescope line's status.\n
         args: str, gamescope args\n
-        use_global: bool, should #SCBGUI#GLOBAL_GAMESCOPE=1 be present? (and what comes with that)"""
+        inactive: bool, should gamescope line be commented out"""
 
         # args to go in gamescope line
         args:str = data['args']
 
         # if true, no gamescope line in the file
-        disable_gamescope:bool = data['use_global']
+        disable_gamescope:bool = data['inactive']
 
         with open(self.path_to_file, 'r') as file:
             lines = file.readlines()
@@ -378,14 +452,6 @@ class ConfigFile:
             lines[-1] += '\n'
 
         new_line = f'SCB_GAMESCOPE_ARGS="{args}"\n'
-
-
-        if disable_gamescope:
-            if not self.check_for_exact_line("#SCBGUI#GLOBAL_GAMESCOPE=1"):
-                lines = self.edit_exact_lines(["#SCBGUI#GLOBAL_GAMESCOPE=0"],["#SCBGUI#GLOBAL_GAMESCOPE=1"], lines)        
-        else:
-            if not self.check_for_exact_line("#SCBGUI#GLOBAL_GAMESCOPE=0"):
-                lines = self.edit_exact_lines(["#SCBGUI#GLOBAL_GAMESCOPE=1"],["#SCBGUI#GLOBAL_GAMESCOPE=0"], lines)
 
         backwards = lines[::-1] #type:ignore
 
@@ -567,17 +633,6 @@ class ScopebuddyDirectory:
                     new_file.edit_displayname(displayname)
                 else:
                     new_file.edit_displayname(filename)
-                
-                #DEPRACATED new_file.create_new_gamescope_line()
-
-                new_gamescope = {
-                    'args': '',
-                    'use_global': False
-                    }
-
-
-
-                new_file.update_gamescope_data(new_gamescope)
 
                 return False
 
