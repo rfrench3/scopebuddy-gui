@@ -157,6 +157,20 @@ class GamescopeLogic:
             self.apply_button.setEnabled(False)
             self.initialized = True
 
+    
+     
+    
+
+
+    
+
+    
+
+    
+    #######################
+    # DATA SAVING/LOADING #
+    #######################
+
     def data_changed(self) -> None:
         """When the user has inputted data, compare it to the saved data
           and enable/disable the apply button based on that."""
@@ -164,7 +178,7 @@ class GamescopeLogic:
             return
 
         if (
-            self.saved_data == [self.print_new_config(), self.checkBox_globalGamescope.isChecked()] #type:ignore
+            self.saved_data == [self.return_new_config(), self.checkBox_globalGamescope.isChecked()] #type:ignore
             ):
             self.apply_button.setEnabled(False)
             shared_data.unsaved_changes = False
@@ -172,6 +186,7 @@ class GamescopeLogic:
 
         shared_data.unsaved_changes = True
         self.apply_button.setEnabled(True)
+
 
     def load_data(self, data: str) -> None:
         """Loads the data from the file into the UI elements."""
@@ -288,7 +303,7 @@ class GamescopeLogic:
 
         
 
-        new_config = self.print_new_config()
+        new_config = self.return_new_config()
 
         # Ensure user is warned if they are combining regular mangohud with gamescope
         gamescope_active:bool = False if (
@@ -356,13 +371,22 @@ class GamescopeLogic:
             "Success!",
             ("New Gamescope settings saved!\n"
             "Your active Gamescope flags are:\n\n"
-            f"gamescope {self.print_new_config()} -- %command%\n\n"
+            f"gamescope {self.return_new_config()} -- %command%\n\n"
             "(you can copy-paste that into Steam to use Gamescope directly!)"),
             QMessageBox.Icon.Information,
             QMessageBox.StandardButton.Ok
         )
         return False
-        
+   
+    ######################
+    # INTERFACE CHANGING #
+    ######################
+
+    def reset_data(self) -> None:
+        """Empties all input fields. Then, loads data from file into those input fields."""
+        self.clear_data()
+        self.load_data(self.file.print_gamescope_line())
+
     def clear_data(self):
         """Empties all input fields."""
         for object_name, (widget_class, arg) in self.widget_mapping.items():
@@ -379,11 +403,6 @@ class GamescopeLogic:
                 else:
                     raise RuntimeError # this should never happen
 
-
-    def reset_data(self) -> None:
-        """Empties all input fields. Then, loads data from file into those input fields."""
-        self.clear_data()
-        self.load_data(self.file.print_gamescope_line())
 
     def handle_menu_renderedResolution_1(self):
         #print("Set rendered resolution to 1920x1080")
@@ -411,7 +430,12 @@ class GamescopeLogic:
         self.lineEdit_oWidth.setText('3840') # type: ignore
         self.lineEdit_oHeight.setText('2160') # type: ignore
 
-    def print_new_config(self) -> str: #output a new config string based on the user input
+    ##################
+    # INTERNAL LOGIC #
+    ##################
+
+    def return_new_config(self) -> str: 
+        """output a new config string based on the user input"""
         self.config_list = []
 
         def apply_lineEdit_input(lineEdit, arg):
@@ -458,4 +482,3 @@ class GamescopeLogic:
         print(generated_config.strip())
 
         return generated_config.strip()
-

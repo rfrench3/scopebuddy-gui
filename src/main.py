@@ -23,6 +23,9 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
     - shared state.py for cross-file communication
     - each page needs to know when its current state doesn't match the saved state and mark that in shared_data.unsaved_changes
 
+- make the global gamescope save properly
+    - probably needs a new function in file_manager
+
 - proper error detection and handling when saving files
 
 - revamp file creator and locator to include non-AppID folders

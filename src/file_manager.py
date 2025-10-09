@@ -95,7 +95,7 @@ class ConfigFile:
         self.filename: str = os.path.basename(self.path_to_file)
         self.displayname: str = self.print_displayname()
         self.export_lines: list[str] = self.print_export_lines()
-        self.gamescope_line: str = self.print_gamescope_line()
+        self.gamescope_line: str = self.print_gamescope_line()[0]
         self.launch_options: str = self.print_launch_options()
 
     # DATA OUTPUT
@@ -143,17 +143,28 @@ class ConfigFile:
                 export_lines.append(line[7:-1])
         return export_lines
 
-    def print_gamescope_line(self) -> str:
-        """Returns the stored gamescope launch arguments as a string."""
+    def print_gamescope_line(self) -> tuple[str,bool]:
+        """Returns the stored gamescope launch arguments as a tuple; arguments, global_active bool.
+        global_active determines if #SCBGUI#GLOBAL_GAMESCOPE=1 is present."""
         with open(self.path_to_file, 'r') as file:
             lines = file.readlines()
 
+        match = None
+        global_active = False
         for line in lines:
             if line.startswith('SCB_GAMESCOPE_ARGS='):
                 match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)
-                if match:
-                    return match.group(1)
-        return 'No gamescope line'
+                
+            elif not global_active and line.startswith('#SCBGUI#GLOBAL_GAMESCOPE=1'):
+                global_active = True # GLOBAL_GAMESCOPE=0 and not being present are the same thing
+
+            if match and global_active:
+                break
+            
+        if match:
+            return (match.group(1),global_active)
+        else:
+            return ('',global_active)
     
     def print_launch_options(self) -> str:
         """Returns the stored launch options as a string."""
@@ -299,7 +310,7 @@ class ConfigFile:
                 # Write the modified lines back to the file
                 with open(self.path_to_file, 'w') as file:
                     file.writelines(lines)
-                self.gamescope_line: str = self.print_gamescope_line()
+                self.gamescope_line: str = self.print_gamescope_line()[0]
                 return
     
         # no match was found, so create the necessary line at the end of the file
@@ -307,7 +318,7 @@ class ConfigFile:
             if lines and not lines[-1].endswith('\n'):
                 file.write('\n')
             file.write('SCB_GAMESCOPE_ARGS=""\n')
-        self.gamescope_line: str = self.print_gamescope_line()
+        self.gamescope_line: str = self.print_gamescope_line()[0]
         return
 
     def edit_gamescope_line(self, new_flags:str) -> None:
@@ -329,14 +340,50 @@ class ConfigFile:
                 with open(self.path_to_file, 'w') as file: 
                     file.writelines(lines)
                 # update gamescope line stored by program
-                self.gamescope_line: str = self.print_gamescope_line()
+                self.gamescope_line: str = self.print_gamescope_line()[0]
                 return
             
         # place gamescope line at the end, because no line was found in the file
         with open(self.path_to_file, 'a') as file: 
             file.writelines(new_line)
-        self.gamescope_line: str = self.print_gamescope_line()
+        self.gamescope_line: str = self.print_gamescope_line()[0]
         return
+
+    def toggle_gamescope_line(self, set_active:bool) -> None:
+        """If set_active=True and no gamescope lines are active, uncomment bottom-most gamescope line. 
+        If set_active=False, and a gamescope line is active, comment it out."""
+
+        with open(self.path_to_file, 'r') as file:
+            lines = file.readlines()
+
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
+
+        if set_active:
+            for line in lines:
+                if line.startswith("SCB_GAMESCOPE_ARGS="):
+                    return # it already exists
+
+            
+
+            for i, line in enumerate(lines):
+                if line.startswith("#SCBGUI#SCB_GAMESCOPE_ARGS="):
+                    gamescope_index:int = i
+    
+            self.edit_exact_lines(["#SCBGUI#SCB_GAMESCOPE_ARGS=", "#SCBGUI#GLOBAL_GAMESCOPE=1"],
+                                  ["SCB_GAMESCOPE_ARGS=","#SCBGUI#GLOBAL_GAMESCOPE=0"])
+
+            
+            
+        else:
+            present = False
+            for line in lines:
+                if line.startswith("SCB_GAMESCOPE_ARGS="):
+                    present = True
+                    break
+            
+            if not present:
+                return # it already is inactive     
 
     def edit_exact_lines(self,start_with:list[str],new_lines:list[str]) -> None:
         """Checks for any lines that start with the start_with string, 
@@ -467,10 +514,10 @@ class ScopebuddyDirectory:
 
                 if displayname:
                     new_file.edit_displayname(displayname)
-                    new_file.create_new_gamescope_line()
                 else:
                     new_file.edit_displayname(filename)
-                    new_file.create_new_gamescope_line()
+                
+                new_file.create_new_gamescope_line()
 
                 return False
 
