@@ -75,7 +75,7 @@ class GamescopeLogic:
 
                 setattr(self, object_name, widget)
 
-            self.checkBox_globalGamescope:QCheckBox
+            #self.checkBox_globalGamescope = parent_widget.findChild(QCheckBox, 'checkBox_globalGamescope')  # type: ignore
 
 
             self.apply_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
@@ -280,12 +280,7 @@ class GamescopeLogic:
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
 
-        if self.checkBox_globalGamescope.isChecked(): #type:ignore
-            new_data['use_global'] = True
-        else:
-            new_data['use_global'] = False
-            
-        
+        new_data['use_global'] = True if self.checkBox_globalGamescope.isChecked() else False
 
         new_args = self.return_new_config()
 
@@ -350,19 +345,8 @@ class GamescopeLogic:
 
         if new_args.strip() != self.file.gamescope_data['args'].strip():            
             new_data['args'] = new_args
-
-
             self.file.update_gamescope_data(new_data)
-        fman.load_message_box(
-            parent_window,
-            "Success!",
-            ("New Gamescope settings saved!\n"
-            "Your active Gamescope flags are:\n\n"
-            f"gamescope {self.return_new_config()} -- %command%\n\n"
-            "(you can copy-paste that into Steam to use Gamescope directly!)"),
-            QMessageBox.Icon.Information,
-            QMessageBox.StandardButton.Ok
-        )
+        
         return False
    
     ######################

@@ -381,11 +381,13 @@ class ConfigFile:
 
 
         if disable_gamescope:
-            self.edit_exact_lines(["#SCBGUI#GLOBAL_GAMESCOPE=0"],["#SCBGUI#GLOBAL_GAMESCOPE=1"])            
+            if not self.check_for_exact_line("#SCBGUI#GLOBAL_GAMESCOPE=1"):
+                lines = self.edit_exact_lines(["#SCBGUI#GLOBAL_GAMESCOPE=0"],["#SCBGUI#GLOBAL_GAMESCOPE=1"], lines)        
         else:
-            self.edit_exact_lines(["#SCBGUI#GLOBAL_GAMESCOPE=1"],["#SCBGUI#GLOBAL_GAMESCOPE=0"])
+            if not self.check_for_exact_line("#SCBGUI#GLOBAL_GAMESCOPE=0"):
+                lines = self.edit_exact_lines(["#SCBGUI#GLOBAL_GAMESCOPE=1"],["#SCBGUI#GLOBAL_GAMESCOPE=0"], lines)
 
-        backwards = lines[::-1]
+        backwards = lines[::-1] #type:ignore
 
         scb_found = False
         for i, line in enumerate(backwards):
@@ -417,7 +419,7 @@ class ConfigFile:
 
         if not scb_found:
             # no scb_gamescope_args in file, put it at the end
-            new_lines.append(line)
+            new_lines.append(new_line)
 
         with open(self.path_to_file, 'w') as file: 
             file.writelines(new_lines)
@@ -426,20 +428,22 @@ class ConfigFile:
         self.gamescope_data = self.return_gamescope_data()
         return
    
-    #TODO: allow for reading/returning lines from other functions instead of always using new read/writes
-    def edit_exact_lines(self,start_with:list[str],new_lines:list[str]) -> None:
+    def edit_exact_lines(self,start_with:list[str],new_lines:list[str],  opened_lines: list[str]|None=None) -> None | list[str]:
         """Checks for any lines that start with the start_with string, 
         replaces that portion with the string in the 2nd list's same index.\n
         Edit only one line by using two lists with one entry.
-        If a start_with string is empty or not found, append the new line to the end of the file."""
+        If a start_with string is empty or not found, append the new line to the end of the file.\n
+        If opened_lines is given, uses those and returns them in place of directly reading/editing the file."""
         if len(start_with) != len(new_lines):
             raise ValueError
         
-        with open(self.path_to_file, 'r') as file:
-            lines = file.readlines()
-
-        if lines and not lines[-1].endswith('\n'):
-            lines[-1] += '\n'
+        if opened_lines:
+            lines = opened_lines
+        else:
+            with open(self.path_to_file, 'r') as file:
+                lines = file.readlines()
+            if lines and not lines[-1].endswith('\n'):
+                lines[-1] += '\n'
 
         lines_to_append = []
         
@@ -464,9 +468,12 @@ class ConfigFile:
         # Append any lines that weren't found
         if lines_to_append:
             lines.extend(lines_to_append)
-        
-        with open(self.path_to_file, 'w') as file:
-            file.writelines(lines)
+
+        if opened_lines:
+            return lines
+        else:    
+            with open(self.path_to_file, 'w') as file:
+                file.writelines(lines)
         
     def edit_launch_options(self, new_flags:str) -> None:
         """Changes the launch options in the file to the newly listed ones."""
