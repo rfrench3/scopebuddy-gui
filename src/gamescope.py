@@ -96,7 +96,9 @@ class GamescopeLogic:
 
             self.load_data()
 
-
+            if self.checkBox_globalGamescope.isChecked(): #type:ignore
+                self.reset_button.setEnabled(False)
+                self.defaults_button.setEnabled(False)
 
 
             # Set up the menus
@@ -150,6 +152,7 @@ class GamescopeLogic:
             self.action_120.triggered.connect(lambda: self.lineEdit_fps.setText('120')) # type: ignore
 
             self.apply_button.setEnabled(False)
+
             self.initialized = True
 
     
