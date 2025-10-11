@@ -40,9 +40,8 @@
       <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/launchOptions.png</image>
     </screenshot>
   </screenshots>
-  <releases>
-    <url>https://github.com/rfrench3/scopebuddy-gui/raw/main/scopebuddy-gui.releases.xml</url>
-  </releases>
+  <releases type="external" url="https://github.com/rfrench3/scopebuddy-gui/raw/main/scopebuddy-gui.releases.xml"/>
+  <url type="external-releases">https://github.com/rfrench3/scopebuddy-gui/raw/main/scopebuddy-gui.releases.xml</url>
   <url type="homepage">https://rfrench3.github.io/scopebuddy-gui/</url>
   <url type="bugtracker">https://github.com/rfrench3/scopebuddy-gui/issues</url>
   <url type="vcs-browser">https://github.com/rfrench3/scopebuddy-gui</url>
