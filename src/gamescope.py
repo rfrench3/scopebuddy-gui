@@ -10,9 +10,11 @@ from PySide6.QtGui import QAction
 
 from file_manager import ConfigFile
 import file_manager as fman
+import shared_data
 
 class GamescopeLogic:
     def __init__(self, file:ConfigFile, parent_widget:QWidget) -> None:
+            self.initialized = False
             self.parent_logic = None  # Will be set by main.py
             self.file = file  # Store the file path
             self.parent_widget = parent_widget
@@ -59,6 +61,18 @@ class GamescopeLogic:
             # Initialize all widgets using the mapping TODO: re-implement QIntValidator
             for object_name, (widget_class, arg) in self.widget_mapping.items():
                 widget = parent_widget.findChild(widget_class, object_name)
+
+                if isinstance(widget, QLineEdit):
+                    widget.textChanged.connect(self.data_changed)
+                elif isinstance(widget, QCheckBox):
+                    widget.stateChanged.connect(self.data_changed)
+                elif isinstance(widget, QDoubleSpinBox):
+                    widget.valueChanged.connect(self.data_changed)
+                elif isinstance(widget, QComboBox):
+                    widget.currentIndexChanged.connect(self.data_changed)
+                elif object_name == 'checkBox_globalGamescope':
+                    widget.stateChanged.connect(self.data_changed) #type:ignore
+
                 setattr(self, object_name, widget)
 
             self.apply_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
@@ -80,7 +94,7 @@ class GamescopeLogic:
             self.reset_button.clicked.connect(self.clear_data)
             self.defaults_button.clicked.connect(self.reset_data)
 
-            self.load_data(file.print_gamescope_line())
+            self.load_data()
 
 
 
@@ -135,15 +149,55 @@ class GamescopeLogic:
             self.action_60.triggered.connect(lambda: self.lineEdit_fps.setText('60')) # type: ignore
             self.action_120.triggered.connect(lambda: self.lineEdit_fps.setText('120')) # type: ignore
 
-    def load_data(self, data: str) -> None:
+            self.apply_button.setEnabled(False)
+            self.initialized = True
+
+    
+    #######################
+    # DATA SAVING/LOADING #
+    #######################
+
+    def data_changed(self) -> None:
+        """When the user has inputted data, compare it to the saved data
+          and enable/disable the apply button based on that."""
+        if not self.initialized:
+            return
+        
+
+        # minor polish, if gamescope fields are disabled then buttons to blanket edit them are as well
+        if self.checkBox_globalGamescope.isChecked(): #type:ignore
+            self.reset_button.setEnabled(False)
+            self.defaults_button.setEnabled(False)
+        else:
+            self.reset_button.setEnabled(True)
+            self.defaults_button.setEnabled(True)
+
+
+
+        if (
+            self.file.gamescope_data['args'] == self.return_new_config() and
+            self.file.gamescope_data['active'] != self.checkBox_globalGamescope.isChecked() #type:ignore
+            ):
+            self.apply_button.setEnabled(False)
+            shared_data.unsaved_changes = False
+            return
+
+        shared_data.unsaved_changes = True
+        self.apply_button.setEnabled(True)
+
+
+    def load_data(self) -> None:
         """Loads the data from the file into the UI elements."""
 
-        if self.file.print_path() == fman.GLOBAL_CONFIG:
+        if self.file.path_to_file == fman.GLOBAL_CONFIG:
             self.widget_globalGamescope.hide() #type:ignore
+
+        if not self.file.gamescope_data['active']:
+            self.checkBox_globalGamescope.setChecked(True)#type:ignore
         
 
         # Split the data string into arguments
-        args:list[str] = data.strip().split()
+        args:list[str] = self.file.gamescope_data['args'].strip().split()
         arg_map: dict[str, str | bool] = {}
         skip_next = False
 
@@ -225,6 +279,10 @@ class GamescopeLogic:
         unimplemented_widget = getattr(self, 'lineEdit_unimplementedSettings', None)
         if unimplemented_widget:
             unimplemented_widget.setText(' '.join(unimplemented_args))
+
+
+        if self.file.path_to_file == fman.GLOBAL_CONFIG:
+            self.checkBox_globalGamescope.setChecked(False) #type:ignore
         
     def save_data(self) -> bool:
         """Does a few checks to ensure certain known incompatibilities are explained to the user,
@@ -232,22 +290,7 @@ class GamescopeLogic:
 
         parent_window = self.parent_widget.window() if self.parent_widget else None
 
-        if self.checkBox_globalGamescope.isChecked(): #type:ignore
-            # ensure no gamescope line is present so the global config is not overridden
-            self.file.edit_exact_lines(["SCB_GAMESCOPE_ARGS="],["#SCBGUI#SCB_GAMESCOPE_ARGS="])
-            fman.load_message_box(
-                parent_window,
-                "Success!",
-                ("New Gamescope settings saved!\n"
-                "The Gamescope settings in the global file will now apply to this game!"),
-                QMessageBox.Icon.Information,
-                QMessageBox.StandardButton.Ok
-            )
-            return False
-
-        
-
-        new_config = self.print_new_config()
+        new_args = self.return_new_config()
 
         # Ensure user is warned if they are combining regular mangohud with gamescope
         gamescope_active:bool = False if (
@@ -257,7 +300,7 @@ class GamescopeLogic:
         
         regular_mangohud:bool = True if (
             self.file.check_for_exact_line("export mangohud") or 
-            self.file.check_for_exact_line("export MANGOHUD")
+            self.file.check_for_exact_line("export MANGOHUD=1")
             ) else False
         
         # determines whether the file will be saved after all error dialogs
@@ -277,23 +320,23 @@ class GamescopeLogic:
 
         # Gamescope does not allow -w or -W to be set without -h or -H being set as well.
         if (
-            ("-w" in new_config and "-h" not in new_config) or
-            ("-W" in new_config and "-H" not in new_config)
+            ("-w" in new_args and "-h" not in new_args) or
+            ("-W" in new_args and "-H" not in new_args)
         ):
             result = fman.load_message_box(
                 parent_window,
                 "Warning!",
-                ("You have specified a width (-w or -W) without a corresponding height (-h or -H)!\n"
-                 "Gamescope will not launch unless only height or both are specified."),
+                (
+                    "You have specified a width (-w or -W) without a corresponding height (-h or -H)!\n"
+                    "Gamescope will not launch unless only height or both are specified."
+                 ),
                 QMessageBox.Icon.Warning,
                 QMessageBox.StandardButton.Cancel | QMessageBox.StandardButton.Ignore
             )
             if result != QMessageBox.StandardButton.Ignore:
                 do_not_save = True
 
-            
-
-        if not gamescope_active:
+        if not gamescope_active and not self.checkBox_globalGamescope.isChecked(): #type:ignore
             fman.load_message_box(
                 parent_window,
                 "Notice!",
@@ -307,21 +350,23 @@ class GamescopeLogic:
             
         if do_not_save:
             return True
-
-        if new_config.strip() != self.file.print_gamescope_line().strip():
-            self.file.edit_gamescope_line(new_config)
-        fman.load_message_box(
-            parent_window,
-            "Success!",
-            ("New Gamescope settings saved!\n"
-            "Your active Gamescope flags are:\n\n"
-            f"gamescope {self.print_new_config()} -- %command%\n\n"
-            "(you can copy-paste that into Steam to use Gamescope directly!)"),
-            QMessageBox.Icon.Information,
-            QMessageBox.StandardButton.Ok
-        )
-        return False
+    
+        self.file.edit_gamescope_line(new_args, (not self.checkBox_globalGamescope.isChecked())) #type:ignore
         
+
+        self.data_changed()
+
+        return False
+   
+    ######################
+    # INTERFACE CHANGING #
+    ######################
+
+    def reset_data(self) -> None:
+        """Empties all input fields. Then, loads data from file into those input fields."""
+        self.clear_data()
+        self.load_data()
+
     def clear_data(self):
         """Empties all input fields."""
         for object_name, (widget_class, arg) in self.widget_mapping.items():
@@ -338,11 +383,6 @@ class GamescopeLogic:
                 else:
                     raise RuntimeError # this should never happen
 
-
-    def reset_data(self) -> None:
-        """Empties all input fields. Then, loads data from file into those input fields."""
-        self.clear_data()
-        self.load_data(self.file.print_gamescope_line())
 
     def handle_menu_renderedResolution_1(self):
         #print("Set rendered resolution to 1920x1080")
@@ -370,7 +410,12 @@ class GamescopeLogic:
         self.lineEdit_oWidth.setText('3840') # type: ignore
         self.lineEdit_oHeight.setText('2160') # type: ignore
 
-    def print_new_config(self) -> str: #output a new config string based on the user input
+    ##################
+    # INTERNAL LOGIC #
+    ##################
+
+    def return_new_config(self) -> str: 
+        """output a new config string based on the user input"""
         self.config_list = []
 
         def apply_lineEdit_input(lineEdit, arg):
@@ -413,8 +458,5 @@ class GamescopeLogic:
         generated_config = ''
         for argument in self.config_list:
             generated_config += argument
-        
-        print(generated_config.strip())
 
         return generated_config.strip()
-

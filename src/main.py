@@ -17,8 +17,13 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
     which could be the default scb.conf or the game-specific confs in AppID.
 '''
 
-#TODO: Loading and unloading UI elements doesn't seem to free memory. 
-# Not a major problem given how lightweight this app is, but figure out why for future projects.
+#TODO: SCOPE OF UPDATE:
+'''
+- proper error detection and handling when saving files
+
+- revamp file creator and locator to include non-AppID folders
+- put in place necessary work for non-English translations
+'''
 
 import sys
 import os
@@ -31,6 +36,8 @@ from PySide6.QtWidgets import (
     )
 from PySide6.QtSvgWidgets import QSvgWidget
 
+from PySide6.QtCore import QSignalBlocker
+
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 import file_manager as fman
@@ -38,6 +45,8 @@ from env_var import EnvVarLogic
 from gamescope import GamescopeLogic
 from general_settings import GeneralSettingsLogic
 from launch_options import LaunchOptionsLogic
+
+import shared_data
 
 
 DATA_DIR = fman.DATA_DIR
@@ -78,31 +87,22 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         """This ensures that attempting to close the window while a file is loaded results in a dialog,
         prompting the user to either save changes, discard them, or not close the app."""
+
+        
+        if not shared_data.unsaved_changes: 
+            event.accept() # there are no unsaved changes
+            return 
+
         global selected_config
         if selected_config is not None and self.logic:
-            confirmation = self.logic.exit_dialog()
+
+            confirmation = self.logic.confirm_before_proceed()
+
+            # Close unless closing was cancelled
             if confirmation == QMessageBox.StandardButton.Cancel:
                 event.ignore()
                 return
-            elif confirmation == QMessageBox.StandardButton.Apply:
-                # Save all data before closing
-                stop = self.logic.general_settings_logic.save_data() if self.logic.general_settings_logic else False
-                if stop:
-                    event.ignore()
-                    return
-                stop = self.logic.env_vars_logic.save_data() if self.logic.env_vars_logic else False
-                if stop:
-                    event.ignore()
-                    return
-                stop = self.logic.gamescope_logic.save_data() if self.logic.gamescope_logic else False
-                if stop:
-                    event.ignore()
-                    return
-                stop = self.logic.launch_options_logic.save_data() if self.logic.launch_options_logic else False
-                if stop:
-                    event.ignore()
-                    return
-            # If Apply succeeded or Discard was chosen, allow close
+            
             event.accept()
         else:
             # No file loaded, close normally
@@ -135,6 +135,10 @@ class ApplicationLogic:
         layout = self.large_logo.layout()
         layout.addWidget(svg_widget)
 
+        # Track last index and intercept changes when there are unsaved changes
+        self._last_tab_index = self.mainFileEdit.currentIndex()
+        self.mainFileEdit.currentChanged.connect(self._on_tab_changed)
+
     
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
@@ -148,6 +152,7 @@ class ApplicationLogic:
         self.status_button.clicked.connect(self.unload_selected_file)
 
         self.statusBar.addWidget(self.status_button)  # Left side
+        
         self.statusBar.addPermanentWidget(self.status_label)  # Right side
         
 
@@ -178,6 +183,71 @@ class ApplicationLogic:
             item.setToolTip(f"File: {os.path.basename(filename)}")
             self.file_list.addItem(item)
         
+    def _on_tab_changed(self) -> None:
+        """Notifies user if they leave the tab with unsaved changes."""
+
+        current_index: int = self.mainFileEdit.currentIndex()
+
+        if not shared_data.unsaved_changes:
+            self._last_tab_index = current_index
+            return
+
+        self.confirm_before_proceed(tab_changed=True)
+        
+    def confirm_before_proceed(self, tab_changed:bool=False) -> QMessageBox.StandardButton:  #type:ignore
+        """Prompt the user if there are unsaved changes. Revert to the previous
+        tab if the user cancels or if saving fails."""
+        current_index: int = self.mainFileEdit.currentIndex()
+        
+        if not shared_data.unsaved_changes:
+            self._last_tab_index = current_index
+            return QMessageBox.StandardButton.Apply # all changes are applied
+        
+        # there are unsaved changes
+        if tab_changed:
+            unsaved_index = self._last_tab_index
+        else:
+            unsaved_index = current_index
+
+        with QSignalBlocker(self.mainFileEdit):
+            self.mainFileEdit.setCurrentIndex(unsaved_index)
+
+        result = fman.load_message_box(
+            self.window,
+            "Apply Settings",
+            "The current page has unsaved changes.",
+            QMessageBox.Icon.Warning,
+            QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel
+            )
+        if result == QMessageBox.StandardButton.Cancel:
+            return QMessageBox.StandardButton.Cancel
+        
+        elif result == QMessageBox.StandardButton.Discard:
+            shared_data.unsaved_changes = False
+            self.mainFileEdit.setCurrentIndex(current_index)
+            self._last_tab_index = current_index
+            return QMessageBox.StandardButton.Discard
+        
+        elif result == QMessageBox.StandardButton.Apply:
+            match unsaved_index:
+                case 0:
+                    self.general_settings_logic.save_data() #type:ignore
+                case 1:
+                    self.env_vars_logic.save_data() #type:ignore
+                case 2:
+                    self.gamescope_logic.save_data() #type:ignore
+                case 3:
+                    self.launch_options_logic.save_data() #type:ignore
+
+            shared_data.unsaved_changes = False
+            self.mainFileEdit.setCurrentIndex(current_index)
+            self._last_tab_index = current_index
+            return QMessageBox.StandardButton.Apply
+
+
+        
+        
+        
     def open_folder_clicked(self):
         """Shows a popup window with instructions for opening the Scopebuddy folder."""
         fman.load_message_box(
@@ -193,55 +263,15 @@ class ApplicationLogic:
         )
         return
 
-    def exit_dialog(self) -> QMessageBox.StandardButton:
-        """When the user attempts to close the window or exit the file,
-        this popup ensures they intended to do so. 
-        This dialog is heavily inspired by KDE's System Settings."""
-        result = fman.load_message_box(
-            self.window,
-            "Exit?",
-            (
-            "Are you certain you wish to exit the file?\n"
-            "\"Apply\" double-checks that everything is saved."
-            ),
-            QMessageBox.Icon.Warning,
-            QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel
-            )
-        return result # type: ignore
-
     def unload_selected_file(self) -> None:
         """Prompts the user with a dialog window to be certain they wish to exit.
         Unloads the chosen file and interface, then returns the user to the 'Select a File' page.
         The dialog does not occur if the user is on the main menu, the app simply closes."""
         #if self.general_settings_logic:
             # if the file-editing portion of the app is loaded:
-        confirmation = self.exit_dialog()
+        confirmation = self.confirm_before_proceed()
         if confirmation == QMessageBox.StandardButton.Cancel:
-            return
-        elif confirmation == QMessageBox.StandardButton.Apply:
-            # automatically switches the user to the page they chose
-            stop = self.general_settings_logic.save_data() #type: ignore
-            if stop:
-                self.mainFileEdit.setCurrentIndex(0)
-                return
-            
-            stop = self.env_vars_logic.save_data() #type: ignore
-            if stop:
-                self.mainFileEdit.setCurrentIndex(1)
-                return
-            
-            stop = self.gamescope_logic.save_data() #type: ignore
-            if stop:
-                self.mainFileEdit.setCurrentIndex(2)
-                return
-            
-            stop = self.launch_options_logic.save_data() #type: ignore
-            if stop:
-                self.mainFileEdit.setCurrentIndex(3)
-                return
-        
-        # else: discard was selected or all applies completed, proceed 
-            
+            return    
 
         def unload_interface(self) -> None:
             """Fully unloads interface elements."""
