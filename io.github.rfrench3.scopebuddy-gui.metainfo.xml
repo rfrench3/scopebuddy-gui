@@ -40,8 +40,52 @@
       <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/launchOptions.png</image>
     </screenshot>
   </screenshots>
-  <releases type="external" url="https://github.com/rfrench3/scopebuddy-gui/raw/main/scopebuddy-gui.releases.xml"/>
-  <url type="external-releases">https://github.com/rfrench3/scopebuddy-gui/raw/main/scopebuddy-gui.releases.xml</url>
+  <releases>
+    <release version="v2.2.0" date="2025-10-11" type="stable">
+      <description>
+        <p>This update vastly improves UX. The Apply buttons on each page now adaptively enables/disables depending on whether or not changes are actually present, and this being tracked also means excessive "are you sure" popups could be removed.</p>
+      </description>
+    </release>
+    <release version="v2.1.2" date="2025-08-18" type="stable" urgency="low">
+      <description>
+        <p>Fix #39: Open Folder button no longer guides users to opening the incorrect folder.</p>
+      </description>
+    </release>
+    <release version="2.1.1" date="2025-08-11" type="stable">
+      <description>
+        <ul>
+          <li>New page to add launch options to games</li>
+          <li>Button to use global scopebuddy config in appid configs</li>
+          <li>Minor visual improvements to the Gamescope page</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.0.5" date="2025-08-02" type="stable">
+      <description>
+        <p>Fix a bug caused by 2.0.3 where the upscaler comboboxes would no longer load into the UI from the file</p>
+      </description>
+    </release>
+    <release version="2.0.3" date="2000-01-01" type="stable">
+      <description>
+        <p>Fixed the broken upscaler settings, updated the buttons on the welcome screen</p>
+      </description>
+    </release>
+    <release version="2.0.0" date="2025-07-10" type="stable">
+      <description>
+        <p>Added game-specific config selection and environment variables support.</p>
+      </description>
+    </release>
+    <release version="1.1.0" date="2025-06-22" type="stable">
+      <description>
+        <p>Overhauls the UI, adds some new buttons.</p>
+      </description>
+    </release>
+    <release version="1.0.0" date="2025-06-16" type="stable">
+      <description>
+        <p>Initial release.</p>
+      </description>
+    </release>
+  </releases>
   <url type="homepage">https://rfrench3.github.io/scopebuddy-gui/</url>
   <url type="bugtracker">https://github.com/rfrench3/scopebuddy-gui/issues</url>
   <url type="vcs-browser">https://github.com/rfrench3/scopebuddy-gui</url>
