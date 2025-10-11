@@ -45,4 +45,9 @@
       <p>This update vastly improves UX. The Apply buttons on each page now adaptively enables/disables depending on whether or not changes are actually present, and this being tracked also means excessive "are you sure" popups could be removed.</p>
     </description>
   </release>
+  <release version="2.2.0" date="2025-10-11" type="stable">
+    <description>
+      <p>This update vastly improves UX. The Apply buttons on each page now adaptively enables/disables depending on whether or not changes are actually present, and this being tracked also means excessive "are you sure" popups could be removed.</p>
+    </description>
+  </release>
 </releases>
