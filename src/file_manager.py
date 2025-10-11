@@ -157,15 +157,17 @@ class ConfigFile:
 
         for line in lines:
             # an active line would never automatically be placed above an automatically commented out line
+            if line.startswith('SCB_GAMESCOPE_ARGS='):
+                data['active'] = True
+
             if (line.startswith('SCB_GAMESCOPE_ARGS=') or
-                line.startswith('#SCBGUI#SCB_GAMESCOPE_ARGS=')
+                line.startswith('#SCBGUI#SCB_GAMESCOPE_ARGS=') or
+                line.startswith('#SCB_GAMESCOPE_ARGS=')
                 ):
                 
                 # return args
                 match = search(r'SCB_GAMESCOPE_ARGS="([^"]*)"', line)                
                 data['args'] = match.group(1) if match else ''
-                if line.startswith('SCB_GAMESCOPE_ARGS='):
-                    data['active'] = True
 
         return data
 
@@ -359,7 +361,7 @@ class ConfigFile:
 
         self.gamescope_data = self.return_gamescope_data()
 
-    def update_gamescope_data(self, data:dict) -> None:
+    def update_gamescope_data(self, data:dict, DEPRACATED=True) -> None:
         """Update information about the gamescope line's status.\n
         args: str, gamescope args\n
         inactive: bool, should gamescope line be commented out"""

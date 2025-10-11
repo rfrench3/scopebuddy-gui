@@ -19,13 +19,6 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
 
 #TODO: SCOPE OF UPDATE:
 '''
-- apply button should be disabled unless there are changes, at which point it should be enabled
-    - shared state.py for cross-file communication
-    - each page needs to know when its current state doesn't match the saved state and mark that in shared_data.unsaved_changes
-
-- make the global gamescope save properly
-    - probably needs a new function in file_manager
-
 - proper error detection and handling when saving files
 
 - revamp file creator and locator to include non-AppID folders
@@ -201,7 +194,7 @@ class ApplicationLogic:
 
         self.confirm_before_proceed(tab_changed=True)
         
-    def confirm_before_proceed(self, tab_changed:bool=False) -> QMessageBox.StandardButton:
+    def confirm_before_proceed(self, tab_changed:bool=False) -> QMessageBox.StandardButton:  #type:ignore
         """Prompt the user if there are unsaved changes. Revert to the previous
         tab if the user cancels or if saving fails."""
         current_index: int = self.mainFileEdit.currentIndex()
@@ -269,28 +262,6 @@ class ApplicationLogic:
             QMessageBox.StandardButton.Ok
         )
         return
-
-    def exit_dialog(self) -> QMessageBox.StandardButton:
-        """When the user attempts to close the window or exit the file,
-        this popup ensures they intended to do so. 
-        This dialog is heavily inspired by KDE's System Settings."""
-
-        #TODO: Temporary fix, "discard changes" because there are no changes
-        if not shared_data.unsaved_changes:
-            return QMessageBox.StandardButton.Discard
-
-
-        result = fman.load_message_box(
-            self.window,
-            "Exit?",
-            (
-            "Are you certain you wish to exit the file?\n"
-            "\"Apply\" double-checks that everything is saved."
-            ),
-            QMessageBox.Icon.Warning,
-            QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel
-            )
-        return result # type: ignore
 
     def unload_selected_file(self) -> None:
         """Prompts the user with a dialog window to be certain they wish to exit.

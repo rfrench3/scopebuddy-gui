@@ -162,6 +162,17 @@ class GamescopeLogic:
           and enable/disable the apply button based on that."""
         if not self.initialized:
             return
+        
+
+        # minor polish, if gamescope fields are disabled then buttons to blanket edit them are as well
+        if self.checkBox_globalGamescope.isChecked(): #type:ignore
+            self.reset_button.setEnabled(False)
+            self.defaults_button.setEnabled(False)
+        else:
+            self.reset_button.setEnabled(True)
+            self.defaults_button.setEnabled(True)
+
+
 
         if (
             self.file.gamescope_data['args'] == self.return_new_config() and
@@ -268,6 +279,10 @@ class GamescopeLogic:
         unimplemented_widget = getattr(self, 'lineEdit_unimplementedSettings', None)
         if unimplemented_widget:
             unimplemented_widget.setText(' '.join(unimplemented_args))
+
+
+        if self.file.path_to_file == fman.GLOBAL_CONFIG:
+            self.checkBox_globalGamescope.setChecked(False) #type:ignore
         
     def save_data(self) -> bool:
         """Does a few checks to ensure certain known incompatibilities are explained to the user,
@@ -321,7 +336,7 @@ class GamescopeLogic:
             if result != QMessageBox.StandardButton.Ignore:
                 do_not_save = True
 
-        if not gamescope_active:
+        if not gamescope_active and not self.checkBox_globalGamescope.isChecked(): #type:ignore
             fman.load_message_box(
                 parent_window,
                 "Notice!",
