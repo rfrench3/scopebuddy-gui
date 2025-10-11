@@ -336,8 +336,11 @@ class GamescopeLogic:
         if do_not_save:
             return True
     
-        self.file.edit_export_lines_gamescope(new_args, (not self.checkBox_globalGamescope.isChecked())) #type:ignore
+        self.file.edit_gamescope_line(new_args, (not self.checkBox_globalGamescope.isChecked())) #type:ignore
         
+
+        self.data_changed()
+
         return False
    
     ######################
