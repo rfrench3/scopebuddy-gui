@@ -917,7 +917,7 @@
                      <item>
                       <widget class="QLabel" name="label_27">
                        <property name="text">
-                        <string>Steam Overlay</string>
+                        <string>Steam Overlay (UNSTABLE!)</string>
                        </property>
                       </widget>
                      </item>
