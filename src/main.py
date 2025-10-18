@@ -22,6 +22,10 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
 - proper error detection and handling when saving files
 
 - revamp file creator and locator to include non-AppID folders
+    - finish implementing NewFileDialog class
+    - rework fman.ScopebuddyDirectory class to handle multi-folder
+    - Replace main menu's QListWidget with QTreeWidget (replace list of configs with launcher,configs)
+
 - put in place necessary work for non-English translations
 '''
 
@@ -63,15 +67,12 @@ ui_gamescope = fman.ui_gamescope
 ui_launch_options = fman.ui_launch_options
 
 # Dialog of welcome page
-dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
+#dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
+dialog_new_file = os.path.join(DATA_DIR, "new_file_create.ui")
 
 
 fman.create_directory()
-
-# Ensures the global config file will always exist
-initialize = fman.ScopebuddyDirectory()
-initialize.create_file('scb.conf','Global Config file.',fman.SCB_DIR)
-initialize = None
+fman.ScopebuddyDirectory().create_file('scb.conf','Global Config file.',fman.SCB_DIR)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -350,18 +351,18 @@ class ApplicationLogic:
 
     def new_config_pressed(self) -> None:
         """opens a modal that has the user create a new config with a Steam AppID.""" 
-        dialog: QDialog = fman.load_widget(dialog_new_file) # type: ignore
+        dialog = NewFileDialog(self.window)
         result = dialog.exec()
         
         if result == QDialog.DialogCode.Accepted:  # OK button was clicked
             # Extract data from the LineEdit widgets
-            file_name_edit = dialog.findChild(QLineEdit, "file_name")
-            display_name_edit = dialog.findChild(QLineEdit, "display_name")
+            file_name_edit: QLineEdit = dialog.findChild(QLineEdit, "file_name") # type: ignore
+            display_name_edit: QLineEdit = dialog.findChild(QLineEdit, "display_name") # type: ignore
             
-            if not file_name_edit.text().endswith(".conf"): # type: ignore
-                file_name = file_name_edit.text().strip() + ".conf" # type: ignore
+            if not file_name_edit.text().endswith(".conf"): 
+                file_name = file_name_edit.text().strip() + ".conf" 
             
-            display_name = display_name_edit.text().strip() # type: ignore
+            display_name = display_name_edit.text().strip() 
                 
             # Create a new config file in APPID_DIR with the given file name and display name
             if (file_name and
@@ -413,7 +414,51 @@ class ApplicationLogic:
                     QMessageBox.StandardButton.Ok
                 )
 
+class NewFileDialog(QDialog): #TODO: finish adding functionality
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+        self.ui_widget = fman.load_widget(dialog_new_file)
+        
+        # Create a new layout for the dialog and add the widget to it
+        from PySide6.QtWidgets import QVBoxLayout
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self.ui_widget)
+        
+        self.setWindowTitle("Create New Config")
+        self.setWindowIcon(fman.icon)
 
+        self.previous: QPushButton = self.ui_widget.findChild(QPushButton, 'previous')  # type: ignore
+        self.next: QPushButton = self.ui_widget.findChild(QPushButton, 'next')  # type: ignore
+        self.stack: QStackedWidget = self.ui_widget.findChild(QStackedWidget, 'stackedWidget')  # type: ignore
+        self.STACK_FINAL = 1
+
+
+        self.previous.clicked.connect(self.last_page)
+        self.next.clicked.connect(self.next_page)
+
+    def last_page(self):
+        new = self.stack.currentIndex() - 1
+        self.stack.setCurrentIndex(new)
+
+        if new == 0:
+            self.previous.setEnabled(False)
+        self.next.setEnabled(True)
+
+    def next_page(self):
+        new = self.stack.currentIndex() + 1
+        self.stack.setCurrentIndex(new)
+
+        if new == self.STACK_FINAL:
+            self.next.setEnabled(False)
+        self.previous.setEnabled(True)
+            
+
+    
+
+
+        
 
 # Logic that loads the app
 app = QApplication([])
