@@ -87,6 +87,19 @@ header p {
   font-size: 1.5rem;
 }
 
+/* Navigation buttons: cleaner wrapping on narrow screens */
+@media (max-width: 767px) {
+  header nav a {
+    flex: 0 0 calc(33.333% - 6px); /* 3 buttons per row, accounting for gap */
+  }
+  header nav a:nth-child(4) {
+    flex: 0 0 calc(33.333% - 6px); /* 4th button takes 1/3 */
+  }
+  header nav a:nth-child(5) {
+    flex: 0 0 calc(66.666% - 4px); /* 5th button takes 2/3 */
+  }
+}
+
 div.content-area {
   padding-left: 12.5%;
   padding-right: 12.5%;
