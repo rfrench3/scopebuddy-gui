@@ -20,7 +20,7 @@
   <!-- Header  -->
   <header class="py-4">
     <div class="container">
-      <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center mb-3 gap-3"></div>
         <a href="https://github.com/rfrench3/scopebuddy-gui" class="d-flex align-items-center text-decoration-none fs-4 fw-bold">
           <img src="images/app-icon.svg" alt="Scopebuddy GUI Logo" width="96" height="96" class="me-3" />
           Scopebuddy GUI
@@ -102,20 +102,20 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-      <h2>Desktop UI</h2>
+            <h2>Desktop UI</h2>
 
-  <ul class="mb-3 ps-3">
-        <li>Open Steam and go to your Library.</li>
+            <ul>
+              <li>Open Steam and go to your Library.</li>
 
-        <li>Right-click the game you want to use with Gamescope and select <strong>Properties</strong>.</li>
+              <li>Right-click the game you want to use with Gamescope and select <strong>Properties</strong>.</li>
 
-        <li>In the <strong>Launch Options</strong> field, enter either of the following:<br>
-          <code>scopebuddy -- %command%</code><br>
-          <code>scb -- %command%</code>
-        </li>
+              <li>In the <strong>Launch Options</strong> field, enter either of the following:<br>
+                <code>scopebuddy -- %command%</code><br>
+                <code>scb -- %command%</code>
+              </li>
 
-        <li>This will launch the game using your current ScopeBuddy configuration.</li>
-      </ul>
+              <li>This will launch the game using your current ScopeBuddy configuration.</li>
+            </ul>
             <hr>
             <!-- Scrolls horizontally if there isn't enough space -->
             <div class="image-gallery">
@@ -125,7 +125,7 @@
             <hr>
             <h2>Big Picture Mode</h2>
 
-            <ul class="mb-3 ps-3">
+            <ul>
               <li>On the SteamDeck interface (gamescope session),
                 using ScopeBuddy results in Gamescope launch arguments being ignored as they would
                 otherwise prevent the game from starting; Gamescope cannot be run within itself.
@@ -145,15 +145,12 @@
               <li>This will launch the game using your current ScopeBuddy configuration.</li>
             </ul>
             <hr>
-                <div class="image-gallery">
-                  <img src="images/BigPicture1.webp" alt="Steam Guide">
-                  <img src="images/BigPicture2.webp" alt="Steam Guide">
-                  <img src="images/BigPicture3.webp" alt="Steam Guide">
-                </div>
-                <hr>
-                
-
-            
+            <div class="image-gallery">
+              <img src="images/BigPicture1.webp" alt="Steam Guide">
+              <img src="images/BigPicture2.webp" alt="Steam Guide">
+              <img src="images/BigPicture3.webp" alt="Steam Guide">
+            </div>
+            <hr>
           </div>
         </div>
       </div>
@@ -173,7 +170,7 @@
             <p>
               To apply scopebuddy to a game in Lutris:
             </p>
-            <ul class="mb-3 ps-3">
+            <ul>
               <li>Right click on the game, click on Configure</li>
               <li>Click the System Options tab</li>
               <li>Enable the "Advanced" toggle in the top right of the window</li>
@@ -202,7 +199,10 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <ul class="mb-3 ps-3">
+            <p>
+              To apply scopebuddy to a game in Heroic:
+            </p>
+            <ul>
               <li>Click on the game's settings button</li>
               <li>In the settings menu, click the Advanced tab</li>
               <li>Scroll down to Wrapper command, put <code>scb</code> as the wrapper and <code> -- </code> as its arguments (ignore the warning, it is irrelevant in this case)</li>
@@ -227,28 +227,33 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>At this moment, the steam overlay option can result in gamescope not opening!</p>
+            <h2>Known Issues</h2>
+            <ul>
+              <li><p>
+              At this moment, Gamescope (and therefore, Scopebuddy) does not tend to work properly with game launchers that are packaged as a flatpak.
+              Some workarounds until that is resolved are to use other formats such as AppImage or distro-specific packages, or to launch the game launcher itself inside gamescope/scopebuddy. 
+              </p><p>For Example: <code>scb -- flatpak run com.heroicgameslauncher.hgl</code></p></li>
+              <li><p>At this moment, the steam overlay option can result in gamescope not opening! If you have this issue, disable the overlay setting.</p></li>
+            </ul>
 
-            <h2>Low resolution, poor visual quality</h2>
-            <p>Make sure the resolution you chose the game to render at is a reasonable quality and aspect ratio. 
+            <h2>Other Considerations</h2>
+            <ul>
+              <li><p>Make sure the resolution you chose the game to render at is a reasonable quality and aspect ratio. 
               Some examples are the ones in the dropdown menu, half of the resolution of your screen, 
-              exactly the resolution of your screen, etc.</p>
+              exactly the resolution of your screen, etc.</p><p style="color: rgb(255, 88, 88);">Leaving the rendered resolution fields blank will lead to their default 720p resolution, 
+              which will look very low-quality on many screens! Setting the rendered resolution too high will cause poor performance.</p></li>
 
-            <p style="color: rgb(255, 88, 88);">Leaving the rendered resolution fields blank will lead to their default 720p resolution, 
-              which will look very low-quality on many screens! Setting the rendered resolution too high will cause poor performance.</p>
-
-            <p>If setting the rendered width and height to match your screen fails, 
+              <li><p>If setting the rendered width and height to match your screen fails, 
               you can also check the in-game settings to see if they can solve the problem! For example, 
-              I have noticed that Overwatch 2 in Gamescope works best when it is run in borderless window mode.</p>
+              I have noticed that Overwatch 2 in Gamescope works best when it is run in borderless window mode.</p></li>
 
-            <h2>MangoHUD</h2>
-            <p>When using MangoHUD with gamescope, make sure to use the built-in support that gamescope has and 
-              not the traditional <code>mangohud</code> in launch options. 
+              <li><p>When using MangoHUD with gamescope, make sure to use the built-in support that gamescope has and 
+              not the traditional <code>mangohud</code> or <code>MANGOHUD=1</code> in launch options. 
               Scopebuddy GUI will attempt to detect when you apply gamescope and normal MangoHUD and warn you, 
-              so heed its warning!</p>
+              so heed its warning!</p></li>
 
+            </ul>
             <br>
-
             <p>If you have an issue, especially one that is easy to encounter, post it in the <a rel="stylesheet" href="https://github.com/rfrench3/scopebuddy-gui/issues" target="_blank">Github</a>!</p>
           </div>
         </div>
@@ -264,7 +269,7 @@
             <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. 
               The web-based version uses JavaScript. The app itself is built from source with the following commands 
               (run inside of a folder with the yml):</p>
-            <ul class="mb-3">
+            <ul>
               <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
               <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
             </ul>
