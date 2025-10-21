@@ -36,7 +36,8 @@ import os
 from PySide6.QtWidgets import (
     QApplication, QStackedWidget, QStatusBar, QListWidget,
     QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog,
-    QLineEdit, QMessageBox, QMainWindow, QWidget
+    QLineEdit, QMessageBox, QMainWindow, QWidget, QVBoxLayout,
+    QTreeWidget, QDialogButtonBox
     )
 from PySide6.QtSvgWidgets import QSvgWidget
 
@@ -419,9 +420,14 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         super().__init__(parent)
         
         self.ui_widget = fman.load_widget(dialog_new_file)
+
+        self.data = {
+            'launcher': '',
+            'file_name': '',
+            'display_name': ''
+        }
         
         # Create a new layout for the dialog and add the widget to it
-        from PySide6.QtWidgets import QVBoxLayout
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.ui_widget)
@@ -433,10 +439,18 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         self.next: QPushButton = self.ui_widget.findChild(QPushButton, 'next')  # type: ignore
         self.stack: QStackedWidget = self.ui_widget.findChild(QStackedWidget, 'stackedWidget')  # type: ignore
         self.STACK_FINAL = 1
+        self.launchers: QTreeWidget = self.ui_widget.findChild(QTreeWidget, 'game_launchers')  # type: ignore
+        self.launcher_label: QLabel = self.ui_widget.findChild(QLabel, 'launcher') # type: ignore
+        self.filename: QLineEdit = self.ui_widget.findChild(QLineEdit, 'file_name') # type: ignore
+        self.displayname: QLineEdit = self.ui_widget.findChild(QLineEdit, 'display_name') # type: ignore
+        self.button_box: QDialogButtonBox = self.ui_widget.findChild(QDialogButtonBox, 'buttonBox') #type:ignore
 
 
         self.previous.clicked.connect(self.last_page)
         self.next.clicked.connect(self.next_page)
+        self.launchers.itemClicked.connect(self.set_launcher)
+        self.filename.textChanged.connect(self.filename_changed)
+        self.displayname.textChanged.connect(self.displayname_changed)
 
     def last_page(self):
         new = self.stack.currentIndex() - 1
@@ -453,6 +467,24 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         if new == self.STACK_FINAL:
             self.next.setEnabled(False)
         self.previous.setEnabled(True)
+
+    def set_launcher(self):
+        self.data['launcher'] = self.launchers.currentItem().text(0)
+        self.launcher_label.setText(self.data['launcher'])
+        self.update_buttonbox_status()
+
+    def filename_changed(self):
+        self.data['file_name'] = self.filename.text()
+        self.update_buttonbox_status()
+        
+    def displayname_changed(self):
+        self.data['display_name'] = self.displayname.text()
+        
+
+    def update_buttonbox_status(self):
+        """Requires a launcher and file name to be set before allowing you to try saving."""
+        self.button_box.setEnabled(bool(self.data['launcher'] and self.data['file_name']))
+
             
 
     
