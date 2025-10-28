@@ -1,6 +1,10 @@
 import os, shutil
 from re import search
 
+# TODO: consider replacing os.path use with Path in the future, 
+# for now it's just here to validate filenames
+from pathlib import Path 
+
 from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
@@ -73,15 +77,26 @@ def create_directory() -> None:
     APPID_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID")
     os.makedirs(APPID_DIR, exist_ok=True)
 
-def invalid_filename(filename: str) -> bool:
-    """Determines that a given file name has only valid characters using re.search. 
-    Returns False if there are no issues."""
-    if not filename or '/' in filename or filename in ('.', '..'):
+def is_filename_invalid(filename:str) -> bool:
+    """True if not valid, false otherwise"""
+    
+    if not filename or filename in ('.', '..'):
         return True
-    # Use re.search to find any character NOT allowed
-    if search(r'[^\w\-.]', filename):
+
+    if '/' in filename or '\\' in filename:
         return True
-    return False
+
+    if '\0' in filename:
+        return True
+
+    try:
+        # Validate using pathlib
+        path = Path(filename)
+        if path.is_absolute():
+            return True
+        return False
+    except (ValueError, OSError):
+        return True
 
 '''
 The ConfigFile class:
@@ -502,10 +517,14 @@ PURPOSE: store data about the scopebuddy directory and its files and have simple
 OUTPUT: list of available files, name of files, first line of files (display name)
 ALTER: add new files to directory
 '''
+
 class ScopebuddyDirectory:
     def __init__(self) -> None:
         self.directory_path = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy")
         self.appid_path = os.path.join(self.directory_path,"AppID")
+
+        # store all necessary info about files and their paths for the file selection part of the app
+        self.full_directory = self.return_filesystem_information(self.directory_path)
         
     def __str__(self) -> str:
         """Returns detected path to scopebuddy directory."""
@@ -533,8 +552,56 @@ class ScopebuddyDirectory:
             ]
         
         return {config.print_path(): config.print_displayname() for config in config_files}
-    
 
+    def return_filesystem_information(self, directory: str) -> dict:
+        """Returns a nested dictionary about the scopebuddy directory.\n
+        All entries have type=file/folder, path=path, name=filename.\n
+        Files have displayname, 
+        folders have a children that contains its own nested dictionary.
+        
+        """
+        information = {}
+
+        # Scan directory for all items
+        try:
+            items = os.listdir(directory)
+        except Exception as e:
+            print(f"return_filesystem_information ERROR! {e}")
+            raise e
+
+        for name in items:
+            path = os.path.join(directory, name)
+            
+            if os.path.isfile(path):
+                # Handle files - add displayname for .conf files
+                item = {
+                    'type': 'file',
+                    'path': path,
+                    'name': name
+                }
+                
+                # Add displayname for config files
+                if name.endswith('.conf'):
+                    try:
+                        config = ConfigFile(path)
+                        item['displayname'] = config.print_displayname()
+                    except Exception as e:
+                        item['displayname'] = name
+                        print(e)
+                
+                information[name] = item
+                
+            elif os.path.isdir(path):
+                # Handle folders - recursively scan subdirectories
+                item = {
+                    'type': 'folder',
+                    'path': path,
+                    'name': name,
+                    'children': self.return_filesystem_information(path)  # Recursive call
+                }
+                information[name] = item
+
+        return information
 
     # DATA EDITING
 
@@ -542,7 +609,7 @@ class ScopebuddyDirectory:
         """Adds a new file to the chosen directory and gives it a displayname. 
         If no display name is provided, it will default to the filename.
         If the file cannot be made, it will return True."""
-        if invalid_filename(filename):
+        if is_filename_invalid(filename):
             print("The chosen filename is not valid.")
             return True
 
@@ -563,7 +630,7 @@ class ScopebuddyDirectory:
                 return False
 
         except FileExistsError:
-            # Expected response outside of first launch
+            # Not a problem
             return True
         except FileNotFoundError as e:
             print(f"Unable to create config file: {e}")
