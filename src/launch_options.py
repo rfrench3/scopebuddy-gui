@@ -24,7 +24,8 @@ class LaunchOptionsLogic:
             self.help_button = self.button_box.button(QDialogButtonBox.StandardButton.Help) # type: ignore
 
             self.apply_button.clicked.connect(self.save_data)
-            self.help_button.clicked.connect(lambda: os.system("xdg-open https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955"))
+            #self.help_button.clicked.connect(lambda: os.system("xdg-open https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955"))
+            self.help_button.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
             self.line_edit.textChanged.connect(self.data_changed)
 
             # Load line from the file

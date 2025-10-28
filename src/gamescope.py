@@ -90,7 +90,8 @@ class GamescopeLogic:
 
 
             self.apply_button.clicked.connect(self.save_data)
-            self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Gamescope"))
+            #self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Gamescope"))
+            self.help_button.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
             self.reset_button.clicked.connect(self.clear_data)
             self.defaults_button.clicked.connect(self.reset_data)
 

@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QLineEdit, QCheckBox, QDialogButtonBox, QMessageBo
 import file_manager as fman
 from file_manager import ConfigFile
 import shared_data
+import os
 
 class GeneralSettingsLogic:
     def __init__(self, file:ConfigFile, parent_widget=None) -> None:
@@ -18,8 +19,10 @@ class GeneralSettingsLogic:
             self.scb_auto_flags = parent_widget.findChild(QCheckBox, 'scb_auto_flags')  # type: ignore
             self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
             self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
+            self.help_button = self.button_box.button(QDialogButtonBox.StandardButton.Help) # type: ignore
 
             self.apply_button.clicked.connect(self.save_data)
+            self.help_button.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
     
             # Load lines from the file
             self.load_data()

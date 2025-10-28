@@ -30,7 +30,8 @@ class EnvVarLogic:
             
             self.add_entry.clicked.connect(self.new_entry)
             self.apply_button.clicked.connect(self.save_data)
-            self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Environment_variables"))
+            #self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Environment_variables"))
+            self.help_button.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
 
             # Load lines from the file
             
