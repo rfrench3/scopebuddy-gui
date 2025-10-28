@@ -382,7 +382,7 @@
          <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="standardButtons">
-         <set>QDialogButtonBox::StandardButton::Apply</set>
+         <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Help</set>
         </property>
        </widget>
       </item>
