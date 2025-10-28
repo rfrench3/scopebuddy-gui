@@ -31,6 +31,18 @@
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="leftMargin">
+      <number>12</number>
+     </property>
+     <property name="topMargin">
+      <number>12</number>
+     </property>
+     <property name="rightMargin">
+      <number>12</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QScrollArea" name="variables_list">
        <property name="maximumSize">
@@ -48,7 +60,7 @@
           <x>0</x>
           <y>0</y>
           <width>600</width>
-          <height>570</height>
+          <height>559</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
