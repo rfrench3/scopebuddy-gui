@@ -367,7 +367,7 @@ class ApplicationLogic:
                 
             # Create a new config file in APPID_DIR with the given file name and display name
             if (file_name and
-            not fman.invalid_filename(file_name) and
+            not fman.is_filename_invalid(file_name) and
             file_name != ".conf"
             ):
                 # the given file name is valid, make sure it does not already exist
@@ -387,7 +387,7 @@ class ApplicationLogic:
                         QMessageBox.Icon.Warning,
                         QMessageBox.StandardButton.Ok
                     )
-            elif fman.invalid_filename(file_name):
+            elif fman.is_filename_invalid(file_name):
                 # The box had invalid characters
                 fman.load_message_box(
                     self.window,

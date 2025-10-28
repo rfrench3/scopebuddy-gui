@@ -525,6 +525,8 @@ class ScopebuddyDirectory:
 
         # store all necessary info about files and their paths for the file selection part of the app
         self.full_directory = self.return_filesystem_information(self.directory_path)
+        import pprint
+        pprint.pprint(self.full_directory)
         
     def __str__(self) -> str:
         """Returns detected path to scopebuddy directory."""
@@ -553,12 +555,11 @@ class ScopebuddyDirectory:
         
         return {config.print_path(): config.print_displayname() for config in config_files}
 
-    def return_filesystem_information(self, directory: str) -> dict:
+    def return_filesystem_information(self, directory: str, _ignore_subfolders:bool=False) -> dict:
         """Returns a nested dictionary about the scopebuddy directory.\n
         All entries have type=file/folder, path=path, name=filename.\n
         Files have displayname, 
         folders have a children that contains its own nested dictionary.
-        
         """
         information = {}
 
@@ -591,14 +592,22 @@ class ScopebuddyDirectory:
                 
                 information[name] = item
                 
-            elif os.path.isdir(path):
+            elif os.path.isdir(path) and not _ignore_subfolders:
                 # Handle folders - recursively scan subdirectories
                 item = {
                     'type': 'folder',
                     'path': path,
                     'name': name,
-                    'children': self.return_filesystem_information(path)  # Recursive call
+                    'children': None
                 }
+
+                # This use of _ignore_subfolders should handle symlinking AppID/steam back into AppID,
+                # while still allowing steam (for example) to be displayed as the folder.
+                if os.path.islink(path):
+                    _ignore_subfolders = True
+
+                item['children'] = self.return_filesystem_information(path, _ignore_subfolders)  # Recursive call
+
                 information[name] = item
 
         return information
@@ -642,6 +651,13 @@ class ScopebuddyDirectory:
             print(f"Unanticipated error: {e}")
             return True
 
+    def delete_file(self, path):
+        """Deletes the file."""
+        raise NotImplementedError
+
+    def delete_folder(self, path):
+        """Deletes the folder and all files inside of it."""
+        raise NotImplementedError
 
 
 
