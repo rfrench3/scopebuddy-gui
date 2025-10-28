@@ -356,6 +356,15 @@ class ApplicationLogic:
         result = dialog.exec()
         
         if result == QDialog.DialogCode.Accepted:  # OK button was clicked
+
+            dialog.data['launcher']
+            dialog.data['filename']
+            dialog.data['displayname']
+
+            
+
+        
+        if result == QDialog.DialogCode.Accepted:  # OK button was clicked
             # Extract data from the LineEdit widgets
             file_name_edit: QLineEdit = dialog.findChild(QLineEdit, "file_name") # type: ignore
             display_name_edit: QLineEdit = dialog.findChild(QLineEdit, "display_name") # type: ignore
@@ -438,19 +447,21 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         self.previous: QPushButton = self.ui_widget.findChild(QPushButton, 'previous')  # type: ignore
         self.next: QPushButton = self.ui_widget.findChild(QPushButton, 'next')  # type: ignore
         self.stack: QStackedWidget = self.ui_widget.findChild(QStackedWidget, 'stackedWidget')  # type: ignore
-        self.STACK_FINAL = 1
+        self.STACK_FINAL: int = 1
         self.launchers: QTreeWidget = self.ui_widget.findChild(QTreeWidget, 'game_launchers')  # type: ignore
         self.launcher_label: QLabel = self.ui_widget.findChild(QLabel, 'launcher') # type: ignore
         self.filename: QLineEdit = self.ui_widget.findChild(QLineEdit, 'file_name') # type: ignore
         self.displayname: QLineEdit = self.ui_widget.findChild(QLineEdit, 'display_name') # type: ignore
-        self.button_box: QDialogButtonBox = self.ui_widget.findChild(QDialogButtonBox, 'buttonBox') #type:ignore
-
+        self.save: QPushButton = self.ui_widget.findChild(QPushButton, 'save')  # type: ignore
+        self.discard: QPushButton = self.ui_widget.findChild(QPushButton, 'discard')  # type: ignore
 
         self.previous.clicked.connect(self.last_page)
         self.next.clicked.connect(self.next_page)
         self.launchers.itemClicked.connect(self.set_launcher)
         self.filename.textChanged.connect(self.filename_changed)
         self.displayname.textChanged.connect(self.displayname_changed)
+        self.discard.clicked.connect(self.close)
+        self.save.clicked.connect(self.save_new_file)
 
     def last_page(self):
         new = self.stack.currentIndex() - 1
@@ -471,26 +482,36 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
     def set_launcher(self):
         self.data['launcher'] = self.launchers.currentItem().text(0)
         self.launcher_label.setText(self.data['launcher'])
-        self.update_buttonbox_status()
+        self.update_save_button()
 
     def filename_changed(self):
         self.data['file_name'] = self.filename.text()
-        self.update_buttonbox_status()
+
+        #TODO: this indicates an invalid filename but looks VERY bad while doing it
+        if fman.is_filename_invalid(self.data['file_name']):
+            self.filename.setStyleSheet("QLineEdit { background-color: #ff0000; }")
+        else:
+            self.filename.setStyleSheet("")
+
+        self.update_save_button()
         
     def displayname_changed(self):
         self.data['display_name'] = self.displayname.text()
         
-
-    def update_buttonbox_status(self):
+    def update_save_button(self):
         """Requires a launcher and file name to be set before allowing you to try saving."""
-        self.button_box.setEnabled(bool(self.data['launcher'] and self.data['file_name']))
+        if (self.data['launcher'] and not fman.is_filename_invalid(self.data['file_name'])):
+            self.save.setEnabled(True)
+        else:
+            self.save.setEnabled(False)
+
+    def save_new_file(self):
+        """saves the file under the appropriate folder."""
+        #TODO: figure out where file saving logic should happen, here or in ApplicationLogic
+        self.accept()
 
             
 
-    
-
-
-        
 
 # Logic that loads the app
 app = QApplication([])
