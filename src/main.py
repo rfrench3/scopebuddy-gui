@@ -125,7 +125,7 @@ class ApplicationLogic:
         #           self.file_list = self.window.findChild(QListWidget, 'file_list') #TODO: remove
         self.file_tree:QTreeWidget = self.window.findChild(QTreeWidget, 'file_tree')
         self.large_logo = self.window.findChild(QWidget, "widget_app_icon")
-        
+
         # Initialize logic references (but don't create widgets yet)
         self.general_settings_logic = None
         self.env_vars_logic = None
@@ -208,12 +208,11 @@ class ApplicationLogic:
         
         for name, num_configs, filename_displayname in launcher_data:
             launcher = QTreeWidgetItem()
-            launcher.setText(0, name)
             
             if num_configs == 1:
-                launcher.setText(1, "(1 config)")
+                launcher.setText(0, f"{name} (1 config)")
             else:
-                launcher.setText(1, f"({num_configs} configs)")
+                launcher.setText(0, f"{name} ({num_configs} configs)")
 
             self.file_tree.addTopLevelItem(launcher)
 
@@ -384,7 +383,9 @@ class ApplicationLogic:
                 return
         else:
             # Sub-item clicked - get launcher folder from parent
-            launcher_folder = parent.text(0)
+
+            # launcher' ('# configs), split off the ' (# configs)' part
+            launcher_folder = parent.text(0).rsplit(' (', 1)[0]
             filename = item.toolTip(0)[6:]  # Remove "File: " prefix
             filepath = os.path.join(fman.APPID_DIR, launcher_folder, filename)
 

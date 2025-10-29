@@ -344,14 +344,12 @@
                        <property name="headerHidden">
                         <bool>true</bool>
                        </property>
+                       <property name="columnCount">
+                        <number>1</number>
+                       </property>
                        <column>
                         <property name="text">
                          <string>launcher</string>
-                        </property>
-                       </column>
-                       <column>
-                        <property name="text">
-                         <string>num_configs</string>
                         </property>
                        </column>
                       </widget>
