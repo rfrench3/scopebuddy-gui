@@ -328,13 +328,32 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QListWidget" name="file_list">
+                      <widget class="QTreeWidget" name="file_tree">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                         <horstretch>1</horstretch>
+                         <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="verticalScrollMode">
+                        <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+                       </property>
+                       <property name="rootIsDecorated">
+                        <bool>false</bool>
+                       </property>
+                       <property name="headerHidden">
+                        <bool>true</bool>
+                       </property>
+                       <column>
+                        <property name="text">
+                         <string>launcher</string>
+                        </property>
+                       </column>
+                       <column>
+                        <property name="text">
+                         <string>num_configs</string>
+                        </property>
+                       </column>
                       </widget>
                      </item>
                     </layout>

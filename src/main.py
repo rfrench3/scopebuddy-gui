@@ -122,7 +122,8 @@ class ApplicationLogic:
         self.button_new_config = self.window.findChild(QPushButton, 'button_new_config')
         self.open_folder = self.window.findChild(QPushButton, "open_folder")
         self.docs_link = self.window.findChild(QPushButton, "button_about")
-        self.file_list = self.window.findChild(QListWidget, 'file_list')
+        #           self.file_list = self.window.findChild(QListWidget, 'file_list') #TODO: remove
+        self.file_tree:QTreeWidget = self.window.findChild(QTreeWidget, 'file_tree')
         self.large_logo = self.window.findChild(QWidget, "widget_app_icon")
         
         # Initialize logic references (but don't create widgets yet)
@@ -147,7 +148,7 @@ class ApplicationLogic:
         self.button_new_config.clicked.connect(self.new_config_pressed)
         self.open_folder.clicked.connect(self.open_folder_clicked)
         self.docs_link.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
-        self.file_list.itemClicked.connect(self.list_clicked)
+        self.file_tree.itemClicked.connect(self.tree_clicked)
 
         # Add a permanent label and pushButton to the status bar
         self.status_label = QLabel("File: None")
@@ -168,23 +169,59 @@ class ApplicationLogic:
         self.appid_files = fman.ScopebuddyDirectory()
 
         # load all configs into UI
-        self.reload_file_list()
+        self.reload_file_tree()
         
-    def reload_file_list(self) -> None:
-        """Clears all entries from self.file_list, and then reloads them."""
-        self.file_list.clear()
+    def reload_file_tree(self) -> None:
+        """Clears all entries from self.file_tree, and then reloads them."""
+    
+        self.file_tree.clear()
 
-        # Load global config file
-        item = QListWidgetItem("Global")
-        item.setToolTip(f"File: scb.conf")
-        self.file_list.addItem(item)
+        globalconfig = QTreeWidgetItem()
+        globalconfig.setText(0, "Global")
+        globalconfig.setToolTip(0, "File: scb.conf")
+        self.file_tree.addTopLevelItem(globalconfig)
 
-        # Load config files that have been found into the list widget
-        appid_dict = self.appid_files.print_appid_dict()
-        for filename, displayname in appid_dict.items():
-            item = QListWidgetItem(displayname)
-            item.setToolTip(f"File: {os.path.basename(filename)}")
-            self.file_list.addItem(item)
+        directory = fman.ScopebuddyDirectory()
+        
+        appid_contents = directory.full_directory.get('AppID', {})
+        
+        launcher_data = []
+        
+        # for each subfolder of AppID (the launchers), count folder name and number of files to put into a list for sorting
+        if appid_contents.get('children'):
+            for name, item_data in appid_contents['children'].items():
+                if item_data['type'] == 'folder' and item_data.get('children'):
+                    num_configs = 0
+                    configs_list = []
+                    for child_name, child_data in item_data['children'].items():
+                        if child_data['type'] == 'file':
+                            num_configs += 1  
+                            configs_list.append((child_data['name'], child_data['displayname']))
+
+
+                    launcher_data.append((name, num_configs, configs_list))
+                elif item_data['type'] == 'folder':
+                    launcher_data.append((name, 0, configs_list))
+        
+        # Sort by number of configs (descending), then by name (ascending)
+        launcher_data.sort(key=lambda x: (-x[1], x[0]))
+        
+        for name, num_configs, filename_displayname in launcher_data:
+            launcher = QTreeWidgetItem()
+            launcher.setText(0, name)
+            
+            if num_configs == 1:
+                launcher.setText(1, "(1 config)")
+            else:
+                launcher.setText(1, f"({num_configs} configs)")
+
+            self.file_tree.addTopLevelItem(launcher)
+
+            # add configs to tree widget
+            for filename, displayname in filename_displayname:
+                config_item = QTreeWidgetItem(launcher)
+                config_item.setText(0, displayname)
+                config_item.setToolTip(0, f"File: {filename}")
         
     def _on_tab_changed(self) -> None:
         """Notifies user if they leave the tab with unsaved changes."""
@@ -247,10 +284,6 @@ class ApplicationLogic:
             self._last_tab_index = current_index
             return QMessageBox.StandardButton.Apply
 
-
-        
-        
-        
     def open_folder_clicked(self):
         """Shows a popup window with instructions for opening the Scopebuddy folder."""
         fman.load_message_box(
@@ -293,12 +326,12 @@ class ApplicationLogic:
         unload_interface(self)
         selected_config = None
 
-        self.reload_file_list()
+        self.reload_file_tree()
 
         self.mainFileSelect.setCurrentIndex(0)
         self.statusBar.hide()
 
-    def list_clicked(self) -> None:
+    def tree_clicked(self) -> None:
         """opens the config file the user clicked."""
         def load_with_selected_file(self,selected_file:fman.ConfigFile) -> None:
             """Loads the file selected by the user, then loads the interface with it."""
@@ -335,14 +368,25 @@ class ApplicationLogic:
             load_interface(self, selected_config) # load the interface elements given the selected file
             self.mainFileSelect.setCurrentIndex(1)
             self.statusBar.show()
-
-        item = self.file_list.currentItem()
         
-        if item.text() == "Global":
-            filepath = GLOBAL_CONFIG
+        item = self.file_tree.currentItem()
+        
+        # Check if this is a top-level item
+        parent = item.parent()
+        
+        if parent is None:
+            # Top-level item clicked
+            if item.text(0) == "Global":
+                filepath = GLOBAL_CONFIG
+            else:
+                # Non-Global top-level item - expand/collapse it
+                item.setExpanded(not item.isExpanded())
+                return
         else:
-            filename:str = item.toolTip()[6:]
-            filepath:str = os.path.join(fman.APPID_DIR,filename)
+            # Sub-item clicked - get launcher folder from parent
+            launcher_folder = parent.text(0)
+            filename = item.toolTip(0)[6:]  # Remove "File: " prefix
+            filepath = os.path.join(fman.APPID_DIR, launcher_folder, filename)
 
         file = fman.ConfigFile(filepath)
         load_with_selected_file(self, file)
@@ -379,7 +423,7 @@ class ApplicationLogic:
                 dialog.data['display_name'],
                 directory
             )
-            self.reload_file_list()
+            self.reload_file_tree()
 
 class NewFileDialog(QDialog): #TODO: add file/folder deletion, either here or as a separate dialog
     def __init__(self, parent=None):
