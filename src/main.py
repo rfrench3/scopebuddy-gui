@@ -435,10 +435,15 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
             self.next.setEnabled(False)
         self.previous.setEnabled(True)
 
+    ### Launchers Page ###
+
     def set_launcher(self):
         self.data['launcher'] = self.launchers.currentItem().text(0)
         self.launcher_label.setText(self.data['launcher'])
         self.update_save_button()
+
+
+    ### File Page ###
 
     def filename_changed(self):
         self.data['file_name'] = self.filename.text()

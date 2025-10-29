@@ -525,8 +525,6 @@ class ScopebuddyDirectory:
 
         # store all necessary info about files and their paths for the file selection part of the app
         self.full_directory = self.return_filesystem_information(self.directory_path)
-        import pprint
-        pprint.pprint(self.full_directory)
         
     def __str__(self) -> str:
         """Returns detected path to scopebuddy directory."""
@@ -572,7 +570,7 @@ class ScopebuddyDirectory:
 
         for name in items:
             path = os.path.join(directory, name)
-            
+
             if os.path.isfile(path):
                 # Handle files - add displayname for .conf files
                 item = {
@@ -601,12 +599,10 @@ class ScopebuddyDirectory:
                     'children': None
                 }
 
-                # This use of _ignore_subfolders should handle symlinking AppID/steam back into AppID,
-                # while still allowing steam (for example) to be displayed as the folder.
-                if os.path.islink(path):
-                    _ignore_subfolders = True
+                # handles symlinks (such as AppID/steam -> AppID) by refusing to check more than one layer of symlink
+                ignore_next_level = os.path.islink(path)
 
-                item['children'] = self.return_filesystem_information(path, _ignore_subfolders)  # Recursive call
+                item['children'] = self.return_filesystem_information(path, ignore_next_level)  # Recursive call
 
                 information[name] = item
 
@@ -652,12 +648,14 @@ class ScopebuddyDirectory:
             print(f"Unanticipated error: {e}")
             return True
 
-    def delete_file(self, path):
-        """Deletes the file."""
+    @staticmethod
+    def delete_file(path):
+        """Deletes the file. Only works for files inside the AppID folder."""
         raise NotImplementedError
 
-    def delete_folder(self, path):
-        """Deletes the folder and all files inside of it."""
+    @staticmethod
+    def delete_folder(path):
+        """Deletes the folder and all files inside of it. Only works for folders inside the AppID folder."""
         raise NotImplementedError
 
 
