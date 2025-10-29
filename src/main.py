@@ -381,7 +381,7 @@ class ApplicationLogic:
             )
             self.reload_file_list()
 
-class NewFileDialog(QDialog): #TODO: finish adding functionality
+class NewFileDialog(QDialog): #TODO: add file/folder deletion, either here or as a separate dialog
     def __init__(self, parent=None):
         super().__init__(parent)
         
@@ -467,6 +467,8 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
                             num_configs += 1  
 
                     launcher_data.append((name, num_configs))
+                elif item_data['type'] == 'folder':
+                    launcher_data.append((name, 0))
         
         # Sort by number of configs (descending), then by name (ascending)
         launcher_data.sort(key=lambda x: (-x[1], x[0]))
@@ -483,13 +485,49 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
             self.launchers.addTopLevelItem(launcher)
                     
     def new_launcher(self):
-
-        dialog = NewFolderDialog()
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Create New Launcher")
+        dialog.setWindowIcon(fman.icon)
+        
+        layout = QVBoxLayout(dialog)
+        
+        label = QLabel("Enter launcher folder name:")
+        layout.addWidget(label)
+        
+        line_edit = QLineEdit()
+        layout.addWidget(line_edit)
+        
+        button_box = QWidget()
+        button_layout = QVBoxLayout(button_box)
+        
+        save_button = QPushButton("Create")
+        cancel_button = QPushButton("Cancel")
+        
+        save_button.clicked.connect(dialog.accept)
+        cancel_button.clicked.connect(dialog.reject)
+        
+        button_layout.addWidget(save_button)
+        button_layout.addWidget(cancel_button)
+        
+        layout.addWidget(button_box)
+        
         result = dialog.exec()
-
-
-
-        raise NotImplementedError
+        
+        if result == QDialog.DialogCode.Accepted:
+            launcher_name = line_edit.text().strip()
+            if launcher_name and not fman.is_filename_invalid(launcher_name):
+                launcher_path = os.path.join(APPID_DIR, launcher_name)
+                os.makedirs(launcher_path, exist_ok=True)
+                self.reload_launcher_widget()
+            else:
+                fman.load_message_box(
+                    self,
+                    "Error",
+                    "Invalid launcher folder name.",
+                    QMessageBox.Icon.Warning,
+                    QMessageBox.StandardButton.Ok
+                )
+        
 
     ### File Page ###
 
@@ -513,18 +551,6 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
             self.save.setEnabled(True)
         else:
             self.save.setEnabled(False)
-
-class NewFolderDialog(QDialog): #TODO: finish implementing functionality, move these dialogs into their own file. 
-    # Probably instead of a whole separate dialog, just make a hidden third page in the NewFileDialog.
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        
-        self.ui_widget = fman.load_widget(dialog_new_launcher)
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(self.ui_widget)
-
-
 
 # Logic that loads the app
 app = QApplication([])

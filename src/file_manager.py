@@ -596,7 +596,7 @@ class ScopebuddyDirectory:
                     'type': 'folder',
                     'path': path,
                     'name': name,
-                    'children': None
+                    'children': {}
                 }
 
                 # handles symlinks (such as AppID/steam -> AppID) by refusing to check more than one layer of symlink
