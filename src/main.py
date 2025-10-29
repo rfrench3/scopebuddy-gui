@@ -37,7 +37,7 @@ from PySide6.QtWidgets import (
     QApplication, QStackedWidget, QStatusBar, QListWidget,
     QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog,
     QLineEdit, QMessageBox, QMainWindow, QWidget, QVBoxLayout,
-    QTreeWidget, QDialogButtonBox
+    QTreeWidget, QTreeWidgetItem, QToolButton
     )
 from PySide6.QtSvgWidgets import QSvgWidget
 
@@ -70,6 +70,7 @@ ui_launch_options = fman.ui_launch_options
 # Dialog of welcome page
 #dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
 dialog_new_file = os.path.join(DATA_DIR, "new_file_create.ui")
+dialog_new_launcher = os.path.join(DATA_DIR, "new_folder_create.ui")
 
 
 fman.create_directory()
@@ -410,6 +411,7 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         self.displayname: QLineEdit = self.ui_widget.findChild(QLineEdit, 'display_name') # type: ignore
         self.save: QPushButton = self.ui_widget.findChild(QPushButton, 'save')  # type: ignore
         self.discard: QPushButton = self.ui_widget.findChild(QPushButton, 'discard')  # type: ignore
+        self.add_folder: QToolButton = self.ui_widget.findChild(QToolButton, 'add_folder')  # type: ignore
 
         self.previous.clicked.connect(self.last_page)
         self.next.clicked.connect(self.next_page)
@@ -418,6 +420,9 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         self.displayname.textChanged.connect(self.displayname_changed)
         self.discard.clicked.connect(self.close)
         self.save.clicked.connect(self.accept)
+        self.add_folder.clicked.connect(self.new_launcher)
+
+        self.reload_launcher_widget()
 
     def last_page(self):
         new = self.stack.currentIndex() - 1
@@ -441,7 +446,50 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         self.data['launcher'] = self.launchers.currentItem().text(0)
         self.launcher_label.setText(self.data['launcher'])
         self.update_save_button()
+        self.next_page()
 
+    def reload_launcher_widget(self): #TODO: if steam folder isn't present, steam folder should be present and use appid files directly
+        self.launchers.clear()
+
+        directory = fman.ScopebuddyDirectory()
+        
+        appid_contents = directory.full_directory.get('AppID', {})
+        
+        launcher_data = []
+        
+        # for each subfolder of AppID (the launchers), count folder name and number of files to put into a list for sorting
+        if appid_contents.get('children'):
+            for name, item_data in appid_contents['children'].items():
+                if item_data['type'] == 'folder' and item_data.get('children'):
+                    num_configs = 0
+                    for child_name, child_data in item_data['children'].items():
+                        if child_data['type'] == 'file':
+                            num_configs += 1  
+
+                    launcher_data.append((name, num_configs))
+        
+        # Sort by number of configs (descending), then by name (ascending)
+        launcher_data.sort(key=lambda x: (-x[1], x[0]))
+        
+        for name, num_configs in launcher_data:
+            launcher = QTreeWidgetItem()
+            launcher.setText(0, name)
+            
+            if num_configs == 1:
+                launcher.setText(1, "(1 config)")
+            else:
+                launcher.setText(1, f"({num_configs} configs)")
+
+            self.launchers.addTopLevelItem(launcher)
+                    
+    def new_launcher(self):
+
+        dialog = NewFolderDialog()
+        result = dialog.exec()
+
+
+
+        raise NotImplementedError
 
     ### File Page ###
 
@@ -466,8 +514,16 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         else:
             self.save.setEnabled(False)
 
+class NewFolderDialog(QDialog): #TODO: finish implementing functionality, move these dialogs into their own file. 
+    # Probably instead of a whole separate dialog, just make a hidden third page in the NewFileDialog.
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+        self.ui_widget = fman.load_widget(dialog_new_launcher)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self.ui_widget)
 
-            
 
 
 # Logic that loads the app
