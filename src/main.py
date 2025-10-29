@@ -335,9 +335,6 @@ class ApplicationLogic:
             self.mainFileSelect.setCurrentIndex(1)
             self.statusBar.show()
 
-            
-
-            #print(f"---FILE LOADED---\n{file}\n-----------------")
         item = self.file_list.currentItem()
         
         if item.text() == "Global":
@@ -354,75 +351,34 @@ class ApplicationLogic:
         """opens a modal that has the user create a new config with a Steam AppID.""" 
         dialog = NewFileDialog(self.window)
         result = dialog.exec()
-        
-        if result == QDialog.DialogCode.Accepted:  # OK button was clicked
 
-            dialog.data['launcher']
-            dialog.data['filename']
-            dialog.data['displayname']
+        if result != QDialog.DialogCode.Accepted:  
+            return
 
-            
+        if not dialog.data['file_name'].endswith(".conf"):
+            dialog.data['file_name'] += ".conf"
 
-        
-        if result == QDialog.DialogCode.Accepted:  # OK button was clicked
-            # Extract data from the LineEdit widgets
-            file_name_edit: QLineEdit = dialog.findChild(QLineEdit, "file_name") # type: ignore
-            display_name_edit: QLineEdit = dialog.findChild(QLineEdit, "display_name") # type: ignore
-            
-            if not file_name_edit.text().endswith(".conf"): 
-                file_name = file_name_edit.text().strip() + ".conf" 
-            
-            display_name = display_name_edit.text().strip() 
-                
-            # Create a new config file in APPID_DIR with the given file name and display name
-            if (file_name and
-            not fman.is_filename_invalid(file_name) and
-            file_name != ".conf"
-            ):
-                # the given file name is valid, make sure it does not already exist
-                new_file_path = os.path.join(fman.APPID_DIR, file_name)
-                if not os.path.exists(new_file_path):
-                    # Create the config file using file_manager logic
-                    logic = fman.ScopebuddyDirectory()
-                    logic.create_file(file_name,display_name)
+        directory = os.path.join(APPID_DIR, dialog.data['launcher'])
+        full_path = os.path.join(directory, dialog.data['file_name'])
 
-                    self.reload_file_list()
-                else:
-                    fman.load_message_box(
-                        self.window,
-                        "Error",
-                        (f"File {file_name} already exists.\n"
-                        "Hover over the items in the list to see their file names."),
-                        QMessageBox.Icon.Warning,
-                        QMessageBox.StandardButton.Ok
-                    )
-            elif fman.is_filename_invalid(file_name):
-                # The box had invalid characters
-                fman.load_message_box(
-                    self.window,
-                    "Error",
-                    "File name contains invalid characters.",
-                    QMessageBox.Icon.Warning,
-                    QMessageBox.StandardButton.Ok
-                )
-            elif file_name == ".conf":
-                # The box was left empty
-                fman.load_message_box(
-                    self.window,
-                    "Error",
-                    "File name is empty.",
-                    QMessageBox.Icon.Warning,
-                    QMessageBox.StandardButton.Ok
-                )
-            else:
-                fman.load_message_box(
-                    self.window,
-                    "Error",
-                    ("File name is invalid for a reason the developer did not account for.\n"
-                    "If you see this, please report your file name to the GitHub issue tracker."),
-                    QMessageBox.Icon.Warning,
-                    QMessageBox.StandardButton.Ok
-                )
+        if os.path.exists(full_path):
+            fman.load_message_box(
+                self.window,
+                "Error",
+                (
+                    f"File {dialog.data['file_name']} already exists in this location.\n"
+                    "Hover over the items in the list to see their file names."
+                ),
+                QMessageBox.Icon.Warning,
+                QMessageBox.StandardButton.Ok
+            )
+        else:
+            fman.ScopebuddyDirectory.create_file(
+                dialog.data['file_name'],
+                dialog.data['display_name'],
+                directory
+            )
+            self.reload_file_list()
 
 class NewFileDialog(QDialog): #TODO: finish adding functionality
     def __init__(self, parent=None):
@@ -461,7 +417,7 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         self.filename.textChanged.connect(self.filename_changed)
         self.displayname.textChanged.connect(self.displayname_changed)
         self.discard.clicked.connect(self.close)
-        self.save.clicked.connect(self.save_new_file)
+        self.save.clicked.connect(self.accept)
 
     def last_page(self):
         new = self.stack.currentIndex() - 1
@@ -487,7 +443,7 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
     def filename_changed(self):
         self.data['file_name'] = self.filename.text()
 
-        #TODO: this indicates an invalid filename but looks VERY bad while doing it
+        #TODO: this clearly indicates an invalid filename but looks VERY bad while doing it
         if fman.is_filename_invalid(self.data['file_name']):
             self.filename.setStyleSheet("QLineEdit { background-color: #ff0000; }")
         else:
@@ -505,10 +461,6 @@ class NewFileDialog(QDialog): #TODO: finish adding functionality
         else:
             self.save.setEnabled(False)
 
-    def save_new_file(self):
-        """saves the file under the appropriate folder."""
-        #TODO: figure out where file saving logic should happen, here or in ApplicationLogic
-        self.accept()
 
             
 

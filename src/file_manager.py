@@ -614,7 +614,8 @@ class ScopebuddyDirectory:
 
     # DATA EDITING
 
-    def create_file(self,filename:str,displayname:str='',directory:str=APPID_DIR) -> bool:
+    @staticmethod
+    def create_file(filename:str,displayname:str='',directory:str=APPID_DIR) -> bool:
         """Adds a new file to the chosen directory and gives it a displayname. 
         If no display name is provided, it will default to the filename.
         If the file cannot be made, it will return True."""
