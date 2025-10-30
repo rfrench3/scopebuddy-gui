@@ -20,12 +20,8 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
 #TODO: SCOPE OF UPDATE:
 '''
 - proper error detection and handling when saving files
-
-- revamp file creator and locator to include non-AppID folders
-    - finish implementing NewFileDialog class
-    - rework fman.ScopebuddyDirectory class to handle multi-folder
-    - Replace main menu's QListWidget with QTreeWidget (replace list of configs with launcher,configs)
-
+- finish implementing NewFileDialog class
+- make new system handle configs directly placed into AppID without a symlinked steam folder
 - put in place necessary work for non-English translations
 '''
 
@@ -34,10 +30,11 @@ import os
 
 # PySide6, Qt Designer UI files
 from PySide6.QtWidgets import (
-    QApplication, QStackedWidget, QStatusBar, QListWidget,
-    QListWidgetItem, QTabWidget, QLabel, QPushButton, QDialog,
-    QLineEdit, QMessageBox, QMainWindow, QWidget, QVBoxLayout,
-    QTreeWidget, QTreeWidgetItem, QToolButton
+    QApplication, QStackedWidget, QStatusBar,
+    QTabWidget, QLabel, QPushButton, QDialog,
+    QLineEdit, QMessageBox, QMainWindow, QWidget, 
+    QVBoxLayout, QTreeWidget, QTreeWidgetItem, 
+    QToolButton
     )
 from PySide6.QtSvgWidgets import QSvgWidget
 
@@ -71,6 +68,7 @@ ui_launch_options = fman.ui_launch_options
 #dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
 dialog_new_file = os.path.join(DATA_DIR, "new_file_create.ui")
 dialog_new_launcher = os.path.join(DATA_DIR, "new_folder_create.ui")
+dialog_about = os.path.join(DATA_DIR, "dialog_about.ui")
 
 
 fman.create_directory()
@@ -121,7 +119,7 @@ class ApplicationLogic:
         self.statusBar = self.window.findChild(QStatusBar, "statusBar")
         self.button_new_config = self.window.findChild(QPushButton, 'button_new_config')
         self.open_folder = self.window.findChild(QPushButton, "open_folder")
-        self.docs_link = self.window.findChild(QPushButton, "button_about")
+        self.about = self.window.findChild(QPushButton, "button_about")
         #           self.file_list = self.window.findChild(QListWidget, 'file_list') #TODO: remove
         self.file_tree:QTreeWidget = self.window.findChild(QTreeWidget, 'file_tree')
         self.large_logo = self.window.findChild(QWidget, "widget_app_icon")
@@ -147,7 +145,7 @@ class ApplicationLogic:
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
         self.open_folder.clicked.connect(self.open_folder_clicked)
-        self.docs_link.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
+        self.about.clicked.connect(self.about_dialog)
         self.file_tree.itemClicked.connect(self.tree_clicked)
 
         # Add a permanent label and pushButton to the status bar
@@ -425,6 +423,29 @@ class ApplicationLogic:
                 directory
             )
             self.reload_file_tree()
+
+    def about_dialog(self) -> None:
+        """Opens a dialog with information and links to Scopebuddy and the SCBGUI docs."""
+        dialog: QDialog = fman.load_widget(dialog_about, window_title="About") #type:ignore
+        image: QWidget = dialog.findChild(QWidget, 'image') #type:ignore
+        scb_gh: QPushButton = dialog.findChild(QPushButton, 'scb_gh') #type:ignore
+        scb_docs: QPushButton = dialog.findChild(QPushButton, 'scb_docs') #type:ignore
+        gui_gh: QPushButton = dialog.findChild(QPushButton, 'gui_gh') #type:ignore
+        gui_docs: QPushButton = dialog.findChild(QPushButton, 'gui_docs') #type:ignore
+
+        svg_widget = QSvgWidget(fman.svg_path)
+        svg_widget.setFixedSize(128, 128)
+        layout: QVBoxLayout = image.layout() #type:ignore
+        layout.addWidget(svg_widget)
+
+        scb_gh.clicked.connect(lambda: os.system("xdg-open https://github.com/HikariKnight/ScopeBuddy"))
+        scb_docs.clicked.connect(lambda: os.system("xdg-open https://docs.bazzite.gg/Advanced/scopebuddy/"))
+        gui_gh.clicked.connect(lambda: os.system("xdg-open https://github.com/rfrench3/scopebuddy-gui"))
+        gui_docs.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
+
+        dialog.exec()
+
+
 
 class NewFileDialog(QDialog): #TODO: add file/folder deletion, either here or as a separate dialog
     def __init__(self, parent=None):

@@ -178,7 +178,7 @@
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Scopebuddy GUI! This app allows you to easily manage launch arguments with a dedicated menu for configuring Gamescope. With &lt;a href=&quot;https://github.com/HikariKnight/ScopeBuddy&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#bdc8e8;&quot;&gt;ScopeBuddy&lt;/span&gt;&lt;/a&gt; installed, the saved config files can be applied to Steam games automatically!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Scopebuddy GUI! This app allows you to easily manage launch arguments with a dedicated menu for configuring Gamescope. With Scopebuddy installed, the saved config files can be applied to games automatically!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -339,7 +339,7 @@
                         <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
                        </property>
                        <property name="rootIsDecorated">
-                        <bool>false</bool>
+                        <bool>true</bool>
                        </property>
                        <property name="headerHidden">
                         <bool>true</bool>
