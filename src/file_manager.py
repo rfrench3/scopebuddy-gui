@@ -73,9 +73,13 @@ def load_message_box(parent_window,title:str,  text:str,  icon:QMessageBox.Icon=
 ####################################
     
 def create_directory() -> None:
-    """Create the directory for /scopebuddy/AppID."""
+    """Create the directory for /scopebuddy/AppID, and a symlink from AppID/steam back to AppID."""
     APPID_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "scopebuddy", "AppID")
     os.makedirs(APPID_DIR, exist_ok=True)
+
+    steam_symlink = os.path.join(APPID_DIR, "steam")
+    if not os.path.exists(steam_symlink):
+        os.symlink(APPID_DIR, steam_symlink, target_is_directory=True)
 
 def is_filename_invalid(filename:str) -> bool:
     """True if not valid, false otherwise"""

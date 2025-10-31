@@ -188,9 +188,10 @@ class ApplicationLogic:
         # for each subfolder of AppID (the launchers), count folder name and number of files to put into a list for sorting
         if appid_contents.get('children'):
             for name, item_data in appid_contents['children'].items():
+                configs_list = []
                 if item_data['type'] == 'folder' and item_data.get('children'):
                     num_configs = 0
-                    configs_list = []
+                    
                     for child_name, child_data in item_data['children'].items():
                         if child_data['type'] == 'file':
                             num_configs += 1  
