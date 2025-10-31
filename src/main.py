@@ -17,11 +17,13 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
     which could be the default scb.conf or the game-specific confs in AppID.
 '''
 
-#TODO: SCOPE OF UPDATE:
+
+#FIXME: Considerations:
 '''
-- proper error detection and handling when saving files
-- finish implementing NewFileDialog class
-- put in place necessary work for non-English translations
+- file saving should have better error detection
+- capability for non-english translations should be implemented
+- reliance on tooltips and interface text for getting filenames and folder names is a problem
+
 '''
 
 import sys
@@ -73,7 +75,7 @@ dialog_about = os.path.join(DATA_DIR, "dialog_about.ui")
 
 
 fman.create_directory()
-fman.ScopebuddyDirectory().create_file('scb.conf','Global Config file.',fman.SCB_DIR)
+fman.ScopebuddyDirectory.create_file('scb.conf','Global Config file.',fman.SCB_DIR)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -456,7 +458,7 @@ class ApplicationLogic:
         
         menu = QMenu()
 
-            # Check if top-level item or child
+        # Check if top-level item or child
         parent = item.parent()
         
         if parent is None:
@@ -492,14 +494,59 @@ class ApplicationLogic:
     
     def delete_item(self, item, type):
         """After an "Are you sure" dialog, pass the file/folder to fman for deletion."""
-        raise NotImplementedError
+
+        if item.text(0).rsplit(' (', 1)[0] == 'steam':
+            fman.load_message_box(
+            self.window,
+            "Deletion Not Allowed",
+            "The Steam folder is present by\n"
+            "default and cannot be deleted.",
+            QMessageBox.Icon.Warning,
+            QMessageBox.StandardButton.Ok
+            )
+            return
+
+
+        if fman.load_message_box(
+            self.window,
+            "Confirm Deletion",
+            f"Are you certain you wish to delete this {type}?\nThis action cannot be undone.",
+            QMessageBox.Icon.Question,
+            QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Abort
+            ) != QMessageBox.StandardButton.Apply:
+            return 
+
+        if type == 'file':
+            launcher_folder = item.parent().text(0).rsplit(' (', 1)[0]
+            filename = item.toolTip(0)[6:]
+            path = os.path.join(fman.APPID_DIR, launcher_folder, filename)
+            fman.ScopebuddyDirectory.delete_file(path)
+        elif type == 'folder':
+            launcher_folder = item.text(0).rsplit(' (', 1)[0]
+            path = os.path.join(fman.APPID_DIR, launcher_folder)
+            fman.ScopebuddyDirectory.delete_folder(path)
+        else:
+            raise ValueError
+        
+        self.reload_file_tree()
     
     def remake_global(self):
-        """After an "Are you sure" dialog, have fman reset global file."""
-        raise NotImplementedError
+        """After an "Are you sure" dialog, have fman reset the global file."""
+
+        if fman.load_message_box(
+            self.window,
+            "Confirm Deletion",
+            "Are you certain you wish to restore the global config\n" 
+            "to default settings? This action cannot be undone.",
+            QMessageBox.Icon.Question,
+            QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Abort
+            ) != QMessageBox.StandardButton.Apply:
+            return 
+        
+        fman.ScopebuddyDirectory.regenerate_global()
 
 
-class NewFileDialog(QDialog): #TODO: add file/folder deletion, either here or as a separate dialog
+class NewFileDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         

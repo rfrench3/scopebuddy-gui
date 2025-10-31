@@ -653,15 +653,43 @@ class ScopebuddyDirectory:
             return True
 
     @staticmethod
-    def delete_file(path):
-        """Deletes the file. Only works for files inside the AppID folder."""
-        raise NotImplementedError
+    def delete_file(path) -> bool:
+        """Deletes the file. Only works for files inside the AppID folder. Return true if successful."""
+        if not path.startswith(APPID_DIR):
+            raise PermissionError("Attempted to delete file outside of AppID directory.")
+        try:
+            if os.path.isfile(path):
+                os.remove(path)
+                return False
+            else:
+                raise ValueError("File not found at the given path.")
+        except Exception as e:
+            raise e
 
     @staticmethod
-    def delete_folder(path):
+    def delete_folder(path) -> bool:
         """Deletes the folder and all files inside of it. Only works for folders inside the AppID folder."""
-        raise NotImplementedError
+        if not path.startswith(APPID_DIR):
+            raise PermissionError("Attempted to delete folder outside of AppID directory.")
+        
+        if os.path.islink(path):
+            os.unlink(path)
+            return False
 
-
-
-
+        try:
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+                return False
+            else:
+                raise ValueError("Folder not found at the given path.")
+        except Exception as e:
+            raise e
+        
+    @staticmethod
+    def regenerate_global():
+        """Deletes the global config file and then restores a fresh copy."""
+        try:
+            os.remove(os.path.join(SCB_DIR, "scb.conf"))
+            ScopebuddyDirectory.create_file('scb.conf','Global Config file.',SCB_DIR)
+        except Exception as e:
+            raise e
