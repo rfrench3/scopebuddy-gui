@@ -21,7 +21,6 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
 '''
 - proper error detection and handling when saving files
 - finish implementing NewFileDialog class
-- make new system handle configs directly placed into AppID without a symlinked steam folder
 - put in place necessary work for non-English translations
 '''
 
@@ -34,11 +33,13 @@ from PySide6.QtWidgets import (
     QTabWidget, QLabel, QPushButton, QDialog,
     QLineEdit, QMessageBox, QMainWindow, QWidget, 
     QVBoxLayout, QTreeWidget, QTreeWidgetItem, 
-    QToolButton
+    QToolButton, QMenu
     )
 from PySide6.QtSvgWidgets import QSvgWidget
 
-from PySide6.QtCore import QSignalBlocker
+from PySide6.QtGui import QAction
+
+from PySide6.QtCore import QSignalBlocker, Qt
 
 # import custom logic
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
@@ -120,9 +121,11 @@ class ApplicationLogic:
         self.button_new_config = self.window.findChild(QPushButton, 'button_new_config')
         self.open_folder = self.window.findChild(QPushButton, "open_folder")
         self.about = self.window.findChild(QPushButton, "button_about")
-        #           self.file_list = self.window.findChild(QListWidget, 'file_list') #TODO: remove
         self.file_tree:QTreeWidget = self.window.findChild(QTreeWidget, 'file_tree')
         self.large_logo = self.window.findChild(QWidget, "widget_app_icon")
+
+        self.file_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.file_tree.customContextMenuRequested.connect(self.show_context_menu)
 
         # Initialize logic references (but don't create widgets yet)
         self.general_settings_logic = None
@@ -141,7 +144,6 @@ class ApplicationLogic:
         self._last_tab_index = self.mainFileEdit.currentIndex()
         self.mainFileEdit.currentChanged.connect(self._on_tab_changed)
 
-    
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
         self.open_folder.clicked.connect(self.open_folder_clicked)
@@ -446,6 +448,55 @@ class ApplicationLogic:
 
         dialog.exec()
 
+    def show_context_menu(self, position) -> None:
+
+        item = self.file_tree.itemAt(position)
+        if not item:
+            return
+        
+        menu = QMenu()
+
+            # Check if top-level item or child
+        parent = item.parent()
+        
+        if parent is None:
+            # Top-level item (Global or launcher folder)
+            if item.text(0) == "Global":
+                open_action = QAction("Open", self.window)
+                open_action.triggered.connect(lambda: self.tree_clicked())
+                delete_action = QAction("Restore Default", self.window)
+                delete_action.triggered.connect(self.remake_global)
+                menu.addAction(open_action)
+                menu.addAction(delete_action)
+            else:
+                # Launcher folder
+                add_config = QAction("Add Config", self.window)
+                # run new_config_pressed with the launcher argument passed
+                add_config.triggered.connect(lambda: self.new_config_pressed())
+                menu.addAction(add_config)
+                
+                delete_folder = QAction("Delete Launcher", self.window)
+                delete_folder.triggered.connect(lambda: self.delete_item(item, 'folder'))
+                menu.addAction(delete_folder)
+        else:
+            # Config file item
+            open_action = QAction("Open", self.window)
+            open_action.triggered.connect(lambda: self.tree_clicked())
+            menu.addAction(open_action)
+            
+            delete_action = QAction("Delete", self.window)
+            delete_action.triggered.connect(lambda: self.delete_item(item, 'file'))
+            menu.addAction(delete_action)
+        
+        menu.exec(self.file_tree.viewport().mapToGlobal(position))
+    
+    def delete_item(self, item, type):
+        """After an "Are you sure" dialog, pass the file/folder to fman for deletion."""
+        raise NotImplementedError
+    
+    def remake_global(self):
+        """After an "Are you sure" dialog, have fman reset global file."""
+        raise NotImplementedError
 
 
 class NewFileDialog(QDialog): #TODO: add file/folder deletion, either here or as a separate dialog
@@ -509,13 +560,14 @@ class NewFileDialog(QDialog): #TODO: add file/folder deletion, either here or as
 
     ### Launchers Page ###
 
-    def set_launcher(self):
+    def set_launcher(self):            
         self.data['launcher'] = self.launchers.currentItem().text(0)
+
         self.launcher_label.setText(self.data['launcher'])
         self.update_save_button()
         self.next_page()
 
-    def reload_launcher_widget(self): #TODO: if steam folder isn't present, steam folder should be present and use appid files directly
+    def reload_launcher_widget(self):
         self.launchers.clear()
 
         directory = fman.ScopebuddyDirectory()
