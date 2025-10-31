@@ -151,6 +151,7 @@ class GamescopeLogic:
             self.action_60.triggered.connect(lambda: self.lineEdit_fps.setText('60')) # type: ignore
             self.action_120.triggered.connect(lambda: self.lineEdit_fps.setText('120')) # type: ignore
 
+            self.defaults_button.setEnabled(False)
             self.apply_button.setEnabled(False)
 
             self.initialized = True
@@ -175,18 +176,23 @@ class GamescopeLogic:
             self.reset_button.setEnabled(True)
             self.defaults_button.setEnabled(True)
 
-
+        if self.return_new_config():
+            self.reset_button.setEnabled(True)
+        else:
+            self.reset_button.setEnabled(False)
 
         if (
             self.file.gamescope_data['args'] == self.return_new_config() and
             self.file.gamescope_data['active'] != self.checkBox_globalGamescope.isChecked() #type:ignore
             ):
+            self.defaults_button.setEnabled(False)
             self.apply_button.setEnabled(False)
             shared_data.unsaved_changes = False
             return
 
-        shared_data.unsaved_changes = True
+        self.defaults_button.setEnabled(True)
         self.apply_button.setEnabled(True)
+        shared_data.unsaved_changes = True
 
 
     def load_data(self) -> None:
@@ -453,9 +459,6 @@ class GamescopeLogic:
                 elif widget_class == QDoubleSpinBox:
                     apply_doubleSpinBox_input(widget, arg)
 
-                
-
-        #TODO: input validation for lineEdits is needed
         compile_arguments(self.widget_mapping.items())
 
         generated_config = ''
