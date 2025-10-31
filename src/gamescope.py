@@ -58,7 +58,7 @@ class GamescopeLogic:
                 'lineEdit_unimplementedSettings': (QLineEdit, '--placeholder-value'),
             }
             
-            # Initialize all widgets using the mapping TODO: re-implement QIntValidator
+            # Initialize all widgets using the mapping
             for object_name, (widget_class, arg) in self.widget_mapping.items():
                 widget = parent_widget.findChild(widget_class, object_name)
 
@@ -90,7 +90,6 @@ class GamescopeLogic:
 
 
             self.apply_button.clicked.connect(self.save_data)
-            #self.help_button.clicked.connect(lambda: os.system("xdg-open https://wiki.archlinux.org/title/Gamescope"))
             self.help_button.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/"))
             self.reset_button.clicked.connect(self.clear_data)
             self.defaults_button.clicked.connect(self.reset_data)
