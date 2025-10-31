@@ -126,9 +126,42 @@
      <widget class="QWidget" name="page_2">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;For automatic detection by Scopebuddy in supported launchers, the file name must be the game's AppID.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="appid_link">
+           <property name="toolTip">
+            <string>https://steamdb.info/apps</string>
+           </property>
+           <property name="text">
+            <string>?</string>
+           </property>
+           <property name="icon">
+            <iconset theme="QIcon::ThemeIcon::HelpAbout"/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;For automatic detection by Scopebuddy in Steam, the file name must be the game's &lt;a href=&quot;https://steamdb.info/apps/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#bdc8e8;&quot;&gt;Steam AppID&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;The display name is only used by this GUI—if a display name is set, it will be displayed in place of the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;The display name is only used by this GUI—if a display name is set, it will be displayed in place of the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignmentFlag::AlignCenter</set>

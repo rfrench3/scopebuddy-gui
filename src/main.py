@@ -577,6 +577,7 @@ class NewFileDialog(QDialog):
         self.save: QPushButton = self.ui_widget.findChild(QPushButton, 'save')  # type: ignore
         self.discard: QPushButton = self.ui_widget.findChild(QPushButton, 'discard')  # type: ignore
         self.add_folder: QToolButton = self.ui_widget.findChild(QToolButton, 'add_folder')  # type: ignore
+        self.appid_link: QToolButton = self.ui_widget.findChild(QToolButton, 'appid_link')  # type: ignore
 
         self.previous.clicked.connect(self.last_page)
         self.next.clicked.connect(self.next_page)
@@ -586,6 +587,7 @@ class NewFileDialog(QDialog):
         self.discard.clicked.connect(self.close)
         self.save.clicked.connect(self.accept)
         self.add_folder.clicked.connect(self.new_launcher)
+        self.appid_link.clicked.connect(lambda: os.system("xdg-open https://rfrench3.github.io/scopebuddy-gui/#appid"))
 
         self.reload_launcher_widget()
 
