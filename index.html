@@ -24,7 +24,7 @@
       </div>
       <hr>
       <nav class="d-flex flex-wrap justify-content-center gap-2">
-        <a href="#benefits" class="breeze_button">Benefits</a>
+        <a href="#options" class="breeze_button">Options</a>
         <a href="#steam" class="breeze_button">Steam</a>
         <a href="#lutris" class="breeze_button">Lutris</a>
         <a href="#heroic" class="breeze_button">Heroic</a>
@@ -42,15 +42,26 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <p>ScopeBuddy GUI is a graphical interface you can use to easily generate 
+            <p>
+              ScopeBuddy GUI is a graphical interface you can use to easily generate 
               a configuration for environment variables, launch options, and Gamescope.
               Ordinarily, this would require you to understand command-line syntax and 
               Gamescope well enough to manually type-out every detail of what you want. 
               With this tool, all you need to do is click on the settings you want!
+            </p>
 
+            <p>
+              Gamescope is a very powerful tool that can drastically improve the gaming experience, 
+              but knowing what launch options you want and what they do can take a lot of time and frustration to figure out. 
+              Understandably, many people may not consider it as an option because of this. I wanted to solve that problem, 
+              and when I found out about Scopebuddy I decided to make a GUI interface for it!
+            </p>
+
+            <p>
               To activate these settings in any game you have<sup>1</sup>, all you need to do is type <code>scb -- %command%</code> into the 
-              Launch Options box for that game! (syntax for various launchers are found below) If you do not wish to install scopebuddy and scopebuddy-gui, 
-              but still want a Gamescope config generated, there is a web-based version <a href="web-ui/index.html">here</a>.</p>
+              Launch Options box for that game! (picture guides for various launchers are found below) If you do not wish to install scopebuddy and scopebuddy-gui, 
+              but still want a Gamescope config generated, there is a web-based version <a href="web-ui/index.html">here</a>.
+            </p>
 
             <p><a href="https://github.com/ValveSoftware/gamescope" target="_blank">Gamescope</a> 
               is a micro-compositor made by ValveSoftware that is used to simplify running games and other software. 
@@ -71,21 +82,89 @@
 </a>
     </section>
     
-    <section class="row row-cols-1 g-4 mb-5" id="benefits">
-      <h2>Benefits</h2>
+    <section class="row row-cols-1 g-4 mb-5" id="options">
+      <h2>Options</h2>
       <hr>
       <div class="col">
-        <div class="card h-100">
+        <div class="card h-100" id="appid">
           <div class="card-body">
-            <p>Using Gamescope can be a great tool even on standard monitors, and can be <span class="fw-bold">especially helpful</span> 
-              for very unusual monitors (very high resolution, ultrawide, etc)!</p>
-
-            <p>It allows you to easily configure your games and how they perform. You can maximize visual quality by setting a high resolution, 
-              or increase performance by setting a lower resolution! It allows you to fine-tune a variety of game-related settings to your liking.</p>
-              
-            <p>For example, I personally have a very high-resolution 3:2 aspect ratio screen paired with a computer that can struggle 
-              with modern games at that resolution. Gamescope allows me to play games at a performant 1080p resolution and avoid any 
-              potential issues that come with my odd aspect ratio! I have some games I have only managed to open with Gamescope.</p>
+            <h4>Automatic AppID Detection</h4>
+            <p>
+              Some game launchers (such as Steam, Heroic, and Ubisoft Connect) 
+              have static identifiers for games that can be detected by scopebuddy.
+              If scopebuddy supports automatic detection for such a launcher, 
+              you will no longer need to specify the <code>SCB_APPID</code> environment variable if the file name matches the AppID.
+            </p>
+            <p>
+              Use the following names when creating a new launcher folder if you wish to take advantage of scopebuddy's automatic detection:
+              <ul>
+                <li>Steam: folder always present</li>
+                <li>Heroic Games Launcher: heroic</li>
+                <li>Ubisoft Connect (uplay): ubisoft</li>
+              </ul>
+            </p>
+            <p>
+              Additional reading: 
+              <ul>
+                <li><a href="https://steamdb.info/apps/" target="_blank">SteamDB</a> to find Steam AppIDs</li>
+                <li><a href="https://github.com/HikariKnight/ScopeBuddy/tree/main" target="_blank">Scopebuddy Github</a></li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100" id="environment_variables">
+          <div class="card-body">
+            <h4>Environment Variables</h4>
+            <p>
+              Environment variables can be used to pass information to programs, telling them to function differently from normal. 
+              For example, SteamDeck=1 will tell games you are on a SteamDeck so they behave as they would on SteamDeck (if they utilize the variable).
+              SteamDeck=0 does the opposite. Usually, if a game isn't working properly you can find environment variables (and other settings) to fix it on ProtonDB.
+            </p>
+            <p>
+              Additional reading: 
+              <ul>
+                <li><a href="https://wiki.archlinux.org/title/Environment_variables" target="_blank">Arch Wiki page</a></li>
+                <li><a href="https://www.protondb.com/" target="_blank">ProtonDB</a></li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100" id="gamescope">
+          <div class="card-body">
+            <h4>Gamescope Arguments</h4>
+            <p>
+              Gamescope uses launch options to determine how it will render and display games. 
+              For example, <code>-w 1920 -h 1080 </code> will tell it to render at a resolution of 1920x1080p (FHD).
+              There are a few launch options for Gamescope left out of the GUI because they are either too complex or unreliable.
+              If you wish to use them, they can be entered into the "Additional Arguments" text field at the bottom of the gamescope page.
+            </p>
+            <p>
+              Additional reading: 
+              <ul>
+                <li><a href="https://wiki.archlinux.org/title/Gamescope" target="_blank">Arch Wiki page</a></li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100" id="launch_options">
+          <div class="card-body">
+            <h4>Launch Options</h4>
+            <p>
+              Like environment variables, launch options can be used to pass information to programs, telling them to function differently from normal. 
+              For example, -novid will skip the starting video in Valve games.
+            </p>
+            <p>
+              Additional reading: 
+              <ul>
+                <li><a href="https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955" target="_blank">Steam FAQ page</a></li>
+              </ul>
+            </p>
           </div>
         </div>
       </div>
@@ -169,9 +248,13 @@
               <li>Right click on the game, click on Configure</li>
               <li>Click the System Options tab</li>
               <li>Enable the "Advanced" toggle in the top right of the window</li>
-              <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable key <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopebuddy GUI when you select a file)</li>
+              
               <li>Scroll to the "Game execution" section, in the Command Prefix line, enter <code>scb -- </code>,
                  then click "Save" in the top right of the window.</li>
+              <li>(Optional) If you wish to use a game-specific config (the global file will be used by default), 
+                enter the environment variable key <code>SCB_APPID</code> and set its value to <code>lutris/filename</code>, 
+                where "filename" is the name of the config file (without the .conf extension) you wish to use. 
+                It is displayed in the bottom bar in Scopebuddy GUI when you select a file.</li>
             </ul>
 
               <hr>
@@ -200,8 +283,12 @@
             <ul>
               <li>Click on the game's settings button</li>
               <li>In the settings menu, click the Advanced tab</li>
-              <li>Scroll down to Wrapper command, put <code>scb</code> as the wrapper and <code> -- </code> as its arguments (ignore the warning, it is irrelevant in this case)</li>
-              <li>If you wish to use a game-specific config (optional, the global file will be used by default), enter the environment variable <code>SCB_CONF</code> and set its value to <code>AppID/filename.conf</code>, where filename.conf is the filename of the config file you wish to use (displayed in the bottom bar in Scopebuddy GUI when you select a file)</li>
+              <li>Scroll down to Wrapper command, put <code>scb</code> as the wrapper and <code> -- </code> as its arguments
+                 (ignore the warning, it is irrelevant in this case)</li>
+              <li>(Optional) If you wish to use a game-specific config (the global file will be used by default), 
+                enter the environment variable key <code>SCB_APPID</code> and set its value to <code>heroic/filename</code>, 
+                where "filename" is the name of the config file (without the .conf extension) you wish to use. 
+                It is displayed in the bottom bar in Scopebuddy GUI when you select a file.</li>
             </ul>
             <hr>
               <div class="image-gallery">
