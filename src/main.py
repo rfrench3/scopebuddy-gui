@@ -23,7 +23,6 @@ Edit that file: Rest of the pages. They all edit aspects of that chosen file,
 - file saving should have better error detection
 - capability for non-english translations should be implemented
 - reliance on tooltips and interface text for getting filenames and folder names is a problem
-
 '''
 
 import sys

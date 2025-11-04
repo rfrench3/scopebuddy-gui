@@ -212,131 +212,71 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget_scb_auto" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <property name="rightMargin">
+               <number>0</number>
               </property>
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On supported desktops, this will automatically determine and set output Width, output Height, HDR, and Adaptive Sync (VRR) for gamescope. For a list of supported desktops, see the official ScopeBuddy documentation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_31">
-               <property name="spacing">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QWidget" name="widget_37" native="true">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="0,0">
-                  <property name="spacing">
-                   <number>6</number>
-                  </property>
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
-                  <item>
-                   <widget class="QLabel" name="label_11">
-                    <property name="text">
-                     <string>Use SCB_AUTO_* functions?</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="scb_auto_flags">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string>SCB_AUTO_RES,HDR,VRR=1</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item>
-                <widget class="Line" name="line_26">
-                 <property name="orientation">
-                  <enum>Qt::Orientation::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="widget_scb_auto_2" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check the ScopeBuddy GUI documentation for more detailed information!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_33">
-               <property name="spacing">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QWidget" name="widget_39" native="true">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_28" stretch="0">
-                  <property name="spacing">
-                   <number>6</number>
-                  </property>
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
-                  <item>
-                   <widget class="QLabel" name="label_13">
-                    <property name="text">
-                     <string>* To apply all of these settings to a game, put scb -- %command% into your Steam launch arguments! An example use outside of Steam is scb -- vkcube</string>
-                    </property>
-                    <property name="wordWrap">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-              </layout>
-             </widget>
+              <item>
+               <widget class="QGroupBox" name="groupBox">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Scopebuddy Auto-arguments attempt to auto-detect your display properties to apply the best settings for your display. Note that there are limitations, and certain gamescope settings (such as refresh rate and adaptive sync) may not work together.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="title">
+                 <string/>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout">
+                 <item row="0" column="1">
+                  <widget class="QCheckBox" name="auto_res">
+                   <property name="text">
+                    <string>Resolution</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QCheckBox" name="auto_vrr">
+                   <property name="text">
+                    <string>VRR</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QCheckBox" name="auto_ref">
+                   <property name="text">
+                    <string>Refresh rate</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QCheckBox" name="auto_hdr">
+                   <property name="text">
+                    <string>HDR</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QCheckBox" name="auto_frame">
+                   <property name="text">
+                    <string>Framerate limit</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>SCB_AUTO:</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <spacer name="verticalSpacer">

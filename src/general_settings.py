@@ -16,7 +16,11 @@ class GeneralSettingsLogic:
             # Initialize and connect inputs
             self.display_name = parent_widget.findChild(QLineEdit, 'display_name')  # type: ignore
             self.scb_noscope = parent_widget.findChild(QCheckBox, 'scb_noscope')  # type: ignore
-            self.scb_auto_flags = parent_widget.findChild(QCheckBox, 'scb_auto_flags')  # type: ignore
+            self.scb_auto_res :QCheckBox = parent_widget.findChild(QCheckBox, 'auto_res') # type: ignore
+            self.scb_auto_ref :QCheckBox = parent_widget.findChild(QCheckBox, 'auto_ref') # type: ignore
+            self.scb_auto_frame :QCheckBox = parent_widget.findChild(QCheckBox, 'auto_frame') # type: ignore
+            self.scb_auto_hdr :QCheckBox = parent_widget.findChild(QCheckBox, 'auto_hdr') # type: ignore
+            self.scb_auto_vrr :QCheckBox = parent_widget.findChild(QCheckBox, 'auto_vrr') # type: ignore
             self.button_box = parent_widget.findChild(QDialogButtonBox, 'buttonBox')  # type: ignore
             self.apply_button = self.button_box.button(QDialogButtonBox.StandardButton.Apply) # type: ignore
             self.help_button = self.button_box.button(QDialogButtonBox.StandardButton.Help) # type: ignore
@@ -30,12 +34,20 @@ class GeneralSettingsLogic:
             self.data = {
                 'name': self.display_name.text(),
                 'noscope': self.scb_noscope.isChecked(),
-                'autos': self.scb_auto_flags.isChecked()
+                'auto_res': self.scb_auto_res.isChecked(),
+                'auto_ref': self.scb_auto_ref.isChecked(),
+                'auto_frame': self.scb_auto_frame.isChecked(),
+                'auto_hdr': self.scb_auto_hdr.isChecked(),
+                'auto_vrr': self.scb_auto_vrr.isChecked()
             }
 
             self.display_name.textChanged.connect(self.data_changed)
             self.scb_noscope.stateChanged.connect(self.data_changed)
-            self.scb_auto_flags.stateChanged.connect(self.data_changed)
+            self.scb_auto_res.stateChanged.connect(self.data_changed)
+            self.scb_auto_ref.stateChanged.connect(self.data_changed)
+            self.scb_auto_frame.stateChanged.connect(self.data_changed)
+            self.scb_auto_hdr.stateChanged.connect(self.data_changed)
+            self.scb_auto_vrr.stateChanged.connect(self.data_changed)
 
             self.apply_button.setDisabled(True)
             self.initialized = True
@@ -50,7 +62,11 @@ class GeneralSettingsLogic:
         if (
             self.data['name'] == self.display_name.text() and
             self.data['noscope'] == self.scb_noscope.isChecked() and
-            self.data['autos'] == self.scb_auto_flags.isChecked()
+            self.data['auto_res'] == self.scb_auto_res.isChecked() and
+            self.data['auto_ref'] == self.scb_auto_ref.isChecked() and
+            self.data['auto_frame'] == self.scb_auto_frame.isChecked() and
+            self.data['auto_hdr'] == self.scb_auto_hdr.isChecked() and
+            self.data['auto_vrr'] == self.scb_auto_vrr.isChecked()
             ):
             self.apply_button.setEnabled(False)
             shared_data.unsaved_changes = False
@@ -71,9 +87,20 @@ class GeneralSettingsLogic:
         if self.file.check_for_exact_line("SCB_NOSCOPE=1"):
             self.scb_noscope.setChecked(True)
 
+        if self.file.check_for_exact_line("SCB_AUTO_RES=1"):
+            self.scb_auto_res.setChecked(True)
 
-        if self.file.check_for_exact_line("SCB_AUTO_"):
-            self.scb_auto_flags.setChecked(True)
+        if self.file.check_for_exact_line("SCB_AUTO_REFRESH=1"):
+            self.scb_auto_ref.setChecked(True)
+
+        if self.file.check_for_exact_line("SCB_AUTO_FRAME_LIMIT=1"):
+            self.scb_auto_frame.setChecked(True)
+
+        if self.file.check_for_exact_line("SCB_AUTO_HDR=1"):
+            self.scb_auto_hdr.setChecked(True)
+
+        if self.file.check_for_exact_line("SCB_AUTO_VRR=1"):
+            self.scb_auto_vrr.setChecked(True)
 
         
 
@@ -116,25 +143,66 @@ class GeneralSettingsLogic:
             self.data['noscope'] = False
 
 
+
+        #TODO: This isn't necessarily BAD, but it could easily be better
+
+        
+
         # if noscope needs to be added:
         if self.scb_noscope.isChecked() and (not self.file.check_for_exact_line("SCB_NOSCOPE=1")):
             lines_to_change["#SCB_NOSCOPE=1"] = "SCB_NOSCOPE=1"
             self.data['noscope'] = True
 
 
-        # if scb_autos need to be removed:
-        if (not self.scb_auto_flags.isChecked()) and self.file.check_for_exact_line("SCB_AUTO"):
+        # if scb_auto_res needs to be removed:
+        if (not self.scb_auto_res.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_RES=1"):
             lines_to_change["SCB_AUTO_RES=1"] = "#SCB_AUTO_RES=1"
-            lines_to_change["SCB_AUTO_HDR=1"] = "#SCB_AUTO_HDR=1"
-            lines_to_change["SCB_AUTO_VRR=1"] = "#SCB_AUTO_VRR=1"
-            self.data['autos'] = False
+            self.data['auto_res'] = False
 
-        # if scb_autos need to be added:
-        if self.scb_auto_flags.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO")):
+        # if scb_auto_res needs to be added:
+        if self.scb_auto_res.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_RES=1")):
             lines_to_change["#SCB_AUTO_RES=1"] = "SCB_AUTO_RES=1"
+            self.data['auto_res'] = True
+
+        # if scb_auto_ref needs to be removed:
+        if (not self.scb_auto_ref.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_REFRESH=1"):
+            lines_to_change["SCB_AUTO_REFRESH=1"] = "#SCB_AUTO_REFRESH=1"
+            self.data['auto_ref'] = False
+
+        # if scb_auto_ref needs to be added:
+        if self.scb_auto_ref.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_REFRESH=1")):
+            lines_to_change["#SCB_AUTO_REFRESH=1"] = "SCB_AUTO_REFRESH=1"
+            self.data['auto_ref'] = True
+
+        # if scb_auto_frame needs to be removed:
+        if (not self.scb_auto_frame.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_FRAME_LIMIT=1"):
+            lines_to_change["SCB_AUTO_FRAME_LIMIT=1"] = "#SCB_AUTO_FRAME_LIMIT=1"
+            self.data['auto_frame'] = False
+
+        # if scb_auto_frame needs to be added:
+        if self.scb_auto_frame.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_FRAME_LIMIT=1")):
+            lines_to_change["#SCB_AUTO_FRAME_LIMIT=1"] = "SCB_AUTO_FRAME_LIMIT=1"
+            self.data['auto_frame'] = True
+
+        # if scb_auto_hdr needs to be removed:
+        if (not self.scb_auto_hdr.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_HDR=1"):
+            lines_to_change["SCB_AUTO_HDR=1"] = "#SCB_AUTO_HDR=1"
+            self.data['auto_hdr'] = False
+
+        # if scb_auto_hdr needs to be added:
+        if self.scb_auto_hdr.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_HDR=1")):
             lines_to_change["#SCB_AUTO_HDR=1"] = "SCB_AUTO_HDR=1"
+            self.data['auto_hdr'] = True
+
+        # if scb_auto_vrr needs to be removed:
+        if (not self.scb_auto_vrr.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_VRR=1"):
+            lines_to_change["SCB_AUTO_VRR=1"] = "#SCB_AUTO_VRR=1"
+            self.data['auto_vrr'] = False
+
+        # if scb_auto_vrr needs to be added:
+        if self.scb_auto_vrr.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_VRR=1")):
             lines_to_change["#SCB_AUTO_VRR=1"] = "SCB_AUTO_VRR=1"
-            self.data['autos'] = True
+            self.data['auto_vrr'] = True
             
         list_current = []
         list_new = []

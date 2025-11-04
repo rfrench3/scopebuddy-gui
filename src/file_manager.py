@@ -218,7 +218,6 @@ class ConfigFile:
 
     
     # DATA EDITING
-    #TODO: implementing regex/string normals for editing lines would simplify certain things
     
     def edit_displayname(self, new_name:str) -> None:
         """Changes the display name (the commented out line 1) inside the file.
@@ -235,67 +234,73 @@ class ConfigFile:
 
             with open(self.path_to_file, 'w') as file:
                 file.writelines(lines)
+
+        except OSError as e:
+            raise
         except Exception as e:
-            print(f"Failed to edit display name: {e}")
+            print(f"Unexpected error editing display name: {e}")
+            raise
+            
         
     def edit_export_lines(self, new_lines:list[str]) -> None:
         """Changes the export lines in the file to the newly listed ones by commenting out
-        or uncommenting in lines, only adding new lines when necessary."""
+        or uncommenting in lines, only adding new lines when necessary.\n
+        Will raise OSError if it fails."""
+        try:
+            with open(self.path_to_file, 'r') as file:
+                lines = file.readlines()
+            
+            if lines and not lines[-1].endswith('\n'):
+                lines[-1] += '\n'
 
-        with open(self.path_to_file, 'r') as file:
-            lines = file.readlines()
+            # disable all oldlines
+            for i, oldline in enumerate(lines):
+                if oldline.startswith("export "):
+                    lines[i] = f"#{oldline}" 
+            
+            # re-enable any oldlines that match a newline
+            for i, oldline in enumerate(lines):
+                if oldline.startswith("#export "):
+                    for newline in new_lines[:]:
+                        if oldline.startswith(f"#export {newline}"): # accounts for comments
+                            new_lines.remove(newline)
+                            lines[i] = oldline[1:]
+                            break
 
-        if lines and not lines[-1].endswith('\n'):
-            lines[-1] += '\n'
 
-        # disable all oldlines
-        for i, oldline in enumerate(lines):
-            if oldline.startswith("export "):
-                lines[i] = f"#{oldline}" 
-        
-        # re-enable any oldlines that match a newline
-        for i, oldline in enumerate(lines):
-            if oldline.startswith("#export "):
-                for newline in new_lines[:]:
-                    if oldline.startswith(f"#export {newline}"): # accounts for comments
-                        new_lines.remove(newline)
-                        lines[i] = oldline[1:]
+            # append any newlines not in oldlines to the file
+            if new_lines:
+
+                
+                for i, line in enumerate(lines[:]):
+                    if i == 0:
+                        continue
+                    
+                    prev_line_is_export:bool = (lines[i-1].startswith("export ") or lines[i-1].startswith("#export "))
+                    curr_line_is_not_export:bool = not (line.startswith("export ") or line.startswith("#export "))
+
+                    if prev_line_is_export and curr_line_is_not_export:
+                        
+                        for export in new_lines[::-1]:
+                            lines.insert(i, f"export {export}\n")
+                            new_lines.remove(export)
+                        
                         break
-
-
-        # append any newlines not in oldlines to the file
-        if new_lines:
-
             
-            for i, line in enumerate(lines[:]):
-                if i == 0:
-                    continue
+            # append new exports to the end of the file, because none were found within the file
+            if new_lines:
                 
-                
-                prev_line_is_export:bool = (lines[i-1].startswith("export ") or lines[i-1].startswith("#export "))
-                curr_line_is_not_export:bool = not (line.startswith("export ") or line.startswith("#export "))
+                append_lines = [
+                    f"export {line}\n"
+                    for line in new_lines
+                ]
 
-                if prev_line_is_export and curr_line_is_not_export:
-                    
-                    for export in new_lines[::-1]:
-                        lines.insert(i, f"export {export}\n")
-                        new_lines.remove(export)
-                    
-                    break
-        
+                lines.extend(append_lines)
 
-        # append new exports to the end of the file, because none were found within the file
-        if new_lines:
-            
-            append_lines = [
-                f"export {line}\n"
-                for line in new_lines
-            ]
-
-            lines.extend(append_lines)
-
-        with open(self.path_to_file,'w') as file:
-            file.writelines(lines)
+            with open(self.path_to_file,'w') as file:
+                file.writelines(lines)
+        except OSError as e:
+            raise
 
     def edit_gamescope_line(self, arguments:str, active:bool) -> None:
         """Changes the gamescope line in the file to the newly listed ones by commenting out
@@ -304,141 +309,148 @@ class ConfigFile:
 
         new_args = [arguments]
 
-        with open(self.path_to_file, 'r') as file:
-            lines = file.readlines()
+        try:
+            with open(self.path_to_file, 'r') as file:
+                lines = file.readlines()
 
-        if lines and not lines[-1].endswith('\n'):
-            lines[-1] += '\n'
+            if lines and not lines[-1].endswith('\n'):
+                lines[-1] += '\n'
 
-        # disable all oldlines
-        for i, oldline in enumerate(lines):
-            if oldline.startswith("SCB_GAMESCOPE_ARGS="):
-                lines[i] = f"#{oldline}" 
-        
-        # re-enable any oldlines that match a newline
-        for i, oldline in enumerate(lines):
-            if oldline.startswith("#SCB_GAMESCOPE_ARGS=") or oldline.startswith("#SCBGUI#SCB_GAMESCOPE_ARGS="):
-                for args in new_args[:]:
-                    if oldline.startswith(f'SCB_GAMESCOPE_ARGS="{args}"'): # accounts for comments
-                        new_args.remove(args)
-                        lines[i] = oldline[1:]
+            # disable all oldlines
+            for i, oldline in enumerate(lines):
+                if oldline.startswith("SCB_GAMESCOPE_ARGS="):
+                    lines[i] = f"#{oldline}" 
+            
+            # re-enable any oldlines that match a newline
+            for i, oldline in enumerate(lines):
+                if oldline.startswith("#SCB_GAMESCOPE_ARGS=") or oldline.startswith("#SCBGUI#SCB_GAMESCOPE_ARGS="):
+                    for args in new_args[:]:
+                        if oldline.startswith(f'SCB_GAMESCOPE_ARGS="{args}"'): # accounts for comments
+                            new_args.remove(args)
+                            lines[i] = oldline[1:]
+                            break
+
+            # append any newlines not in oldlines to the file
+            if new_args:
+                for i, line in enumerate(lines[:]):
+                    if i == 0:
+                        continue        
+
+                    prev_line_is_export:bool = (
+                        lines[i-1].startswith("SCB_GAMESCOPE_ARGS=") or 
+                        lines[i-1].startswith("#SCB_GAMESCOPE_ARGS=") or 
+                        lines[i-1].startswith("#SCBGUI#SCB_GAMESCOPE_ARGS=")
+                        )
+                    
+                    curr_line_is_not_export:bool = not (
+                        line.startswith("SCB_GAMESCOPE_ARGS=") or 
+                        line.startswith("#SCB_GAMESCOPE_ARGS=") or 
+                        line.startswith("#SCBGUI#SCB_GAMESCOPE_ARGS=")
+                        )
+                    
+                    if prev_line_is_export and curr_line_is_not_export:
+                        
+                        for export in new_args[::-1]:
+                            lines.insert(i, f'SCB_GAMESCOPE_ARGS="{export}"\n')
+                            new_args.remove(export)
+                        
+                        break
+            
+
+            # append new exports to the end of the file, because none were found within the file
+            if new_args:
+                
+                append_lines = [
+                    f'SCB_GAMESCOPE_ARGS="{line}\n"'
+                    for line in new_args
+                ]
+
+                lines.extend(append_lines)
+
+            if not active:
+                for i, line in enumerate(lines):
+                    if line.startswith("SCB_GAMESCOPE_ARGS="):
+                        lines[i] = f'#{line}'
                         break
 
-
-        # append any newlines not in oldlines to the file
-        if new_args:
-            
-            for i, line in enumerate(lines[:]):
+            # remove duplicate lines
+            for i, line in enumerate(lines):
                 if i == 0:
                     continue
-                            
-                prev_line_is_export:bool = (lines[i-1].startswith("SCB_GAMESCOPE_ARGS=") or 
-                                            lines[i-1].startswith("#SCB_GAMESCOPE_ARGS=") or 
-                                            lines[i-1].startswith("#SCBGUI#SCB_GAMESCOPE_ARGS=")
-                                            )
-                curr_line_is_not_export:bool = not (line.startswith("SCB_GAMESCOPE_ARGS=") or 
-                                                    line.startswith("#SCB_GAMESCOPE_ARGS=") or 
-                                                    line.startswith("#SCBGUI#SCB_GAMESCOPE_ARGS=")
-                                                    )
-
-                if prev_line_is_export and curr_line_is_not_export:
-                    
-                    for export in new_args[::-1]:
-                        lines.insert(i, f'SCB_GAMESCOPE_ARGS="{export}"\n')
-                        new_args.remove(export)
-                    
-                    break
-        
-
-        # append new exports to the end of the file, because none were found within the file
-        if new_args:
-            
-            append_lines = [
-                f'SCB_GAMESCOPE_ARGS="{line}\n"'
-                for line in new_args
-            ]
-
-            lines.extend(append_lines)
-
-        if not active:
-            for i, line in enumerate(lines):
-                if line.startswith("SCB_GAMESCOPE_ARGS="):
-                    lines[i] = f'#{line}'
-                    break
-
-        # remove duplicate lines
-        for i, line in enumerate(lines):
-            if i == 0:
-                continue
-            if lines[i] == lines[i-1]:
-                lines.pop(i)
+                if lines[i] == lines[i-1]:
+                    lines.pop(i)
 
 
 
-        with open(self.path_to_file,'w') as file:
-            file.writelines(lines)
+            with open(self.path_to_file,'w') as file:
+                file.writelines(lines)
 
-        self.gamescope_data = self.return_gamescope_data()
+            self.gamescope_data = self.return_gamescope_data()
+        except OSError as e:
+            raise
 
     def update_gamescope_data(self, data:dict, DEPRACATED=True) -> None:
         """Update information about the gamescope line's status.\n
         args: str, gamescope args\n
         inactive: bool, should gamescope line be commented out"""
+        try:
+            
+            # args to go in gamescope line
+            args:str = data['args']
 
-        # args to go in gamescope line
-        args:str = data['args']
+            # if true, no gamescope line in the file
+            disable_gamescope:bool = data['inactive']
 
-        # if true, no gamescope line in the file
-        disable_gamescope:bool = data['inactive']
+            with open(self.path_to_file, 'r') as file:
+                lines = file.readlines()
+            if lines and not lines[-1].endswith('\n'):
+                lines[-1] += '\n'
 
-        with open(self.path_to_file, 'r') as file:
-            lines = file.readlines()
-        if lines and not lines[-1].endswith('\n'):
-            lines[-1] += '\n'
+            new_line = f'SCB_GAMESCOPE_ARGS="{args}"\n'
 
-        new_line = f'SCB_GAMESCOPE_ARGS="{args}"\n'
+            backwards = lines[::-1] #type:ignore
 
-        backwards = lines[::-1] #type:ignore
+            scb_found = False
+            for i, line in enumerate(backwards):
+                if line.startswith('SCB_GAMESCOPE_ARGS='):
+                    if disable_gamescope:
+                        backwards[i] = f"#SCBGUI#{line}#SCBGUI#{new_line}"
+                    else:
+                        backwards[i] = f"#SCBGUI#{line}{new_line}"
+                    scb_found = True
+                    break
 
-        scb_found = False
-        for i, line in enumerate(backwards):
-            if line.startswith('SCB_GAMESCOPE_ARGS='):
-                if disable_gamescope:
-                    backwards[i] = f"#SCBGUI#{line}#SCBGUI#{new_line}"
-                else:
-                    backwards[i] = f"#SCBGUI#{line}{new_line}"
-                scb_found = True
-                break
+                if line.startswith('#SCBGUI#SCB_GAMESCOPE_ARGS='):
+                    if disable_gamescope:
+                        backwards[i] = f"{line}#SCBGUI#{new_line}"
+                    else:
+                        backwards[i] = f"{line}{new_line}"
+                    scb_found = True
+                    break
 
-            if line.startswith('#SCBGUI#SCB_GAMESCOPE_ARGS='):
-                if disable_gamescope:
-                    backwards[i] = f"{line}#SCBGUI#{new_line}"
-                else:
-                    backwards[i] = f"{line}{new_line}"
-                scb_found = True
-                break
+                if line.startswith('#SCB_GAMESCOPE_ARGS='): #default example line
+                    if disable_gamescope:
+                        backwards[i] = f"{line}#SCBGUI#{new_line}"
+                    else:
+                        backwards[i] = f"{line}{new_line}"
+                    scb_found = True
+                    break
 
-            if line.startswith('#SCB_GAMESCOPE_ARGS='): #default example line
-                if disable_gamescope:
-                    backwards[i] = f"{line}#SCBGUI#{new_line}"
-                else:
-                    backwards[i] = f"{line}{new_line}"
-                scb_found = True
-                break
+            new_lines = backwards[::-1]
 
-        new_lines = backwards[::-1]
+            if not scb_found:
+                # no scb_gamescope_args in file, put it at the end
+                new_lines.append(new_line)
 
-        if not scb_found:
-            # no scb_gamescope_args in file, put it at the end
-            new_lines.append(new_line)
+            with open(self.path_to_file, 'w') as file: 
+                file.writelines(new_lines)
 
-        with open(self.path_to_file, 'w') as file: 
-            file.writelines(new_lines)
-
-        # update gamescope data stored by program
-        self.gamescope_data = self.return_gamescope_data()
-        return
-   
+            # update gamescope data stored by program
+            self.gamescope_data = self.return_gamescope_data()
+            return
+        except OSError as e:
+            raise
+    
     def edit_exact_lines(self,start_with:list[str],new_lines:list[str],  opened_lines: list[str]|None=None) -> None | list[str]:
         """Checks for any lines that start with the start_with string, 
         replaces that portion with the string in the 2nd list's same index.\n
@@ -448,44 +460,48 @@ class ConfigFile:
         if len(start_with) != len(new_lines):
             raise ValueError
         
-        if opened_lines:
-            lines = opened_lines
-        else:
-            with open(self.path_to_file, 'r') as file:
-                lines = file.readlines()
-            if lines and not lines[-1].endswith('\n'):
-                lines[-1] += '\n'
-
-        lines_to_append = []
-        
-        for j, start_str in enumerate(start_with):
-            found = False
-            for i, line in enumerate(lines):
-                if start_str == '':
-                    break # empty start_str means new line
-
-                if line.startswith(start_str):
-                    # Preserve any data after the start_str portion, such as comments left by the user
-                    remaining_data = line[len(start_str):]
-                    lines[i] = new_lines[j] + remaining_data
-                    found = True
-                    break
+        try:
             
-            if not found:
-                # Add newline if the new line doesn't already end with one
-                line_to_add = new_lines[j] + '\n' if not new_lines[j].endswith('\n') else new_lines[j]
-                lines_to_append.append(line_to_add)
-        
-        # Append any lines that weren't found
-        if lines_to_append:
-            lines.extend(lines_to_append)
+            if opened_lines:
+                lines = opened_lines
+            else:
+                with open(self.path_to_file, 'r') as file:
+                    lines = file.readlines()
+                if lines and not lines[-1].endswith('\n'):
+                    lines[-1] += '\n'
 
-        if opened_lines:
-            return lines
-        else:    
-            with open(self.path_to_file, 'w') as file:
-                file.writelines(lines)
-        
+            lines_to_append = []
+            
+            for j, start_str in enumerate(start_with):
+                found = False
+                for i, line in enumerate(lines):
+                    if start_str == '':
+                        break # empty start_str means new line
+
+                    if line.startswith(start_str):
+                        # Preserve any data after the start_str portion, such as comments left by the user
+                        remaining_data = line[len(start_str):]
+                        lines[i] = new_lines[j] + remaining_data
+                        found = True
+                        break
+                
+                if not found:
+                    # Add newline if the new line doesn't already end with one
+                    line_to_add = new_lines[j] + '\n' if not new_lines[j].endswith('\n') else new_lines[j]
+                    lines_to_append.append(line_to_add)
+            
+            # Append any lines that weren't found
+            if lines_to_append:
+                lines.extend(lines_to_append)
+
+            if opened_lines:
+                return lines
+            else:    
+                with open(self.path_to_file, 'w') as file:
+                    file.writelines(lines)
+        except OSError as e:
+            raise
+            
     def edit_launch_options(self, new_flags:str) -> None:
         """Changes the launch options in the file to the newly listed ones."""
 
