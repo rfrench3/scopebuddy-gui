@@ -544,7 +544,7 @@ class ApplicationLogic:
         
         fman.ScopebuddyDirectory.regenerate_global()
 
-
+#FIXME: pressing ESC inside the dialog results in a blank window
 class NewFileDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)

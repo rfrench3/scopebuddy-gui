@@ -16,31 +16,46 @@
   <screenshots>
     <screenshot type="default">
       <caption>The Scopebuddy GUI welcome screen.</caption>
-      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/welcomeScreen.png</image>
-      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/welcomeScreen.png</image>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/welcomeScreen.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/welcomeScreen.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The Scopebuddy GUI new launcher dialog.</caption>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/newFolder.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/newFolder.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The Scopebuddy GUI new file dialog.</caption>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/newFile.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/newFile.png</image>
     </screenshot>
     <screenshot>
       <caption>The Scopebuddy GUI general settings screen.</caption>
-      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/generalSettings.png</image>
-      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/generalSettings.png</image>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/generalSettings.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/generalSettings.png</image>
     </screenshot>
     <screenshot>
       <caption>The Scopebuddy GUI environment variables screen.</caption>
-      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/environmentVariables.png</image>
-      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/environmentVariables.png</image>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/environmentVariables.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/environmentVariables.png</image>
     </screenshot>
     <screenshot>
       <caption>The Scopebuddy GUI gamescope settings screen.</caption>
-      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/gamescope.png</image>
-      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/gamescope.png</image>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/gamescope.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/gamescope.png</image>
     </screenshot>
     <screenshot>
       <caption>Launch Options page.</caption>
-      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/launchOptions.png</image>
-      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.1.0/src/img/launchOptions.png</image>
+      <image type="source">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/launchOptions.png</image>
+      <image type="source" xml:lang="en">https://raw.githubusercontent.com/rfrench3/scopebuddy-gui/v2.3.0/src/img/launchOptions.png</image>
     </screenshot>
   </screenshots>
   <releases>
+    <release version="v2.3.0" date="2025-11-04" type="stable">
+      <description>
+        <p>This update adds support for launchers outside of Steam. It also adds the ability to delete config files from within the launcher.</p>
+      </description>
+    </release>
     <release version="v2.2.0" date="2025-10-11" type="stable">
       <description>
         <p>This update vastly improves UX. The Apply buttons on each page now adaptively enables/disables depending on whether or not changes are actually present, and this being tracked also means excessive "are you sure" popups could be removed.</p>
