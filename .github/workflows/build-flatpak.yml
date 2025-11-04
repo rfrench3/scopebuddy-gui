@@ -1,0 +1,45 @@
+name: Build and Release Flatpak
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-flatpak:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Update manifest with current tag
+        run: |
+          sed -i "s|tag: main|tag: ${{ github.ref_name }}|g" io.github.rfrench3.scopebuddy-gui.yml
+      
+      - name: Install Flatpak and Flatpak Builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder
+          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      
+      - name: Install KDE SDK and Base App
+        run: |
+          sudo flatpak install -y flathub org.kde.Platform//6.9
+          sudo flatpak install -y flathub org.kde.Sdk//6.9
+          sudo flatpak install -y flathub io.qt.PySide.BaseApp//6.9
+      
+      - name: Build Flatpak
+        run: |
+          flatpak-builder --repo=repo --force-clean build-dir io.github.rfrench3.scopebuddy-gui.yml
+          flatpak build-bundle repo scopebuddy-gui-${{ github.ref_name }}.flatpak io.github.rfrench3.scopebuddy-gui
+      
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            scopebuddy-gui-${{ github.ref_name }}.flatpak
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
