@@ -141,68 +141,27 @@ class GeneralSettingsLogic:
                 
             lines_to_change["SCB_NOSCOPE=1"] = "#SCB_NOSCOPE=1"
             self.data['noscope'] = False
+    
+        def handle_auto(box:QCheckBox, line:str, data_key:str):
+            if (not box.isChecked()) and self.file.check_for_exact_line(line):
+                lines_to_change[line] = f"#{line}"
+                self.data[data_key] = False
 
+            if box.isChecked() and (not self.file.check_for_exact_line(line)):
+                lines_to_change[f"#{line}"] = line
+                self.data[data_key] = True
 
+        autos_list = [
+            (self.scb_noscope, "SCB_NOSCOPE=1", "noscope"),
+            (self.scb_auto_res, "SCB_AUTO_RES=1", "auto_res"),
+            (self.scb_auto_ref, "SCB_AUTO_REFRESH=1", "auto_ref"),
+            (self.scb_auto_frame, "SCB_AUTO_FRAME_LIMIT=1", "auto_frame"),
+            (self.scb_auto_hdr, "SCB_AUTO_HDR=1", "auto_hdr"),
+            (self.scb_auto_vrr, "SCB_AUTO_VRR=1", "auto_vrr"),
+            ]
 
-        #TODO: This isn't necessarily BAD, but it could easily be better
-
-        
-
-        # if noscope needs to be added:
-        if self.scb_noscope.isChecked() and (not self.file.check_for_exact_line("SCB_NOSCOPE=1")):
-            lines_to_change["#SCB_NOSCOPE=1"] = "SCB_NOSCOPE=1"
-            self.data['noscope'] = True
-
-
-        # if scb_auto_res needs to be removed:
-        if (not self.scb_auto_res.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_RES=1"):
-            lines_to_change["SCB_AUTO_RES=1"] = "#SCB_AUTO_RES=1"
-            self.data['auto_res'] = False
-
-        # if scb_auto_res needs to be added:
-        if self.scb_auto_res.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_RES=1")):
-            lines_to_change["#SCB_AUTO_RES=1"] = "SCB_AUTO_RES=1"
-            self.data['auto_res'] = True
-
-        # if scb_auto_ref needs to be removed:
-        if (not self.scb_auto_ref.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_REFRESH=1"):
-            lines_to_change["SCB_AUTO_REFRESH=1"] = "#SCB_AUTO_REFRESH=1"
-            self.data['auto_ref'] = False
-
-        # if scb_auto_ref needs to be added:
-        if self.scb_auto_ref.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_REFRESH=1")):
-            lines_to_change["#SCB_AUTO_REFRESH=1"] = "SCB_AUTO_REFRESH=1"
-            self.data['auto_ref'] = True
-
-        # if scb_auto_frame needs to be removed:
-        if (not self.scb_auto_frame.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_FRAME_LIMIT=1"):
-            lines_to_change["SCB_AUTO_FRAME_LIMIT=1"] = "#SCB_AUTO_FRAME_LIMIT=1"
-            self.data['auto_frame'] = False
-
-        # if scb_auto_frame needs to be added:
-        if self.scb_auto_frame.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_FRAME_LIMIT=1")):
-            lines_to_change["#SCB_AUTO_FRAME_LIMIT=1"] = "SCB_AUTO_FRAME_LIMIT=1"
-            self.data['auto_frame'] = True
-
-        # if scb_auto_hdr needs to be removed:
-        if (not self.scb_auto_hdr.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_HDR=1"):
-            lines_to_change["SCB_AUTO_HDR=1"] = "#SCB_AUTO_HDR=1"
-            self.data['auto_hdr'] = False
-
-        # if scb_auto_hdr needs to be added:
-        if self.scb_auto_hdr.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_HDR=1")):
-            lines_to_change["#SCB_AUTO_HDR=1"] = "SCB_AUTO_HDR=1"
-            self.data['auto_hdr'] = True
-
-        # if scb_auto_vrr needs to be removed:
-        if (not self.scb_auto_vrr.isChecked()) and self.file.check_for_exact_line("SCB_AUTO_VRR=1"):
-            lines_to_change["SCB_AUTO_VRR=1"] = "#SCB_AUTO_VRR=1"
-            self.data['auto_vrr'] = False
-
-        # if scb_auto_vrr needs to be added:
-        if self.scb_auto_vrr.isChecked() and (not self.file.check_for_exact_line("SCB_AUTO_VRR=1")):
-            lines_to_change["#SCB_AUTO_VRR=1"] = "SCB_AUTO_VRR=1"
-            self.data['auto_vrr'] = True
+        for box, line, data_key in autos_list:
+            handle_auto(box, line, data_key)
             
         list_current = []
         list_new = []
