@@ -79,7 +79,7 @@ def create_directory() -> None:
 
     steam_symlink = os.path.join(APPID_DIR, "steam")
     if not os.path.exists(steam_symlink):
-        os.symlink(APPID_DIR, steam_symlink, target_is_directory=True)
+        os.symlink(".", steam_symlink, target_is_directory=True)
 
 def is_filename_invalid(filename:str) -> bool:
     """True if not valid, false otherwise"""
