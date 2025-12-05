@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# SPDX-FileCopyrightText: 2024-2025 Robert French (rfrench3, TealMango)
+
 from PySide6.QtWidgets import QLineEdit, QCheckBox, QDialogButtonBox, QMessageBox
 import file_manager as fman
 from file_manager import ConfigFile

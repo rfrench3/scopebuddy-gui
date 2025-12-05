@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# SPDX-FileCopyrightText: 2024-2025 Robert French (rfrench3, TealMango)
+
 import os, shutil
 from re import search
 

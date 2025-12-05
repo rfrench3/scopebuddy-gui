@@ -1,22 +1,7 @@
 #!/usr/bin/env python3
-
-'''
-This program, scopebuddy GUI, was created by Robert French (rfrench3, TealMango).
-It is licensed under the GPLv3.0 exclusively.
-'''
-
-'''
-If a function returns a bool to indicate success or failure, False means success and True means there was an error.
-
-Each page gets its own dedicated logic file, every "ui_filename.ui" comes with a "ui_filename.py" for logic. 
-Any operation regarding reading/writing a scopebuddy config file is done through the fman.ConfigFile class.
-
-Select a file: Welcome page. Select the config file to load for the rest of the program.
-
-Edit that file: Rest of the pages. They all edit aspects of that chosen file, 
-    which could be the default scb.conf or the game-specific confs in AppID.
-'''
-
+#
+# SPDX-License-Identifier: GPL-3.0-only
+# SPDX-FileCopyrightText: 2024-2025 Robert French (rfrench3, TealMango)
 
 #FIXME: Considerations:
 '''
@@ -67,7 +52,6 @@ ui_gamescope = fman.ui_gamescope
 ui_launch_options = fman.ui_launch_options
 
 # Dialog of welcome page
-#dialog_new_file = os.path.join(DATA_DIR, "dialog_new_file.ui")
 dialog_new_file = os.path.join(DATA_DIR, "new_file_create.ui")
 dialog_new_launcher = os.path.join(DATA_DIR, "new_folder_create.ui")
 dialog_about = os.path.join(DATA_DIR, "dialog_about.ui")
