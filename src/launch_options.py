@@ -5,7 +5,7 @@ import sys
 import os
 sys.path.insert(0, "/app/share/scopebuddygui") # flatpak path
 
-from PySide6.QtWidgets import QLineEdit, QDialogButtonBox, QMessageBox
+from PySide6.QtWidgets import QLineEdit, QDialogButtonBox
 import file_manager as fman
 from file_manager import ConfigFile
 import shared_data

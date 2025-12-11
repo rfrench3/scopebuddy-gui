@@ -561,6 +561,7 @@ class NewFileDialog(QDialog):
         self.discard: QPushButton = self.ui_widget.findChild(QPushButton, 'discard')  # type: ignore
         self.add_folder: QToolButton = self.ui_widget.findChild(QToolButton, 'add_folder')  # type: ignore
         self.appid_link: QToolButton = self.ui_widget.findChild(QToolButton, 'appid_link')  # type: ignore
+        self.label_filename: QLabel =  self.ui_widget.findChild(QLabel, 'label_file_name')  # type: ignore
 
         self.previous.clicked.connect(self.last_page)
         self.next.clicked.connect(self.next_page)
@@ -685,11 +686,12 @@ class NewFileDialog(QDialog):
     def filename_changed(self):
         self.data['file_name'] = self.filename.text()
 
-        #TODO: this clearly indicates an invalid filename but looks VERY bad while doing it
         if fman.is_filename_invalid(self.data['file_name']):
-            self.filename.setStyleSheet("QLineEdit { background-color: #ff0000; }")
+            self.filename.setStyleSheet("QLineEdit { text-decoration: underline; }")
+            self.label_filename.setText("Invalid File Name!")
         else:
             self.filename.setStyleSheet("")
+            self.label_filename.setText("File Name: ")
 
         self.update_save_button()
         
