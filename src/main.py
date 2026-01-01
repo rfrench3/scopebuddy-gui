@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# SPDX-License-Identifier: GPL-3.0-only
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2024-2025 Robert French (rfrench3, TealMango)
 
 #FIXME: Considerations:
@@ -34,6 +34,7 @@ from env_var import EnvVarLogic
 from gamescope import GamescopeLogic
 from general_settings import GeneralSettingsLogic
 from launch_options import LaunchOptionsLogic
+import desktop_portal as Portal
 
 import shared_data
 
@@ -131,7 +132,7 @@ class ApplicationLogic:
 
         
         self.button_new_config.clicked.connect(self.new_config_pressed)
-        self.open_folder.clicked.connect(self.open_folder_clicked)
+        self.open_folder.clicked.connect(lambda: Portal.chooseApplication(fman.SCB_DIR, False))
         self.about.clicked.connect(self.about_dialog)
         self.file_tree.itemClicked.connect(self.tree_clicked)
 
@@ -268,21 +269,6 @@ class ApplicationLogic:
             self.mainFileEdit.setCurrentIndex(current_index)
             self._last_tab_index = current_index
             return QMessageBox.StandardButton.Apply
-
-    def open_folder_clicked(self):
-        """Shows a popup window with instructions for opening the Scopebuddy folder."""
-        fman.load_message_box(
-            self.window,
-            "Open Scopebuddy Folder",
-            (
-            "To open the Scopebuddy config folder, run this in a terminal:\n\n"
-            f"xdg-open {os.path.join(os.path.expanduser("~/.config"), "scopebuddy")}\n\n" #FIXME: fman.SCB_DIR was causing this to point inside the flatpak sandbox, though everything else works fine
-            "This will allow you to directly edit, create, or delete config files without relying on the GUI."
-            ),
-            QMessageBox.Icon.Information,
-            QMessageBox.StandardButton.Ok
-        )
-        return
 
     def unload_selected_file(self) -> None:
         """Prompts the user with a dialog window to be certain they wish to exit.

@@ -53,7 +53,7 @@ or, you can install it directly from this github.
 
 <h1 align="center">License</h1>
 
-<p>GPL-3.0-only. See LICENSE for details.</p>
+<p>LGPL-2.1-or-later. See LICENSE for details.</p>
 
 <br>
 
