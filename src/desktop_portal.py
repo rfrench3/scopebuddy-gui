@@ -79,5 +79,5 @@ def chooseApplication(file_path:str, choose_application:bool=True):
 
 
 @Slot(int, dict)
-def gotApplicationChoice(response_code, results):
-    pass
+def gotApplicationChoice(response_code: int, results: dict) -> tuple[int,dict]:
+    return (response_code, results)

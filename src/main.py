@@ -8,6 +8,7 @@
 - file saving should have better error detection
 - capability for non-english translations should be implemented
 - reliance on tooltips and interface text for getting filenames and folder names is a problem
+- The boolean returns from functions are messy
 '''
 
 import sys
@@ -140,9 +141,12 @@ class ApplicationLogic:
         self.status_label = QLabel("File: None")
         self.status_button = QPushButton("Exit File")
         self.status_button.clicked.connect(self.unload_selected_file)
+        self.manual_button = QPushButton("Edit Manually")
+        self.manual_button.clicked.connect(self.portal_open_file)
 
         self.statusBar.addWidget(self.status_button)  # Left side
-        
+        self.statusBar.addWidget(self.manual_button)
+
         self.statusBar.addPermanentWidget(self.status_label)  # Right side
         
 
@@ -157,6 +161,21 @@ class ApplicationLogic:
         # load all configs into UI
         self.reload_file_tree()
         
+    def portal_open_file(self) -> None:
+        """confirm with the user they have no unsaved changes in the GUI, 
+        then unload the file and offer to open it in the default text editor."""
+
+        global selected_config
+        
+        if selected_config is None:
+            print("ERROR: The portal to open the selected config was activated when no config is selected!")
+            return
+
+        path = selected_config.path_to_file
+        if not self.unload_selected_file():
+            Portal.chooseApplication(path, True)
+        return 
+
     def reload_file_tree(self) -> None:
         """Clears all entries from self.file_tree, and then reloads them."""
     
@@ -270,7 +289,7 @@ class ApplicationLogic:
             self._last_tab_index = current_index
             return QMessageBox.StandardButton.Apply
 
-    def unload_selected_file(self) -> None:
+    def unload_selected_file(self) -> bool:
         """Prompts the user with a dialog window to be certain they wish to exit.
         Unloads the chosen file and interface, then returns the user to the 'Select a File' page.
         The dialog does not occur if the user is on the main menu, the app simply closes."""
@@ -278,7 +297,7 @@ class ApplicationLogic:
             # if the file-editing portion of the app is loaded:
         confirmation = self.confirm_before_proceed()
         if confirmation == QMessageBox.StandardButton.Cancel:
-            return    
+            return True
 
         def unload_interface(self) -> None:
             """Fully unloads interface elements."""
@@ -301,6 +320,7 @@ class ApplicationLogic:
 
         self.mainFileSelect.setCurrentIndex(0)
         self.statusBar.hide()
+        return False
 
     def tree_clicked(self) -> None:
         """opens the config file the user clicked."""
