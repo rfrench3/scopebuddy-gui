@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (
     QTabWidget, QLabel, QPushButton, QDialog,
     QLineEdit, QMessageBox, QMainWindow, QWidget, 
     QVBoxLayout, QTreeWidget, QTreeWidgetItem, 
-    QToolButton, QMenu
+    QToolButton, QMenu, QHeaderView
     )
 from PySide6.QtSvgWidgets import QSvgWidget
 
@@ -57,7 +57,6 @@ ui_launch_options = fman.ui_launch_options
 dialog_new_file = os.path.join(DATA_DIR, "new_file_create.ui")
 dialog_new_launcher = os.path.join(DATA_DIR, "new_folder_create.ui")
 dialog_about = os.path.join(DATA_DIR, "dialog_about.ui")
-
 
 fman.create_directory()
 fman.ScopebuddyDirectory.create_file('scb.conf','Global Config file.',fman.SCB_DIR)
@@ -99,7 +98,6 @@ class MainWindow(QMainWindow):
 
 class ApplicationLogic:
     def __init__(self, window): 
-
         # Load data for the main window
         self.window = window 
         self.mainFileSelect = self.window.findChild(QStackedWidget,"stackedWidget")
@@ -113,7 +111,10 @@ class ApplicationLogic:
 
         self.file_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.file_tree.customContextMenuRequested.connect(self.show_context_menu)
-
+        self.file_tree.header().setStretchLastSection(False)
+        self.file_tree.header().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.file_tree.header().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        
         # Initialize logic references (but don't create widgets yet)
         self.general_settings_logic = None
         self.env_vars_logic = None
@@ -184,6 +185,7 @@ class ApplicationLogic:
         globalconfig = QTreeWidgetItem()
         globalconfig.setText(0, "Global")
         globalconfig.setToolTip(0, "File: scb.conf")
+        globalconfig.setText(1, "︙")
         self.file_tree.addTopLevelItem(globalconfig)
 
         directory = fman.ScopebuddyDirectory()
@@ -214,6 +216,7 @@ class ApplicationLogic:
         
         for name, num_configs, filename_displayname in launcher_data:
             launcher = QTreeWidgetItem()
+            launcher.setText(1, "☰")
             
             if num_configs == 1:
                 launcher.setText(0, f"{name} (1 config)")
@@ -227,6 +230,7 @@ class ApplicationLogic:
                 config_item = QTreeWidgetItem(launcher)
                 config_item.setText(0, displayname)
                 config_item.setToolTip(0, f"File: {filename}")
+                config_item.setText(1, "︙")
         
     def _on_tab_changed(self) -> None:
         """Notifies user if they leave the tab with unsaved changes."""
@@ -322,8 +326,9 @@ class ApplicationLogic:
         self.statusBar.hide()
         return False
 
-    def tree_clicked(self) -> None:
-        """opens the config file the user clicked."""
+    def tree_clicked(self, _=None, column=None) -> None:
+        """opens the config file the user clicked. 
+        If the second column was clicked, instead opens the context menu."""
         def load_with_selected_file(self,selected_file:fman.ConfigFile) -> None:
             """Loads the file selected by the user, then loads the interface with it."""
             def load_interface(self,file:fman.ConfigFile) -> None:
@@ -359,9 +364,16 @@ class ApplicationLogic:
             load_interface(self, selected_config) # load the interface elements given the selected file
             self.mainFileSelect.setCurrentIndex(1)
             self.statusBar.show()
-        
+
         item = self.file_tree.currentItem()
         
+        # If menu button was clicked, show the right-click menu
+        if column == 1:    
+            rect = self.file_tree.visualItemRect(item)  
+            pos = rect.bottomLeft()  
+            self.show_context_menu(pos)
+            return
+
         # Check if this is a top-level item
         parent = item.parent()
         
@@ -718,6 +730,7 @@ icon = fman.icon
 window_main = MainWindow()
 logic = ApplicationLogic(window_main.ui_widget)
 window_main.logic = logic
+
 
 window_main.show()
 app.exec()
