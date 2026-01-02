@@ -64,42 +64,16 @@ fman.ScopebuddyDirectory.create_file('scb.conf','Global Config file.',fman.SCB_D
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.logic = None  # type: ApplicationLogic | None
+        
         
         # Load the UI from the .ui file
-        self.ui_widget = fman.load_widget(ui_main)
-        self.setCentralWidget(self.ui_widget)
+        self.window = fman.load_widget(ui_main)
+        self.setCentralWidget(self.window)
         self.setWindowTitle("Scopebuddy GUI")
         self.setWindowIcon(fman.icon)
-        
-    def closeEvent(self, event):
-        """This ensures that attempting to close the window while a file is loaded results in a dialog,
-        prompting the user to either save changes, discard them, or not close the app."""
+
 
         
-        if not shared_data.unsaved_changes: 
-            event.accept() # there are no unsaved changes
-            return 
-
-        global selected_config
-        if selected_config is not None and self.logic:
-
-            confirmation = self.logic.confirm_before_proceed()
-
-            # Close unless closing was cancelled
-            if confirmation == QMessageBox.StandardButton.Cancel:
-                event.ignore()
-                return
-            
-            event.accept()
-        else:
-            # No file loaded, close normally
-            event.accept()
-
-class ApplicationLogic:
-    def __init__(self, window): 
-        # Load data for the main window
-        self.window = window 
         self.mainFileSelect = self.window.findChild(QStackedWidget,"stackedWidget")
         self.mainFileEdit = self.window.findChild(QTabWidget,"tabWidget")
         self.statusBar = self.window.findChild(QStatusBar, "statusBar")
@@ -161,6 +135,32 @@ class ApplicationLogic:
 
         # load all configs into UI
         self.reload_file_tree()
+
+
+        
+    def closeEvent(self, event):
+        """This ensures that attempting to close the window while a file is loaded results in a dialog,
+        prompting the user to either save changes, discard them, or not close the app."""
+
+        
+        if not shared_data.unsaved_changes: 
+            event.accept() # there are no unsaved changes
+            return 
+
+        global selected_config
+        if selected_config is not None:
+
+            confirmation = self.confirm_before_proceed()
+
+            # Close unless closing was cancelled
+            if confirmation == QMessageBox.StandardButton.Cancel:
+                event.ignore()
+                return
+            
+            event.accept()
+        else:
+            # No file loaded, close normally
+            event.accept()
         
     def portal_open_file(self) -> None:
         """confirm with the user they have no unsaved changes in the GUI, 
@@ -728,8 +728,6 @@ app = QApplication([])
 icon = fman.icon
 
 window_main = MainWindow()
-logic = ApplicationLogic(window_main.ui_widget)
-window_main.logic = logic
 
 
 window_main.show()

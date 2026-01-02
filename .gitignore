@@ -2,6 +2,7 @@
 /.flatpak-builder
 /builddir
 /repo
+/app
 /.venv
 /.mypy_cache
 scopebuddyGUI.flatpak
