@@ -1,9 +1,9 @@
 id: io.github.rfrench3.scopebuddy-gui
 runtime: org.kde.Platform
-runtime-version: '6.9'
+runtime-version: '6.10'
 sdk: org.kde.Sdk
 base: io.qt.PySide.BaseApp
-base-version: '6.9'
+base-version: '6.10'
 command: scopebuddygui
 finish-args:
   - --share=ipc
@@ -22,9 +22,8 @@ modules:
   - name: scopebuddygui
     buildsystem: simple
     sources:
-      - type: git
-        url: https://github.com/rfrench3/scopebuddy-gui.git
-        tag: main #USE A TAGGED RELEASE WHEN SUBMITTING THIS!
+      - type: dir
+        path: .
     build-commands:
       - mkdir -p /app/share/scopebuddygui
       - install -Dm755 src/main.py /app/bin/scopebuddygui

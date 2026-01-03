@@ -345,11 +345,16 @@
                         <bool>true</bool>
                        </property>
                        <property name="columnCount">
-                        <number>1</number>
+                        <number>2</number>
                        </property>
                        <column>
                         <property name="text">
                          <string>launcher</string>
+                        </property>
+                       </column>
+                       <column>
+                        <property name="text">
+                         <string>menu</string>
                         </property>
                        </column>
                       </widget>

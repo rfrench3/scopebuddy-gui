@@ -8,7 +8,7 @@
     <name>Robert French</name>
   </developer>
   <metadata_license>MIT</metadata_license>
-  <project_license>GPL-3.0-only</project_license>
+  <project_license>LGPL-3.0-only</project_license>
   <update_contact>frenchrobertm@outlook.com</update_contact>
   <description>
     <p>Convenient interface for saving, editing, and loading configurations for games. If you have ScopeBuddy installed, it can even apply these configurations automatically!</p>
@@ -51,6 +51,17 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="v2.4.0" date="2026-01-02" type="stable">
+      <description>
+        <ul>
+          <li>Proper functionality has been given to the "Open Folder" button.</li>
+          <li>A new button has been added to manually edit the current file in a text editor.</li>
+          <li>The application has been relicensed from GPL-3.0-only to LGPL-3.0-only.</li>
+          <li>Upgrade from PySide6 6.9 to 6.10</li>
+          <li>Merged backend AppLogic and MainWindow classes to remove complexity.</li>
+        </ul>
+      </description>
+    </release>
     <release version="v2.3.1" date="2025-12-11" type="stable">
       <description>
         <p>Minor visual improvements.</p>

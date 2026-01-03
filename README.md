@@ -53,19 +53,20 @@ or, you can install it directly from this github.
 
 <h1 align="center">License</h1>
 
-<p>GPL-3.0-only. See LICENSE for details.</p>
+<p>LGPL-3.0-only. See LICENSE.txt for details.</p>
 
 <br>
 
 <h1 align="center">Build Instructions</h1>
 
-Once you have all of the required dependencies, within the root folder (the one that contains the .yml) run the following commands in order:
+For testing and development, I use this command to install the application directly from the source code:
+```bash
+flatpak-builder --install --user --force-clean app io.github.rfrench3.scopebuddy-gui.yml
+```
 
-- flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddy-gui.yml
+If you want to build a `scopebuddy-gui.flatpak` file, you can use these commands:
+```bash
+flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddy-gui.yml
 
-- flatpak build-bundle repo scopebuddy-gui.flatpak io.github.rfrench3.scopebuddy-gui --verbose
-
-
-(Running the first command and reviewing the errors is a simple way to locate other build dependencies)
-
-
+flatpak build-bundle repo scopebuddy-gui.flatpak io.github.rfrench3.scopebuddy-gui --verbose
+```

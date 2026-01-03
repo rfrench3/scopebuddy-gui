@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 #
-# SPDX-License-Identifier: GPL-3.0-only
-# SPDX-FileCopyrightText: 2024-2025 Robert French (rfrench3, TealMango)
+# SPDX-License-Identifier: LGPL-3.0-only
+# SPDX-FileCopyrightText: 2024-2026 Robert French (rfrench3, TealMango)
 
 #FIXME: Considerations:
 '''
 - file saving should have better error detection
 - capability for non-english translations should be implemented
 - reliance on tooltips and interface text for getting filenames and folder names is a problem
+- The boolean returns from functions are messy
+- There is no clear difference between functions meant to be called directly 
+  and ones meant to be called by other functions
 '''
 
 import sys
@@ -19,7 +22,7 @@ from PySide6.QtWidgets import (
     QTabWidget, QLabel, QPushButton, QDialog,
     QLineEdit, QMessageBox, QMainWindow, QWidget, 
     QVBoxLayout, QTreeWidget, QTreeWidgetItem, 
-    QToolButton, QMenu
+    QToolButton, QMenu, QHeaderView
     )
 from PySide6.QtSvgWidgets import QSvgWidget
 
@@ -34,9 +37,9 @@ from env_var import EnvVarLogic
 from gamescope import GamescopeLogic
 from general_settings import GeneralSettingsLogic
 from launch_options import LaunchOptionsLogic
+from desktop_portal import ChooseApplicationMixin
 
 import shared_data
-
 
 DATA_DIR = fman.DATA_DIR
 APPID_DIR = fman.APPID_DIR
@@ -56,20 +59,82 @@ dialog_new_file = os.path.join(DATA_DIR, "new_file_create.ui")
 dialog_new_launcher = os.path.join(DATA_DIR, "new_folder_create.ui")
 dialog_about = os.path.join(DATA_DIR, "dialog_about.ui")
 
-
 fman.create_directory()
 fman.ScopebuddyDirectory.create_file('scb.conf','Global Config file.',fman.SCB_DIR)
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, ChooseApplicationMixin):
     def __init__(self):
         super().__init__()
-        self.logic = None  # type: ApplicationLogic | None
+        
         
         # Load the UI from the .ui file
-        self.ui_widget = fman.load_widget(ui_main)
-        self.setCentralWidget(self.ui_widget)
+        self.app_window = fman.load_widget(ui_main)
+        self.setCentralWidget(self.app_window)
         self.setWindowTitle("Scopebuddy GUI")
         self.setWindowIcon(fman.icon)
+
+
+        
+        self.mainFileSelect:QStackedWidget = self.app_window.findChild(QStackedWidget,"stackedWidget") #type:ignore
+        self.mainFileEdit:QTabWidget = self.app_window.findChild(QTabWidget,"tabWidget") #type:ignore
+        self.appStatusBar:QStatusBar = self.app_window.findChild(QStatusBar, "statusBar") #type:ignore
+        self.button_new_config:QPushButton = self.app_window.findChild(QPushButton, 'button_new_config') #type:ignore
+        self.open_folder:QPushButton = self.app_window.findChild(QPushButton, "open_folder") #type:ignore
+        self.about:QPushButton = self.app_window.findChild(QPushButton, "button_about") #type:ignore
+        self.file_tree:QTreeWidget = self.app_window.findChild(QTreeWidget, 'file_tree') #type:ignore
+        self.large_logo:QWidget = self.app_window.findChild(QWidget, "widget_app_icon") #type:ignore
+
+        self.file_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.file_tree.customContextMenuRequested.connect(self.show_context_menu)
+        self.file_tree.header().setStretchLastSection(False)
+        self.file_tree.header().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.file_tree.header().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        
+        # Initialize logic references (but don't create widgets yet)
+        self.general_settings_logic = None
+        self.env_vars_logic = None
+        self.gamescope_logic = None
+        self.launch_options_logic = None
+        self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
+                
+
+        svg_widget = QSvgWidget(fman.svg_path)
+        svg_widget.setFixedSize(128, 128)
+        layout:QLayout = self.large_logo.layout() #type:ignore
+        layout.addWidget(svg_widget)
+
+        # Track last index and intercept changes when there are unsaved changes
+        self._last_tab_index = self.mainFileEdit.currentIndex()
+        self.mainFileEdit.currentChanged.connect(self._on_tab_changed)
+
+        self.button_new_config.clicked.connect(self.new_config_pressed)
+        self.open_folder.clicked.connect(self.portal_open_folder)
+        self.about.clicked.connect(self.about_dialog)
+        self.file_tree.itemClicked.connect(self.tree_clicked)
+
+        # Add a permanent label and pushButton to the status bar
+        self.status_label = QLabel("File: None")
+        self.status_button = QPushButton("Exit File")
+        self.status_button.clicked.connect(self.unload_selected_file)
+        self.manual_button = QPushButton("Edit Manually")
+        self.manual_button.clicked.connect(self.portal_open_file)
+
+        self.appStatusBar.addWidget(self.status_button)  # Left side
+        self.appStatusBar.addWidget(self.manual_button)
+
+        self.appStatusBar.addPermanentWidget(self.status_label)  # Right side
+        
+
+        # ensure everything starts at its default state
+        self.mainFileSelect.setCurrentIndex(0)
+        self.mainFileEdit.setCurrentIndex(0)
+        self.appStatusBar.hide()
+
+        # Locate game-specific configs
+        self.appid_files = fman.ScopebuddyDirectory()
+
+        # load all configs into UI
+        self.reload_file_tree()
         
     def closeEvent(self, event):
         """This ensures that attempting to close the window while a file is loaded results in a dialog,
@@ -81,9 +146,9 @@ class MainWindow(QMainWindow):
             return 
 
         global selected_config
-        if selected_config is not None and self.logic:
+        if selected_config is not None:
 
-            confirmation = self.logic.confirm_before_proceed()
+            confirmation = self.confirm_before_proceed()
 
             # Close unless closing was cancelled
             if confirmation == QMessageBox.StandardButton.Cancel:
@@ -95,67 +160,50 @@ class MainWindow(QMainWindow):
             # No file loaded, close normally
             event.accept()
 
-class ApplicationLogic:
-    def __init__(self, window): 
-
-        # Load data for the main window
-        self.window = window 
-        self.mainFileSelect = self.window.findChild(QStackedWidget,"stackedWidget")
-        self.mainFileEdit = self.window.findChild(QTabWidget,"tabWidget")
-        self.statusBar = self.window.findChild(QStatusBar, "statusBar")
-        self.button_new_config = self.window.findChild(QPushButton, 'button_new_config')
-        self.open_folder = self.window.findChild(QPushButton, "open_folder")
-        self.about = self.window.findChild(QPushButton, "button_about")
-        self.file_tree:QTreeWidget = self.window.findChild(QTreeWidget, 'file_tree')
-        self.large_logo = self.window.findChild(QWidget, "widget_app_icon")
-
-        self.file_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.file_tree.customContextMenuRequested.connect(self.show_context_menu)
-
-        # Initialize logic references (but don't create widgets yet)
-        self.general_settings_logic = None
-        self.env_vars_logic = None
-        self.gamescope_logic = None
-        self.launch_options_logic = None
-        self.interface_loaded: bool = False # redundancy to ensure ui doesn't load multiple times at once
-                
-
-        svg_widget = QSvgWidget(fman.svg_path)
-        svg_widget.setFixedSize(128, 128)
-        layout = self.large_logo.layout()
-        layout.addWidget(svg_widget)
-
-        # Track last index and intercept changes when there are unsaved changes
-        self._last_tab_index = self.mainFileEdit.currentIndex()
-        self.mainFileEdit.currentChanged.connect(self._on_tab_changed)
-
+    def portal_open_folder(self) -> None:
+        """inform the user the app will close if they proceed, then open the scopebuddy folder."""
+        result = fman.load_message_box(
+            self.app_window,
+            "Notice",
+            "The scopebuddy directory will open and the app will close if you proceed.",
+            QMessageBox.Icon.Information,
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel
+            )
         
-        self.button_new_config.clicked.connect(self.new_config_pressed)
-        self.open_folder.clicked.connect(self.open_folder_clicked)
-        self.about.clicked.connect(self.about_dialog)
-        self.file_tree.itemClicked.connect(self.tree_clicked)
-
-        # Add a permanent label and pushButton to the status bar
-        self.status_label = QLabel("File: None")
-        self.status_button = QPushButton("Exit File")
-        self.status_button.clicked.connect(self.unload_selected_file)
-
-        self.statusBar.addWidget(self.status_button)  # Left side
+        if result != QMessageBox.StandardButton.Ok:
+            return
         
-        self.statusBar.addPermanentWidget(self.status_label)  # Right side
+        self.chooseApplication(self.normalize_path(fman.SCB_DIR), False)
+        self.close()
+        return
         
+    def portal_open_file(self) -> None:
+        """confirm with the user they have no unsaved changes in the GUI, 
+        then unload the file and offer to open it in the default text editor."""
 
-        # ensure everything starts at its default state
-        self.mainFileSelect.setCurrentIndex(0)
-        self.mainFileEdit.setCurrentIndex(0)
-        self.statusBar.hide()
-
-        # Locate game-specific configs
-        self.appid_files = fman.ScopebuddyDirectory()
-
-        # load all configs into UI
-        self.reload_file_tree()
+        global selected_config
         
+        if selected_config is None:
+            print("ERROR: The portal to open the selected config was activated when no config is selected!")
+            return
+        
+        if not shared_data.unsaved_changes:
+            result = fman.load_message_box(
+                self.app_window,
+                "Notice",
+                "If you proceed, you will return to the main menu and this file will be opened in a text editor.",
+                QMessageBox.Icon.Information,
+                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel
+                )
+            if result != QMessageBox.StandardButton.Ok:
+                return
+            
+        path = selected_config.path_to_file
+        # If the file is unloaded, allow opening it in a text editor.
+        if not self.unload_selected_file():
+            self.chooseApplication(self.normalize_path(path), True)
+        return 
+
     def reload_file_tree(self) -> None:
         """Clears all entries from self.file_tree, and then reloads them."""
     
@@ -164,6 +212,7 @@ class ApplicationLogic:
         globalconfig = QTreeWidgetItem()
         globalconfig.setText(0, "Global")
         globalconfig.setToolTip(0, "File: scb.conf")
+        globalconfig.setText(1, "︙")
         self.file_tree.addTopLevelItem(globalconfig)
 
         directory = fman.ScopebuddyDirectory()
@@ -194,6 +243,7 @@ class ApplicationLogic:
         
         for name, num_configs, filename_displayname in launcher_data:
             launcher = QTreeWidgetItem()
+            launcher.setText(1, "☰")
             
             if num_configs == 1:
                 launcher.setText(0, f"{name} (1 config)")
@@ -207,6 +257,7 @@ class ApplicationLogic:
                 config_item = QTreeWidgetItem(launcher)
                 config_item.setText(0, displayname)
                 config_item.setToolTip(0, f"File: {filename}")
+                config_item.setText(1, "︙")
         
     def _on_tab_changed(self) -> None:
         """Notifies user if they leave the tab with unsaved changes."""
@@ -238,7 +289,7 @@ class ApplicationLogic:
             self.mainFileEdit.setCurrentIndex(unsaved_index)
 
         result = fman.load_message_box(
-            self.window,
+            self.app_window,
             "Apply Settings",
             "The current page has unsaved changes.",
             QMessageBox.Icon.Warning,
@@ -269,22 +320,7 @@ class ApplicationLogic:
             self._last_tab_index = current_index
             return QMessageBox.StandardButton.Apply
 
-    def open_folder_clicked(self):
-        """Shows a popup window with instructions for opening the Scopebuddy folder."""
-        fman.load_message_box(
-            self.window,
-            "Open Scopebuddy Folder",
-            (
-            "To open the Scopebuddy config folder, run this in a terminal:\n\n"
-            f"xdg-open {os.path.join(os.path.expanduser("~/.config"), "scopebuddy")}\n\n" #FIXME: fman.SCB_DIR was causing this to point inside the flatpak sandbox, though everything else works fine
-            "This will allow you to directly edit, create, or delete config files without relying on the GUI."
-            ),
-            QMessageBox.Icon.Information,
-            QMessageBox.StandardButton.Ok
-        )
-        return
-
-    def unload_selected_file(self) -> None:
+    def unload_selected_file(self) -> bool:
         """Prompts the user with a dialog window to be certain they wish to exit.
         Unloads the chosen file and interface, then returns the user to the 'Select a File' page.
         The dialog does not occur if the user is on the main menu, the app simply closes."""
@@ -292,7 +328,7 @@ class ApplicationLogic:
             # if the file-editing portion of the app is loaded:
         confirmation = self.confirm_before_proceed()
         if confirmation == QMessageBox.StandardButton.Cancel:
-            return    
+            return True
 
         def unload_interface(self) -> None:
             """Fully unloads interface elements."""
@@ -314,10 +350,12 @@ class ApplicationLogic:
         self.reload_file_tree()
 
         self.mainFileSelect.setCurrentIndex(0)
-        self.statusBar.hide()
+        self.appStatusBar.hide()
+        return False
 
-    def tree_clicked(self) -> None:
-        """opens the config file the user clicked."""
+    def tree_clicked(self, _=None, column=None) -> None:
+        """opens the config file the user clicked. 
+        If the second column was clicked, instead opens the context menu."""
         def load_with_selected_file(self,selected_file:fman.ConfigFile) -> None:
             """Loads the file selected by the user, then loads the interface with it."""
             def load_interface(self,file:fman.ConfigFile) -> None:
@@ -352,10 +390,17 @@ class ApplicationLogic:
             selected_config = selected_file
             load_interface(self, selected_config) # load the interface elements given the selected file
             self.mainFileSelect.setCurrentIndex(1)
-            self.statusBar.show()
-        
+            self.appStatusBar.show()
+
         item = self.file_tree.currentItem()
         
+        # If menu button was clicked, show the right-click menu
+        if column == 1:    
+            rect = self.file_tree.visualItemRect(item)  
+            pos = rect.bottomLeft()  
+            self.show_context_menu(pos)
+            return
+
         # Check if this is a top-level item
         parent = item.parent()
         
@@ -381,7 +426,7 @@ class ApplicationLogic:
 
     def new_config_pressed(self) -> None:
         """opens a modal that has the user create a new config with a Steam AppID.""" 
-        dialog = NewFileDialog(self.window)
+        dialog = NewFileDialog(self.app_window)
         result = dialog.exec()
 
         if result != QDialog.DialogCode.Accepted:  
@@ -395,7 +440,7 @@ class ApplicationLogic:
 
         if os.path.exists(full_path):
             fman.load_message_box(
-                self.window,
+                self.app_window,
                 "Error",
                 (
                     f"File {dialog.data['file_name']} already exists in this location.\n"
@@ -447,29 +492,29 @@ class ApplicationLogic:
         if parent is None:
             # Top-level item (Global or launcher folder)
             if item.text(0) == "Global":
-                open_action = QAction("Open", self.window)
+                open_action = QAction("Open", self.app_window)
                 open_action.triggered.connect(lambda: self.tree_clicked())
-                delete_action = QAction("Restore Default", self.window)
+                delete_action = QAction("Restore Default", self.app_window)
                 delete_action.triggered.connect(self.remake_global)
                 menu.addAction(open_action)
                 menu.addAction(delete_action)
             else:
                 # Launcher folder
-                add_config = QAction("Add Config", self.window)
+                add_config = QAction("Add Config", self.app_window)
                 # run new_config_pressed with the launcher argument passed
                 add_config.triggered.connect(lambda: self.new_config_pressed())
                 menu.addAction(add_config)
                 
-                delete_folder = QAction("Delete Launcher", self.window)
+                delete_folder = QAction("Delete Launcher", self.app_window)
                 delete_folder.triggered.connect(lambda: self.delete_item(item, 'folder'))
                 menu.addAction(delete_folder)
         else:
             # Config file item
-            open_action = QAction("Open", self.window)
+            open_action = QAction("Open", self.app_window)
             open_action.triggered.connect(lambda: self.tree_clicked())
             menu.addAction(open_action)
             
-            delete_action = QAction("Delete", self.window)
+            delete_action = QAction("Delete", self.app_window)
             delete_action.triggered.connect(lambda: self.delete_item(item, 'file'))
             menu.addAction(delete_action)
         
@@ -480,7 +525,7 @@ class ApplicationLogic:
 
         if item.text(0).rsplit(' (', 1)[0] == 'steam':
             fman.load_message_box(
-            self.window,
+            self.app_window,
             "Deletion Not Allowed",
             "The Steam folder is present by\n"
             "default and cannot be deleted.",
@@ -491,7 +536,7 @@ class ApplicationLogic:
 
 
         if fman.load_message_box(
-            self.window,
+            self.app_window,
             "Confirm Deletion",
             f"Are you certain you wish to delete this {type}?\nThis action cannot be undone.",
             QMessageBox.Icon.Question,
@@ -517,7 +562,7 @@ class ApplicationLogic:
         """After an "Are you sure" dialog, have fman reset the global file."""
 
         if fman.load_message_box(
-            self.window,
+            self.app_window,
             "Confirm Deletion",
             "Are you certain you wish to restore the global config\n" 
             "to default settings? This action cannot be undone.",
@@ -527,6 +572,29 @@ class ApplicationLogic:
             return 
         
         fman.ScopebuddyDirectory.regenerate_global()
+
+    @staticmethod
+    def normalize_path(file_path:str):
+        """
+        If the given path points to a flatpak-specific location, 
+        normalize it into a standard system-accessible path. 
+        If it is already standard, return it with no changes.\n
+        Very hacky solution only used to implement desktop portals, 
+        replace with a proper solution when it is found.\n
+        Only works when ~/.config/scopebuddy is the correct location.
+        """
+
+        if "/.var/app/io.github.rfrench3.scopebuddy-gui/config/scopebuddy" in file_path:
+            #HACK: The path passed to chooseApplication needs to be a real path on the system
+            split_path = file_path.split("var/app/io.github.rfrench3.scopebuddy-gui/")
+            fixed_path = "".join(split_path)
+            print(
+                f"\"{file_path}\" was normalized into \"{fixed_path}\"\n"
+                "This will only work when using the default location, ~/.config/scopebuddy"
+            )
+            return fixed_path
+        else:
+            return file_path
 
 #FIXME: pressing ESC inside the dialog results in a blank window
 class NewFileDialog(QDialog):
@@ -633,7 +701,7 @@ class NewFileDialog(QDialog):
                 launcher.setText(1, "(1 config)")
             else:
                 launcher.setText(1, f"({num_configs} configs)")
-
+            
             self.launchers.addTopLevelItem(launcher)
                     
     def new_launcher(self):
@@ -708,10 +776,8 @@ class NewFileDialog(QDialog):
 # Logic that loads the app
 app = QApplication([])
 icon = fman.icon
-
 window_main = MainWindow()
-logic = ApplicationLogic(window_main.ui_widget)
-window_main.logic = logic
+
 
 window_main.show()
 app.exec()
