@@ -28,9 +28,9 @@ jobs:
       
       - name: Install KDE SDK and Base App
         run: |
-          sudo flatpak install -y flathub org.kde.Platform//6.9
-          sudo flatpak install -y flathub org.kde.Sdk//6.9
-          sudo flatpak install -y flathub io.qt.PySide.BaseApp//6.9
+          sudo flatpak install -y flathub org.kde.Platform//6.10
+          sudo flatpak install -y flathub org.kde.Sdk//6.10
+          sudo flatpak install -y flathub io.qt.PySide.BaseApp//6.10
       
       - name: Build Flatpak
         run: |
