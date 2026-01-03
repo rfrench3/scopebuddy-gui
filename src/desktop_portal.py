@@ -8,11 +8,10 @@
 #   https://invent.kde.org/libraries/xdg-portal-test-kde/-/blob/master/src/xdgportaltest.cpp?ref_type=heads
 
 from PySide6.QtDBus import QDBusMessage, QDBusConnection, QDBusPendingCallWatcher, QDBusUnixFileDescriptor
-#from PySide6.QtCore import Slot
+# from PySide6.QtCore import Slot
 import os
 
 from PySide6.QtWidgets import QWidget
-
 
 class ChooseApplicationMixin:
     """
@@ -56,8 +55,7 @@ class ChooseApplicationMixin:
         """
 
         if not os.path.exists(file_path):
-            print(f"Error: File {file_path} does not exist!")
-            raise FileNotFoundError
+            raise FileNotFoundError(f"File {file_path} does not exist!")
 
         message = QDBusMessage.createMethodCall(
             "org.freedesktop.portal.Desktop",
@@ -72,20 +70,19 @@ class ChooseApplicationMixin:
         fd_wrapper = QDBusUnixFileDescriptor(fd)
 
         if not fd_wrapper.isValid():
-            print("Error: File descriptor is not valid!")
             os.close(fd)
             raise ValueError(f"File descriptor for '{file_path}' is not valid for D-Bus operations")
 
         options = {"ask": choose_application}
         message.setArguments([parent_window_id, fd_wrapper, options])
 
-        print(f"Sending D-Bus message... ({message.arguments()})")
+        #print(f"Sending D-Bus message... ({message.arguments()})")
         pending_call = QDBusConnection.sessionBus().asyncCall(message)
         
-        watcher = QDBusPendingCallWatcher(pending_call, self) #type:ignore
+        watcher = QDBusPendingCallWatcher(pending_call, self)
         
         def on_finished(watcher:QDBusPendingCallWatcher):
-            print("D-Bus call finished")
+            #print("D-Bus call finished")
             os.close(fd)
             watcher.deleteLater()
             reply = watcher.reply()
@@ -93,10 +90,10 @@ class ChooseApplicationMixin:
                 print("Couldn't get reply")
                 print(f"Error: {reply.errorMessage()}")
             else:
-                print(f"Got reply successfully ({reply})")
+                #print(f"Got reply successfully ({reply})")
                 object_path = reply.arguments()[0]
                 path_str = object_path.path() if hasattr(object_path, 'path') else str(object_path)
-                print(f"Connecting to response signal on path: {path_str}")
+                #print(f"Connecting to response signal on path: {path_str}")
 
                 QDBusConnection.sessionBus().connect(
                     "org.freedesktop.portal.Desktop", # service
@@ -104,9 +101,18 @@ class ChooseApplicationMixin:
                     "org.freedesktop.portal.Request", # interface
                     "Response",                       # name
                     self,                             # QObject
-                    None                              # slot (FIXME: When porting this to PySide6, I was unable to get this working.)
+                    None                              # slot
                 )
 
-        watcher.finished.connect(on_finished) #type:ignore
+        watcher.finished.connect(on_finished)
+'''
+NOTE: replacing "None" in the QDBusConnection.sessionBus().connect with "callFinishedSlot" 
+      results in the following message, making me think it is a PySide6 bug.
+qt.dbus.integration: Could not connect "org.freedesktop.portal.Request" to allFinishedSlot :
 
-        
+This never runs, so it is commented out for now
+    # @Slot(int, dict)
+    # def callFinishedSlot(self, call):
+    #     print("called")
+    #     pass
+'''

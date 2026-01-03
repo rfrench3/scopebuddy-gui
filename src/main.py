@@ -576,7 +576,7 @@ class MainWindow(QMainWindow, ChooseApplicationMixin):
     @staticmethod
     def normalize_path(file_path:str):
         """
-        If the path given points to a flatpak-specific location, 
+        If the given path points to a flatpak-specific location, 
         normalize it into a standard system-accessible path. 
         If it is already standard, return it with no changes.\n
         Very hacky solution only used to implement desktop portals, 
@@ -590,7 +590,7 @@ class MainWindow(QMainWindow, ChooseApplicationMixin):
             fixed_path = "".join(split_path)
             print(
                 f"\"{file_path}\" was normalized into \"{fixed_path}\"\n"
-                "If your config folder is not default (~/.config), this likely failed... "
+                "This will only work when using the default location, ~/.config/scopebuddy"
             )
             return fixed_path
         else:
@@ -701,7 +701,7 @@ class NewFileDialog(QDialog):
                 launcher.setText(1, "(1 config)")
             else:
                 launcher.setText(1, f"({num_configs} configs)")
-
+            
             self.launchers.addTopLevelItem(launcher)
                     
     def new_launcher(self):
@@ -776,7 +776,6 @@ class NewFileDialog(QDialog):
 # Logic that loads the app
 app = QApplication([])
 icon = fman.icon
-
 window_main = MainWindow()
 
 
