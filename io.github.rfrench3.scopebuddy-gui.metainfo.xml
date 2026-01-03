@@ -8,7 +8,7 @@
     <name>Robert French</name>
   </developer>
   <metadata_license>MIT</metadata_license>
-  <project_license>LGPL-2.1-or-later</project_license>
+  <project_license>LGPL-3.0-only</project_license>
   <update_contact>frenchrobertm@outlook.com</update_contact>
   <description>
     <p>Convenient interface for saving, editing, and loading configurations for games. If you have ScopeBuddy installed, it can even apply these configurations automatically!</p>
