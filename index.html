@@ -73,7 +73,7 @@
               which includes creating a general Gamescope configuration for all of your games. This GUI does not cover all of its capabilities,
               but allows for easier usage of its more simple features while preserving any advanced manually-set functions.</p>
 
-            <p><sub>1. Game launchers installed as flatpak may have difficulties using Gamescope.</sub></p>
+            <p><sub>1. Game launchers installed as flatpak may have difficulties working with ScopeBuddy.</sub></p>
           </div>
         </div>
       </div>
@@ -139,7 +139,7 @@
             <p>
               Gamescope uses launch options to determine how it will render and display games. 
               For example, <code>-w 1920 -h 1080 </code> will tell it to render at a resolution of 1920x1080p (FHD).
-              There are a few launch options for Gamescope left out of the GUI because they are either too complex or unreliable.
+              Not all Gamescope arguments have been implemented into the GUI.
               If you wish to use them, they can be entered into the "Additional Arguments" text field at the bottom of the gamescope page.
             </p>
             <p>
@@ -309,13 +309,45 @@
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
+
+            <h2>Flatpak Game Launchers</h2>
+            <p>
+              When a game launcher is installed as a Flatpak, it is not able to view programs installed to the host (including gamescope and scopebuddy).
+              As of writing (Mar 2, 2026), ScopeBuddy does not have easy integration with Flatpak, but Gamescope does!
+            </p>
+            <ul>
+              <li>
+                <p>
+                  Determine the base runtime used by the game launcher. 
+                  The Gamescope Flatpak installs itself as an extension to the base freedesktop runtime. 
+                </p>
+                <code>
+                  flatpak info com.heroicgameslauncher.hgl <br>
+                  > ...info... <br>
+                  > <b>Runtime:</b> org.freedesktop.Platform/x86_64/25.08 <br>
+                  > ...info...
+                </code>
+                
+              </li>
+              <li>
+                <p>
+                  Based on the runtime of the launcher, install the correct version of gamescope.
+                </p>
+                <code>flatpak install gamescope</code>
+                <p>
+                    If it asks which remote to use (<i>likely flathub (user) vs flathub (system)</i>), choose the same remote as the launcher. 
+                    This information is shown in the <code>flatpak info</code> command from the last step. 
+                    You will then get an interactive prompt asking you which version of gamescope to install: install the one that matches the launcher's Runtime version.
+                </p>
+              </li>
+            </ul>
+
+
             <h2>Known Issues</h2>
             <ul>
-              <li><p>
-              At this moment, Gamescope (and therefore, Scopebuddy) does not tend to work properly with game launchers that are packaged as a flatpak.
-              Some workarounds until that is resolved are to use other formats such as AppImage or distro-specific packages, or to launch the game launcher itself inside gamescope/scopebuddy. 
-              </p><p>For Example: <code>scb -- flatpak run com.heroicgameslauncher.hgl</code></p></li>
-              <li><p>At this moment, the steam overlay option can result in gamescope not opening! If you have this issue, disable the overlay setting.</p></li>
+              <li><p>ScopeBuddy does not currently (Mar 2, 2026) have a flatpak package.</p></li>
+              
+              <li><p>The <code>-e</code> or <code>--steam</code> flags can crash games when passed to gamescope. <b>The flag is intended to be used on steam itself, do not pass it to your games.</b></p></li>
             </ul>
 
             <h2>Other Considerations</h2>
@@ -337,28 +369,6 @@
             </ul>
             <br>
             <p>If you have an issue, especially one that is easy to encounter, post it in the <a rel="stylesheet" href="https://github.com/rfrench3/scopebuddy-gui/issues" target="_blank">Github</a>!</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <section class="row row-cols-1 g-4 mb-5" id="devinfo">
-      <h2>Developer Information</h2>
-      <hr>
-      <div class="col">
-        <div class="card h-100">
-          <div class="card-body">
-            <p>The app itself uses Python and PySide6 (Qt for Python). I utilize Qt Designer for the interface and Python code for the logic. 
-              The web-based version uses JavaScript. The app itself is built from source with the following commands 
-              (run inside of a folder with the yml):</p>
-            <ul>
-              <li><code>flatpak-builder --force-clean --repo=repo builddir io.github.rfrench3.scopebuddyGUI.yml</code></li>
-              <li><code>flatpak build-bundle repo scopebuddyGUI.flatpak io.github.rfrench3.scopebuddyGUI</code></li>
-            </ul>
-            <br>
-            <p>If you are interested in making a flatpak app with Qt and Python, or a website with bootstrap similar to this one, 
-              my GitHub has templates of both you can use! Additionally, I <strong>strongly</strong> recommend developing Qt/KDE applications inside of 
-              <a href="https://blues.win/posts/kde-dev-bazzite/" target="_blank">this distrobox</a> as it greatly simplifies development!</p>
           </div>
         </div>
       </div>
