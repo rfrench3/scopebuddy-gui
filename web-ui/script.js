@@ -16,7 +16,6 @@ function generateGamescopeConfig() {
     const fullscreen = document.getElementById('fullscreen');
     const borderless_window = document.getElementById('borderless_window');
     const hdr = document.getElementById('hdr');
-    const steam = document.getElementById('steam');
     const mangohud = document.getElementById('mangohud');
     const force_grab_cursor = document.getElementById('force_grab_cursor');
     const force_internal_fullscreen = document.getElementById('force_internal_fullscreen');
@@ -39,7 +38,6 @@ function generateGamescopeConfig() {
     if (fullscreen.checked) {editableList.push(`-f`)}
     if (borderless_window.checked) {editableList.push(`-b`)}
     if (hdr.checked) {editableList.push(`--hdr-enabled`)}
-    if (steam.checked) {editableList.push(`-e`)}
     if (mangohud.checked) {editableList.push(`--mangoapp`)}
     if (force_grab_cursor.checked) {editableList.push(`--force-grab-cursor`)}
     if (force_internal_fullscreen.checked) {editableList.push(`--force-windows-fullscreen`)}
