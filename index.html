@@ -168,6 +168,30 @@
           </div>
         </div>
       </div>
+      <div class="col">
+        <div class="card h-100" id="all_together">
+          <div class="card-body">
+            <h4>Combined Usage</h4>
+            <p>
+              To combine environment variables, gamescope, and launch options, you would use the following format:
+            </p>
+            <code>
+              [list of environment variables] wrapper-program main-program [list of launch options]
+            </code>
+            <br><br>
+            <p>
+              Gamescope (and ScopeBuddy) would be inserted into the wrapper-program slot as <code>(gamescope -args-for-gamescope --)</code>. 
+              In Steam's launch options, the command to run the program is always entered as <code>%command%</code>.
+              To give some examples:
+            </p>
+            <code>
+              ENV_VAR_A=1 ENV_VAR_B=2 gamescope -h 1080 -- PROGRAM_BEING_RUN --launch-options-for-the-program <br>
+              SteamDeck=0 scb -- %command% -novid <br>
+              LD_PRELOAD="" mangohud SuperTuxKart
+            </code>
+          </div>
+        </div>
+      </div>
     </section>
     
     <section class="row row-cols-1 g-4 mb-5" id="steam">
