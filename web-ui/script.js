@@ -8,6 +8,7 @@ function copyConfigToClipboard() {
 
 function generateGamescopeConfig() {
     // Assign all input fields to constants
+    const env_vars = document.getElementById('env_vars');
     const rendered_width = document.getElementById('rendered_width');
     const rendered_height = document.getElementById('rendered_height');
     const output_width = document.getElementById('output_width');
@@ -27,7 +28,9 @@ function generateGamescopeConfig() {
     const upscaler_sharpness = document.getElementById('upscaler_sharpness');
     const additional_args = document.getElementById('additional_args');
 
+
     let editableList = []; //append each argument to this list
+    editableList.push(env_vars.value);
     editableList.push("gamescope");
     // beginning of entries
     if (rendered_width.value != 0) {editableList.push(`-w ${rendered_width.value}`)}
@@ -64,6 +67,25 @@ function generateGamescopeConfig() {
 document.getElementById('generate_gamescope_config').addEventListener('click', function() {
     if (document.querySelector('form').reportValidity()) {
         //TODO: make sure width is not set if height is not set
+        if (rendered_width.value && !rendered_height.value) {
+            const left_of_output = document.getElementById('left_of_output_config');
+            const output = document.getElementById('output_config');
+            left_of_output.textContent = '';
+            output.textContent = "You cannot set the rendered width without setting the rendered height.";
+            this.style.borderColor = 'red';
+            return;
+        }
+            
+        if (output_width.value && !output_height.value) {
+            const left_of_output = document.getElementById('left_of_output_config');
+            const output = document.getElementById('output_config');
+            left_of_output.textContent = '';
+            output.textContent = "You cannot set the output width without setting the output height.";
+            this.style.borderColor = 'red';
+            return;
+        }
+        
+        this.style.borderColor = '';
         generateGamescopeConfig();
     }
 });
