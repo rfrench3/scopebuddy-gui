@@ -51,6 +51,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="v2.4.1" date="2026-04-23" type="stable">
+      <description>
+        <p>Remove the misunderstood steam checkbox, fix a possible crash.</p>
+      </description>
+    </release>
     <release version="v2.4.0" date="2026-01-02" type="stable">
       <description>
         <ul>
