@@ -611,7 +611,7 @@ class ScopebuddyDirectory:
                         item['displayname'] = name
                         print(e)
                 
-                information[name] = item
+                    information[name] = item
                 
             elif os.path.isdir(path) and not _ignore_subfolders:
                 # Handle folders - recursively scan subdirectories
