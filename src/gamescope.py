@@ -38,7 +38,6 @@ class GamescopeLogic:
                 'checkBox_fullscreen': (QCheckBox, '-f'),
                 'checkBox_borderless': (QCheckBox, '-b'),
                 'checkBox_hdr': (QCheckBox, '--hdr-enabled'),
-                'checkBox_steam': (QCheckBox, '-e'),
                 'checkBox_mango': (QCheckBox, '--mangoapp'),
                 'checkBox_forceGrabCursor': (QCheckBox, '--force-grab-cursor'),
                 'checkBox_forceInternalFullscreen': (QCheckBox, '--force-windows-fullscreen'),
