@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <component type="desktop-application">
-  <!--Created with jdAppStreamEdit 9.2-->
+  <!--Created with jdAppStreamEdit 10.0-->
   <id>io.github.rfrench3.scopebuddy-gui</id>
   <name>Scopebuddy GUI</name>
   <summary>Configure Gamescope and more</summary>
@@ -51,6 +51,15 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="v2.4.2" date="2026-10-23" type="stable">
+      <description>
+        <ul>
+          <li>Fixed a bug that could cause a malformed scopebuddy config file.</li>
+          <li>Allow the Config Files list to expand downwards to show more files.</li>
+          <li>Update to org.kde.Platform 6.11</li>
+        </ul>
+      </description>
+    </release>
     <release version="v2.4.1" date="2026-04-23" type="stable">
       <description>
         <p>Remove the misunderstood steam checkbox, fix a possible crash.</p>
@@ -82,7 +91,7 @@
         <p>This update vastly improves UX. The Apply buttons on each page now adaptively enables/disables depending on whether or not changes are actually present, and this being tracked also means excessive "are you sure" popups could be removed.</p>
       </description>
     </release>
-    <release version="v2.1.2" date="2025-08-18" type="stable" urgency="low">
+    <release version="v2.1.2" urgency="low" date="2025-08-18" type="stable">
       <description>
         <p>Fix #39: Open Folder button no longer guides users to opening the incorrect folder.</p>
       </description>
@@ -129,13 +138,13 @@
     <category>Utility</category>
     <category>Settings</category>
   </categories>
-  <requires>
-    <display_length compare="ge">600</display_length>
-  </requires>
   <recommends>
     <control>pointing</control>
     <control>keyboard</control>
   </recommends>
+  <requires>
+    <display_length compare="ge">600</display_length>
+  </requires>
   <content_rating type="oars-1.1"/>
   <launchable type="desktop-id">io.github.rfrench3.scopebuddy-gui.desktop</launchable>
   <keywords>
